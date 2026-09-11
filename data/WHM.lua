@@ -1,10 +1,6 @@
 -- =============================================================================
 -- WHM.lua — Changelog
--- 2026-08-09: Added check_ecphoria_for_ja(spell) call at the very top of job_precast(),
---             ahead of the existing Magic/JobAbility if-elseif chain so it runs regardless
---             of branch -- correctly wires the Amnesia -> Ecphoria Ring precast hook (see
---             Ullona-Globals.lua).
-
+--11/9/2026: added display for what barspells are on what button for elemental wheel. 
 -- =============================================================================
 
 -- Initialization function for this job file.
@@ -14,7 +10,6 @@ function get_sets()
     include('Smart-Caster.lua')
 end
 
--- Setup vars that are user-independent.  state.Buff vars initialized here will automatically be tracked.
 function job_setup()
 
     state.Buff['Afflatus Solace'] = buffactive['Afflatus Solace'] or false
@@ -54,10 +49,6 @@ function job_setup()
 			return
 		end
 
-		-- Make sure Afflatus Solace is up before committing to a single-target cure on an ally,
-		-- so it lands at full potency. Skipped for MONSTER targets (offensive cure-nuke usage,
-		-- not a "normal" cure). If Solace isn't up and the JA is off cooldown, fire it, then
-		-- automatically retry this same smartcure call a moment later once Solace has landed.
 		if cureTarget.type ~= 'MONSTER' and not state.Buff['Afflatus Solace'] then
 			local abil_recasts = windower.ffxi.get_ability_recasts()
 			if abil_recasts[29] < latency then
@@ -147,11 +138,6 @@ function job_setup()
 	end
 end
 
--------------------------------------------------------------------------------------------------------------------
--- Job-specific hooks for standard casting events.
--------------------------------------------------------------------------------------------------------------------
--- Set eventArgs.handled to true if we don't want any automatic gear equipping to be done.
--- Set eventArgs.useMidcastGear to true if we want midcast gear equipped on precast.
 
 function job_filtered_action(spell, eventArgs)
 
@@ -162,22 +148,9 @@ function job_pretarget(spell, spellMap, eventArgs)
 end
 
 function job_precast(spell, spellMap, eventArgs)
-	-- [ADDED 2026-08-09] Amnesia -> Ecphoria Ring: swaps ring2 to Ecphoria Ring the moment
-	-- a job ability is attempted while Amnesia is up (see check_ecphoria_for_ja() in
-	-- Ullona-Globals.lua for the actual logic -- this is just the required per-job wiring).
-	-- Placed at the very top, ahead of the Magic/JobAbility if-elseif chain below, so it
-	-- always runs regardless of which branch this spell/ability falls into.
 	check_ecphoria_for_ja(spell)
 
 	if spell.action_type == 'Magic' then
-		-- [REMOVED] The old weather-prep block used to live here: it would cancel a Cure/Cure
-		-- II cast, fire Aurorastorm, then reschedule the actual heal ~4 seconds later. That
-		-- delayed reschedule was fragile -- any interruption, lag, or re-cancel along the way
-		-- meant the real heal just never happened, which is exactly backwards for something
-		-- that can be life-or-death. Per direct instruction: a party member's health always
-		-- comes before weather. The Cure/Cure II cast now NEVER gets delayed for Aurorastorm --
-		-- smart_caster_precast() below still gives you a heads-up reminder in chat if
-		-- Aurorastorm is down, but it no longer touches the actual cast in any way.
 
 		if spellMap == 'Cure' or spellMap == 'Curaga' then
 			gear.default.obi_waist = gear.obi_cure_waist
@@ -196,14 +169,6 @@ function job_precast(spell, spellMap, eventArgs)
 				return
 			end
 		end
-
-		-- [FIX] Smart-Caster.lua was never actually wired in -- this include existed with
-		-- fully correct Afflatus Misery-before-Esuna logic (and Afflatus Solace-before-Cure,
-		-- as a second layer alongside handle_smartcure's own check) but was never called from
-		-- anywhere, so none of it ever ran. Placed last, after WHM's own tailored precast
-		-- logic above, so anything WHM already handles explicitly (Divine Caress) keeps
-		-- priority and this only runs if none of that already cancelled+returned. Its own
-		-- Aurorastorm reminder (reminder-only now, never blocking) covers Cure/Cure II here.
 		smart_caster_precast(spell, spellMap, eventArgs)
 	elseif spell.type == 'JobAbility' then
 		local abil_recasts = windower.ffxi.get_ability_recasts()
@@ -266,12 +231,6 @@ function job_post_midcast(spell, spellMap, eventArgs)
 			equip(sets.element[spell.element])
 		end
 
-		-- [NEW 2026-07-25]: WHM never had MP-recovery gear logic before -- this job mostly
-		-- casts Cure, so it wasn't as pressing, but Holy/Banish nukes still eat into MP the
-		-- same as any other job's Elemental Magic. Calls the same shared global
-		-- try_recover_mp() (Ullona-Globals.lua) that BLM/RDM now use -- fixed 75% MP
-		-- threshold. No-ops harmlessly if sets.RecoverMP hasn't been defined in
-		-- Ullona_Whm_Gear.lua yet.
 		try_recover_mp()
     end
 	
@@ -290,10 +249,6 @@ end
 
 -------------------------------------------------------------------------------------------------------------------
 -- Job-specific hooks for non-casting events.
--------------------------------------------------------------------------------------------------------------------
-
--------------------------------------------------------------------------------------------------------------------
--- User code that supplements standard library decisions.
 -------------------------------------------------------------------------------------------------------------------
 
 -- Custom spell mapping.
@@ -505,6 +460,24 @@ local bar_status_spells = {
 	Dark      = {name = 'Barpoisonra',  type = 'magic'},  -- Poison -- double-dip #2, same spell as Water above
 	Light     = {name = 'Barblindra',   type = 'magic'},  -- Blind -- need light to see
 }
+
+-- Display-only helper: cycling the ElementalMode wheel (Ctrl+`) normally just echoes the
+-- raw element name (e.g. "Elemental Mode: Dark"), which tells you nothing about what's
+-- actually bound to it on this wheel. This reminds you which bar-element/bar-status spells
+-- you're pointing at, "Bar" stripped, built straight from bar_element_spells / bar_status_spells
+-- above so it can't drift out of sync with the real bindings.
+-- Mote-Include calls job_state_change(stateField, new_value, old_value) automatically any
+-- time a state changes -- this only reacts to the Elemental Mode field, every other state
+-- (Weapons, CastingMode, etc.) is untouched.
+function job_state_change(stateField, new_value, old_value)
+    if stateField == 'Elemental Mode' then
+        local elem_spell = bar_element_spells[new_value]
+        local status_entry = bar_status_spells[new_value]
+        local elem_name = elem_spell and elem_spell:gsub('^Bar', '') or '?'
+        local status_name = status_entry and status_entry.name:gsub('^Bar', '') or '?'
+        add_to_chat(160, 'Elemental Mode: '..new_value..'  ['..elem_name..' / '..status_name..']')
+    end
+end
 
 function handle_barstatus(cmdParams)
 	local entry = bar_status_spells[state.ElementalMode.value]
