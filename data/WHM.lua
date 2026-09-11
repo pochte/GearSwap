@@ -518,7 +518,14 @@ function job_state_change(stateField, new_value, old_value)
     if stateField == 'Elemental Mode' then
         local status_entry = bar_status_spells[new_value]
         local status_name = status_entry and status_entry.name or '?'
-        add_to_chat(160, 'Elemental Mode: '..new_value..' ['..status_name..']')
+        if new_value == 'Light' or new_value == 'Dark' then
+            -- Light/Dark have no real bar-element spell -- Ctrl+A casts a status spell here
+            -- too (Barparalyzra/Barsleepra), same as Alt+A, so both need calling out.
+            local elem_name = bar_element_spells[new_value] or '?'
+            add_to_chat(160, 'Elemental Mode: '..new_value..' ['..elem_name..' / '..status_name..']')
+        else
+            add_to_chat(160, 'Elemental Mode: '..new_value..' ['..status_name..']')
+        end
     end
 end
 
