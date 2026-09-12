@@ -29,7 +29,7 @@ soul_devour_weapons = {
     DNC = {{tier1 = "Prime Dagger",    tier2 = "Mpu Gandring",  slot = "main"}},
     BRD = {
         {tier1 = "Prime Dagger",    tier2 = "Mpu Gandring",  slot = "main"},
-        {tier1 = "Prime Horn",      tier2 = "Loughnashade",  slot = "main"},
+        {tier1 = "Prime Horn",      tier2 = "Loughnashade",  slot = "range"},
     },
     PLD = {
         {tier1 = "Prime Sword",     tier2 = "Caliburnus",    slot = "main"},
@@ -55,10 +55,10 @@ soul_devour_weapons = {
     BLM = {{tier1 = "Prime Staff",     tier2 = "Opashoro",      slot = "main"}},
     SMN = {{tier1 = "Prime Staff",     tier2 = "Opashoro",      slot = "main"}},
     SCH = {{tier1 = "Prime Staff",     tier2 = "Opashoro",      slot = "main"}},
-    COR = {{tier1 = "Prime Gun",       tier2 = "Earp",          slot = "main"}},
+    COR = {{tier1 = "Prime Gun",       tier2 = "Earp",          slot = "range"}},
     RNG = {
-        {tier1 = "Prime Bow",       tier2 = "Pinaka",        slot = "main"},
-        {tier1 = "Prime Gun",       tier2 = "Earp",          slot = "main"},
+        {tier1 = "Prime Bow",       tier2 = "Pinaka",        slot = "range"},
+        {tier1 = "Prime Gun",       tier2 = "Earp",          slot = "range"},
     },
 }
 
@@ -85,6 +85,12 @@ function soul_devour_owns_item(item_name)
     local items = windower.ffxi.get_items()
     if not items then return false end
 
+    -- NOTE: don't pre-resolve item_name -> a single id via res.items:with("en", ...).
+    -- Empyrean weapons keep the same display name across every augment rank, but
+    -- each rank is a *different* item id under the hood. Pre-resolving grabs
+    -- whichever id the resource table happens to list first (usually Rank 1),
+    -- which will never match a reforged copy. Instead, resolve each bag item's
+    -- own name and compare strings.
     for _, bag_name in ipairs(SOUL_DEVOUR_BAGS) do
         local bag = items[bag_name]
         if bag then
