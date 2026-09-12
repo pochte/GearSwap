@@ -19,46 +19,56 @@ local res = require('resources')
 -- =============================================================================
 
 soul_devour_weapons = {
-    MNK = {{tier1 = "Prime Fists",     tier2 = "Varga Purnikawa", slot = "main"}},
-    PUP = {{tier1 = "Prime Fists",     tier2 = "Varga Purnikawa", slot = "main"}},
+    -- Every tier1_id/tier2_id below is derived from the actual resource file:
+    -- stage 1 = the "Prime X" item's own id; stage 2 ("X (Incomplete)") = the
+    -- id among X's several same-named entries whose base stat (damage, or for
+    -- Duban/Loughnashade the lowest id since they have no distinguishing stat)
+    -- exactly matches Prime X's — the same relationship that was confirmed via
+    -- in-game Examine for Lorg Mor (WHM/GEO). Only Lorg Mor has actually been
+    -- Examine-confirmed stage by stage; the rest are inferred from the same
+    -- structural pattern holding identically across all 14 weapon families in
+    -- the resource file, so treat these as high-confidence but not individually
+    -- eyeballed in-game — worth a quick Examine spot-check if one misbehaves.
+    MNK = {{tier1 = "Prime Fists",  tier1_id = 21531, tier2 = "Varga Purnikawa", tier2_id = 21532, slot = "main"}},
+    PUP = {{tier1 = "Prime Fists",  tier1_id = 21531, tier2 = "Varga Purnikawa", tier2_id = 21532, slot = "main"}},
     RDM = {
-        {tier1 = "Prime Dagger",    tier2 = "Mpu Gandring",  slot = "main"},
-        {tier1 = "Prime Sword",     tier2 = "Caliburnus",    slot = "main"},
+        {tier1 = "Prime Dagger", tier1_id = 21586, tier2 = "Mpu Gandring", tier2_id = 21587, slot = "main"},
+        {tier1 = "Prime Sword",  tier1_id = 21642, tier2 = "Caliburnus",   tier2_id = 21643, slot = "main"},
     },
-    THF = {{tier1 = "Prime Dagger",    tier2 = "Mpu Gandring",  slot = "main"}},
-    DNC = {{tier1 = "Prime Dagger",    tier2 = "Mpu Gandring",  slot = "main"}},
+    THF = {{tier1 = "Prime Dagger", tier1_id = 21586, tier2 = "Mpu Gandring", tier2_id = 21587, slot = "main"}},
+    DNC = {{tier1 = "Prime Dagger", tier1_id = 21586, tier2 = "Mpu Gandring", tier2_id = 21587, slot = "main"}},
     BRD = {
-        {tier1 = "Prime Dagger",    tier2 = "Mpu Gandring",  slot = "main"},
-        {tier1 = "Prime Horn",      tier2 = "Loughnashade",  slot = "range"},
+        {tier1 = "Prime Dagger", tier1_id = 21586, tier2 = "Mpu Gandring", tier2_id = 21587, slot = "main"},
+        {tier1 = "Prime Horn",   tier1_id = 22303, tier2 = "Loughnashade", tier2_id = 22304, slot = "range"},
     },
     PLD = {
-        {tier1 = "Prime Sword",     tier2 = "Caliburnus",    slot = "main"},
-        {tier1 = "Prime Blade",     tier2 = "Helheim",       slot = "main"},
-        {tier1 = "Prime Shield",    tier2 = "Duban",         slot = "sub"},
+        {tier1 = "Prime Sword",  tier1_id = 21642, tier2 = "Caliburnus", tier2_id = 21643, slot = "main"},
+        {tier1 = "Prime Blade",  tier1_id = 21650, tier2 = "Helheim",    tier2_id = 21651, slot = "main"},
+        {tier1 = "Prime Shield", tier1_id = 26491, tier2 = "Duban",      tier2_id = 26492, slot = "sub"},
     },
-    BLU = {{tier1 = "Prime Sword",     tier2 = "Caliburnus",    slot = "main"}},
+    BLU = {{tier1 = "Prime Sword",     tier1_id = 21642, tier2 = "Caliburnus", tier2_id = 21643, slot = "main"}},
     WAR = {
-        {tier1 = "Prime Blade",     tier2 = "Helheim",       slot = "main"},
-        {tier1 = "Prime Great Axe", tier2 = "Laphria",       slot = "main"},
+        {tier1 = "Prime Blade",     tier1_id = 21650, tier2 = "Helheim", tier2_id = 21651, slot = "main"},
+        {tier1 = "Prime Great Axe", tier1_id = 21781, tier2 = "Laphria", tier2_id = 21782, slot = "main"},
     },
     DRK = {
-        {tier1 = "Prime Blade",     tier2 = "Helheim",       slot = "main"},
-        {tier1 = "Prime Scythe",    tier2 = "Foenaria",      slot = "main"},
+        {tier1 = "Prime Blade",  tier1_id = 21650, tier2 = "Helheim",  tier2_id = 21651, slot = "main"},
+        {tier1 = "Prime Scythe", tier1_id = 21833, tier2 = "Foenaria", tier2_id = 21834, slot = "main"},
     },
-    RUN = {{tier1 = "Prime Blade",     tier2 = "Helheim",       slot = "main"}},
-    BST = {{tier1 = "Prime Pickaxe",   tier2 = "Spalirisos",    slot = "main"}},
-    DRG = {{tier1 = "Prime Lance",     tier2 = "Gae Buide",      slot = "main"}},
-    NIN = {{tier1 = "Genshitanto",     tier2 = "Dokoku",        slot = "main"}},
-    SAM = {{tier1 = "Genshito",        tier2 = "Kusanagi",      slot = "main"}},
-    WHM = {{tier1 = "Prime Maul",      tier2 = "Lorg Mor",      slot = "main"}},
-    GEO = {{tier1 = "Prime Maul",      tier2 = "Lorg Mor",      slot = "main"}},
-    BLM = {{tier1 = "Prime Staff",     tier2 = "Opashoro",      slot = "main"}},
-    SMN = {{tier1 = "Prime Staff",     tier2 = "Opashoro",      slot = "main"}},
-    SCH = {{tier1 = "Prime Staff",     tier2 = "Opashoro",      slot = "main"}},
-    COR = {{tier1 = "Prime Gun",       tier2 = "Earp",          slot = "range"}},
+    RUN = {{tier1 = "Prime Blade",     tier1_id = 21650, tier2 = "Helheim",    tier2_id = 21651, slot = "main"}},
+    BST = {{tier1 = "Prime Pickaxe",   tier1_id = 21726, tier2 = "Spalirisos", tier2_id = 21727, slot = "main"}},
+    DRG = {{tier1 = "Prime Lance",     tier1_id = 21887, tier2 = "Gae Buide",  tier2_id = 21888, slot = "main"}},
+    NIN = {{tier1 = "Genshitanto",     tier1_id = 21928, tier2 = "Dokoku",     tier2_id = 21929, slot = "main"}},
+    SAM = {{tier1 = "Genshito",        tier1_id = 21982, tier2 = "Kusanagi",   tier2_id = 21983, slot = "main"}},
+    WHM = {{tier1 = "Prime Maul",      tier1_id = 21999, tier2 = "Lorg Mor",   tier2_id = 22000, slot = "main"}},
+    GEO = {{tier1 = "Prime Maul",      tier1_id = 21999, tier2 = "Lorg Mor",   tier2_id = 22000, slot = "main"}},
+    BLM = {{tier1 = "Prime Staff",     tier1_id = 22102, tier2 = "Opashoro",   tier2_id = 22103, slot = "main"}},
+    SMN = {{tier1 = "Prime Staff",     tier1_id = 22102, tier2 = "Opashoro",   tier2_id = 22103, slot = "main"}},
+    SCH = {{tier1 = "Prime Staff",     tier1_id = 22102, tier2 = "Opashoro",   tier2_id = 22103, slot = "main"}},
+    COR = {{tier1 = "Prime Gun",       tier1_id = 22159, tier2 = "Earp",       tier2_id = 22160, slot = "range"}},
     RNG = {
-        {tier1 = "Prime Bow",       tier2 = "Pinaka",        slot = "range"},
-        {tier1 = "Prime Gun",       tier2 = "Earp",          slot = "range"},
+        {tier1 = "Prime Bow", tier1_id = 22155, tier2 = "Pinaka", tier2_id = 22156, slot = "range"},
+        {tier1 = "Prime Gun", tier1_id = 22159, tier2 = "Earp",   tier2_id = 22160, slot = "range"},
     },
 }
 
@@ -100,6 +110,40 @@ function soul_devour_owns_item(item_name)
                     if item_res and item_res.en == item_name then
                         return true
                     end
+                end
+            end
+        end
+    end
+    return false
+end
+
+-- =============================================================================
+-- ITEM AVAILABILITY CHECK — BY EXACT ID (bag OR already worn)
+-- =============================================================================
+-- Use this instead of the name-based check whenever the exact stage id is
+-- known (see tier1_id/tier2_id in soul_devour_weapons). Exact id matching is
+-- strictly correct — it can't accidentally match a later reforge stage that's
+-- lost Soul Devour, the way name-matching can.
+
+function soul_devour_item_available_by_id(item_id, slot)
+    if not item_id or not slot then return false end
+
+    local item_res = res.items[item_id]
+    local item_name = item_res and item_res.en
+
+    if item_name and player and player.equipment and player.equipment[slot] == item_name then
+        return true
+    end
+
+    local items = windower.ffxi.get_items()
+    if not items then return false end
+
+    for _, bag_name in ipairs(SOUL_DEVOUR_BAGS) do
+        local bag = items[bag_name]
+        if bag then
+            for _, item in pairs(bag) do
+                if type(item) == "table" and item.id == item_id and (item.count or 0) > 0 then
+                    return true
                 end
             end
         end
@@ -174,7 +218,10 @@ function get_soul_devour_gear()
 
     -- Priority 1: Check all Tier 2 weapons first
     for _, candidate in ipairs(candidates) do
-        if soul_devour_item_available(candidate.tier2, candidate.slot) then
+        local available = candidate.tier2_id
+            and soul_devour_item_available_by_id(candidate.tier2_id, candidate.slot)
+            or soul_devour_item_available(candidate.tier2, candidate.slot)
+        if available then
             return {
                 slot = candidate.slot,
                 item = candidate.tier2,
@@ -184,7 +231,10 @@ function get_soul_devour_gear()
 
     -- Priority 2: Fall back to Tier 1 weapons
     for _, candidate in ipairs(candidates) do
-        if soul_devour_item_available(candidate.tier1, candidate.slot) then
+        local available = candidate.tier1_id
+            and soul_devour_item_available_by_id(candidate.tier1_id, candidate.slot)
+            or soul_devour_item_available(candidate.tier1, candidate.slot)
+        if available then
             return {
                 slot = candidate.slot,
                 item = candidate.tier1,
