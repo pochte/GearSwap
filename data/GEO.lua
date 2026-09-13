@@ -3,7 +3,6 @@
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -- Setup functions for this job. Generally should not be modified.
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 -- Initialization function for this job file.
 function get_sets()
     -- Make sure GearSwap's nested set tables exist before any included gear file
@@ -30,20 +29,13 @@ function job_setup()
     LowTierNukes = S{'Stone', 'Water', 'Aero', 'Fire', 'Blizzard', 'Thunder',
         'Stone II', 'Water II', 'Aero II', 'Fire II', 'Blizzard II', 'Thunder II',
         'Stonega', 'Waterga', 'Aeroga', 'Firaga', 'Blizzaga', 'Thundaga'}
-
-    -- [ADDED 2026-08-30] Hard cap on nuke tier this job can actually cast.
     MaxNukeTier = 5
-
-    -- [FIX 2026-08-30] state.RecoverMode retired.
-    -- MP recovery is now handled globally via try_recover_mp().
     autows = 'Realmrazer'
     autofood = 'Miso Ramen'
     autoindi = 'Torpor'
     autoentrust = 'Fury'
     autoentrustee = '<p1>'
     autogeo = 'Frailty'
-
-    -- Fallback defaults for melee/mage auto-Indi/Geo profiles.
     autoindimelee = 'Fury'
     autogeomelee  = 'Frailty'
     autoindimage  = 'Focus'
@@ -90,12 +82,9 @@ end
 
 -------------------------------------------------------------------------------------------------------------------
 -- Job-specific hooks for standard casting events.
--------------------------------------------------------------------------------------------------------------------
-
+-------------------------------------------------------------------------------------------------------------------=
 function job_filtered_action(spell, eventArgs)
-
 end
-
 function job_filter_precast(spell, spellMap, eventArgs)
 
     if spell.english:startswith('Geo-') and pet.isvalid then
@@ -107,7 +96,6 @@ function job_filter_precast(spell, spellMap, eventArgs)
     end
 
 end
-
 function job_pretarget(spell, spellMap, eventArgs)
 
     if spell.type == 'Geomancy' then
@@ -1654,7 +1642,6 @@ function check_buffup()
     end
 end
 
-
 buff_spell_lists = {
 	Auto = {--Options for When are: Always, Engaged, Idle, OutOfCombat, Combat
 		{Name='Aurorastorm',	Buff='Aurorastorm',	SpellID=119,	When='Idle'},
@@ -1662,7 +1649,6 @@ buff_spell_lists = {
 		{Name='Aquaveil',		Buff='Aquaveil',	SpellID=55,		When='OutOfCombat'},
 	},
 
-	
 	Default = {
 		{Name='Stoneskin',		Buff='Stoneskin',	SpellID=54,		Reapply=false},
 	},

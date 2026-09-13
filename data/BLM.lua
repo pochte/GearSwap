@@ -1,15 +1,5 @@
 -- =============================================================================
 -- BLM.lua — Changelog
--- 2026-08-09: Added check_ecphoria_for_ja(spell) call at the top of job_precast(), outside
---             the action_type=='Magic' block (job abilities aren't Magic) -- correctly wires
---             the Amnesia -> Ecphoria Ring precast hook (see Ullona-Globals.lua).
--- 2026-07-25: Retired the local state.RecoverMode modal ('35%'/'60%'/'Always'/'Never') in
---             favor of the shared global try_recover_mp() (Ullona-Globals.lua) -- fixed 75%
---             MP threshold, no modal to cycle, same RecoverBurst/ResistantRecoverBurst
---             selection logic preserved. MP recovery is now consistent across every mage job
---             instead of being configured independently per-job.
--- =============================================================================
-
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -- Setup functions for this job.  Generally should not be modified.
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -162,12 +152,6 @@ function job_post_midcast(spell, spellMap, eventArgs)
 			if spell.element and sets.element[spell.element] then
 				equip(sets.element[spell.element])
 			end
-			
-			-- [FIX 2026-07-25]: was a local state.RecoverMode modal ('35%'/'60%'/'Always'/
-			-- 'Never') that had to be manually cycled. Now calls the shared global
-			-- try_recover_mp() (Ullona-Globals.lua) -- fixed 75% MP threshold, same
-			-- RecoverBurst/ResistantRecoverBurst selection logic preserved, no modal to forget
-			-- to set. Shared across every mage job now instead of being BLM-only.
 			try_recover_mp()
 		end
 		
@@ -199,12 +183,6 @@ end
 -- buff == buff gained or lost
 -- gain == true if the buff was gained, false if it was lost.
 function job_buff_change(buff, gain)
-	-- [REVERTED 2026-08-24] Removed the user_buff_change(buff, gain) call added here on the
-	-- theory that this job-level job_buff_change was clobbering Sel-Include.lua's dispatch to
-	-- user_buff_change. Having now actually seen Sel-Include.lua's buff_change() (line 2217),
-	-- that theory was wrong: it calls user_buff_change unconditionally, completely independent
-	-- of whether job_buff_change is defined -- there was never any clobbering. The added call
-	-- was making Soul Devour/haste-tier/Amnesia-revert fire TWICE per buff event. Reverted.
 end
 
 -------------------------------------------------------------------------------------------------------------------
@@ -212,34 +190,32 @@ end
 -------------------------------------------------------------------------------------------------------------------
 
 -- Custom spell mapping.
-function job_get_spell_map(spell, default_spell_map)
-
-	if  default_spell_map == 'Cure' or default_spell_map == 'Curaga'  then
-		if world.weather_element == 'Light' then
-                return 'LightWeatherCure'
-		elseif world.day_element == 'Light' then
-                return 'LightDayCure'
+function job_get_spell_map(spell,default_spell_map)
+    if default_spell_map == 'Cure' or default_spell_map == 'Curaga' then
+        if world.weather_element == 'Light' then
+            return 'LightWeatherCure'
+        elseif world.day_element == 'Light' then
+            return 'LightDayCure'
         end
 
     elseif spell.skill == 'Elemental Magic' then
-		if default_spell_map == 'ElementalEnfeeble' or spell.english:contains('helix') then
-			return
+        if default_spell_map == 'ElementalEnfeeble' or spell.english:contains('helix') then
+            return
         elseif LowTierNukes:contains(spell.english) then
             return 'LowTierNuke'
         else
             return 'HighTierNuke'
         end
-	
-	elseif spell.skill == "Enfeebling Magic" then
-		if spell.english:startswith('Dia') then
-			return "Dia"
-		elseif spell.type == "WhiteMagic" or spell.english:startswith('Frazzle') or spell.english:startswith('Distract') then
-			return 'MndEnfeebles'
-		else
-			return 'IntEnfeebles'
-		end
+
+    elseif spell.skill == "Enfeebling Magic" then
+        if spell.english:startswith('Dia') then
+            return "Dia"
+        elseif spell.type == "WhiteMagic" or spell.english:startswith('Frazzle') or spell.english:startswith('Distract') then
+            return 'MndEnfeebles'
+        else
+            return 'IntEnfeebles'
+        end
     end
-	
 end
 
 -- Modify the default idle set after it was constructed.
@@ -428,8 +404,6 @@ function handle_elemental(cmdParams)
 		local spell_recasts = windower.ffxi.get_spell_recasts()
 		local tierlist = {['tier1']='',['tier2']=' II',['tier3']=' III',['tier4']=' IV',['tier5']=' V',['tier6']=' VI'}
 		local tiernum  = {['tier1']=1,['tier2']=2,['tier3']=3,['tier4']=4,['tier5']=5,['tier6']=6}
-
-		-- [ADDED 2026-08-14] Job-tier-cap guard, see MaxNukeTier in job_setup().
 		local requested = tiernum[command]
 		if not requested then
 			add_to_chat(123,'Abort: Unrecognized tier command "'..command..'".')
@@ -453,35 +427,22 @@ function handle_elemental(cmdParams)
 		else
 			windower.chat.input('/ma "'..data.elements.nukega_of[state.ElementalMode.value]..tierlist[command]..'" '..target..'')
 		end
-
 	elseif command == 'ara' then
 		windower.chat.input('/ma "'..data.elements.nukera_of[state.ElementalMode.value]..'ra" '..target..'')
-		
 	elseif command == 'helix' then
 		windower.chat.input('/ma "'..data.elements.helix_of[state.ElementalMode.value]..'helix" '..target..'')
-	
 	elseif command == 'ancientmagic' then
 		windower.chat.input('/ma "'..data.elements.ancient_nuke_of[state.ElementalMode.value]..'" '..target..'')
-		
 	elseif command == 'ancientmagic2' then
 		windower.chat.input('/ma "'..data.elements.ancient_nuke_of[state.ElementalMode.value]..' II" '..target..'')
-		
 	elseif command == 'enfeeble' then
 		windower.chat.input('/ma "'..data.elements.elemental_enfeeble_of[state.ElementalMode.value]..'" '..target..'')
-	
 	elseif command == 'bardsong' then
 		windower.chat.input('/ma "'..data.elements.threnody_of[state.ElementalMode.value]..' Threnody" '..target..'')
 	else
         add_to_chat(123,'Unrecognized elemental command.')
     end
 end
-
--- =============================================================================
--- Smart cure command: NEW for BLM (didn't exist before). Same missingHP-estimate
--- pattern used in RDM/WHM. [ASSUMPTION]: BLM only has Cure access via subjob
--- (typically /WHM), which standard subjob restrictions cap at Cure III — adjust
--- the tier ceiling below if your actual accessible tier is different.
--- =============================================================================
 function handle_smartcure(cmdParams)
 	local cureTarget
 	if cmdParams[2] then
@@ -507,10 +468,6 @@ function handle_smartcure(cmdParams)
 	end
 
 	local spell_recasts = windower.ffxi.get_spell_recasts()
-
-	-- Monster-target branch (pets/NPCs) skips missingHP entirely, same as RDM/WHM.
-	-- silent_can_use(4) checks whether Cure IV is actually unlocked yet (Master Level 30) —
-	-- returns false gracefully pre-ML30 so this just falls through to III/II until then.
 	if cureTarget.type == 'MONSTER' then
 		if silent_can_use(4) and spell_recasts[4] < spell_latency then
 			windower.chat.input('/ma "Cure IV" '..cureTarget.id..'')
@@ -523,7 +480,6 @@ function handle_smartcure(cmdParams)
 		end
 		return
 	end
-
 	local missingHP
 	if cureTarget.in_alliance then
 		cureTarget.hp = find_player_in_alliance(cureTarget.name).hp
@@ -578,7 +534,6 @@ function handle_smartcure(cmdParams)
 		end
 	end
 end
-
 function check_buff()
 	if state.AutoBuffMode.value ~= 'Off' and not data.areas.cities:contains(world.area) then
 		local spell_recasts = windower.ffxi.get_spell_recasts()
@@ -594,7 +549,6 @@ function check_buff()
 		return false
 	end
 end
-
 function check_buffup()
 	if buffup ~= '' then
 		local needsbuff = false
@@ -629,10 +583,10 @@ end
 
 buff_spell_lists = {
 	Auto = {--Options for When are: Always, Engaged, Idle, OutOfCombat, Combat
-		{Name='Reraise',		Buff='Reraise',			SpellID=113,	When='OutofCombat'},
+		{Name='Reraise',		Buff='Reraise',			SpellID=113,	When= 'OutOfCombat'},
 		{Name='Stoneskin',		Buff='Stoneskin',		SpellID=54,		When='Always'},
 		{Name='Klimaform',		Buff='Klimaform',		SpellID=287,	When='Always'},
-		{Name='Aquaveil',		Buff='Aquaveil',	SpellID=55,		When='OutOfCombat'}
+		{Name='Aquaveil',		Buff='Aquaveil',	SpellID=55,		When= 'OutOfCombat'}
 	},
 	
 	Default = {
