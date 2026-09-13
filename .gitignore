@@ -1,0 +1,22 @@
+# Base GearSwap
+beta_examples_and_information/
+libs/
+
+equip_processing.lua
+export.lua
+flow.lua
+gearswap.lua
+helper_functions.lua
+packet_parsing.lua
+refresh.lua
+statics.lua
+targets.lua
+triggers.lua
+user_functions.lua
+validate.lua
+version_history.txt
+README.md
+
+# Keep custom data files
+!data/
+!data/**/
