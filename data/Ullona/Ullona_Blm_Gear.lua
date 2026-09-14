@@ -92,7 +92,7 @@ sets.TreasureHunter = {ammo="Perfect Lucky Egg", waist="Chaac Belt"}
         sub="Willpower Grip",
         head  = "Nahtirah Hat",
         body  = "Agwu's Robe",
-        hands = Mallquis Cuffs +2,
+        hands = "Mallquis Cuffs +2",
         legs="Querkening Brais",
         feet  = "Regal Pumps",
         neck = "Voltsurge Torque",
