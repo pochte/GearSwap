@@ -21,16 +21,6 @@ function user_job_setup()
     state.ExtraMeleeMode = M{['description']='Extra Melee Mode','None','Suppa','DWMax','Parry'}
     state.AmbushMode = M(false, 'Ambush Mode')
 
-    gear.da_jse_back = {
-        name="Toutatis's Cape",
-        augments={'DEX+20','Accuracy+20 Attack+20','"Dbl.Atk."+10',}
-    }
-
-    gear.wsd_jse_back = {
-        name="Toutatis's Cape",
-        augments={'DEX+20','Accuracy+20 Attack+20','Weapon skill damage +10%',}
-    }
-
     -- =========================================================================
     -- Macro Book
     -- =========================================================================
@@ -95,14 +85,13 @@ function init_gear_sets()
     -- Actions we want to use to tag TH.
     sets.precast.Step = {
         head="Mummu Bonnet +2",              
-        neck="Love Torque",              
+        neck="Null Loop",              
         ear2="Cessance Earring",          
         ear1="Sherida Earring",            
         body="Mummu Jacket +2",             
         hands="Leyline Gloves",         
-        ring1="Mars's  Ring",             
-        ring2="Iota Ring",              
-        back="Toutatis's Cape",       
+        ring1="Mars's  Ring",  
+        ring2="Meghanada Ring",           
         waist="Sailfi Belt +1",             
         legs="SV loincloth +1",          
         feet="Plunderer's Poulaines",
@@ -137,7 +126,7 @@ function init_gear_sets()
     sets.precast.JA['Trick Attack'] = sets.buff['Trick Attack']
 
     -- Waltz set (chr and vit)
-    sets.precast.Waltz = {body= "Gleti's Cuirass", head="Mummu Bonnet +2", hands="Slither's Gloves +1", ring1="Asklepian Ring", feet="Rawhide Boots",}
+    sets.precast.Waltz = {body= "Gleti's Cuirass", head="Mummu Bonnet +2", hands="Slither Gloves +1", ring1="Asklepian Ring", feet="Rawhide Boots",}
 	sets.Self_Waltz =   sets.precast.Waltz 
     sets.precast.Waltz['Healing Waltz'] =   sets.precast.Waltz 
 
@@ -149,7 +138,7 @@ function init_gear_sets()
         body="Skulker's Vest +2",         
         hands="Leyline Gloves",     
         waist="Cornelia's Belt",
-        feet="Mummu Gameshes +2",
+        feet=" Mummu Gamashes +2",
         legs="Malignance Tights",
         ring2="Murky Ring",
         neck = "Voltsurge Torque",
@@ -238,7 +227,7 @@ function init_gear_sets()
     --          sets.engaged.Acc), so this branch was silently equipping a table missing
     --          everything SomeAcc/Acc had contributed. Now correctly builds on Acc.
     sets.engaged.FullAcc = set_combine(sets.engaged.Acc, {ring1="Mars's Ring", ear2="Cessance Earring"})
-    sets.engaged.Fodder = set_combine(sets.engaged, {back="Null Cape"})
+    sets.engaged.Fodder = set_combine(sets.engaged, {back="Null Shawl"})
 
     sets.engaged.DT = set_combine(sets.engaged, {})
     sets.engaged.SomeAcc.DT = set_combine(sets.engaged.SomeAcc, {})
@@ -269,7 +258,7 @@ function init_gear_sets()
 
 	sets.DayIdle = set_combine(sets.idle, {})
 	sets.NightIdle = set_combine(sets.idle, {})
-	sets.ExtraRegen = set_combine(sets.idle, {waist="Null Belt", hands="Umulthi Gloves"})
+	sets.ExtraRegen = set_combine(sets.idle, {waist="Null Belt"})
 
 
     -- Defense sets

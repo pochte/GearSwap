@@ -74,7 +74,7 @@ function init_gear_sets()
 		legs="Gyve Trousers",
 		neck="Null Shawl",
 		ear1="Magnetic Earring",
-		waist="Siegal Sash",
+		waist="Siegel Sash",
 		feet="Ebers Duckbills +3",})
 	
     sets.precast.FC.Stoneskin = set_combine(sets.precast.FC['Enhancing Magic'], {
@@ -103,7 +103,7 @@ sets.precast.FC['Healing Magic'] = set_combine(
 	sets.precast.Cure=set_combine(sets.precast.FC['Healing Magic'],{legs="Doyen Pants", body="Vanya Robe", ear1="Nourishing Earring", ear2="Mendicant's Earring", back="Pahtli Cape"})
     sets.precast.Aquaveil    = set_combine(sets.precast.FC['Enhancing Magic'], {main="Vadose Rod", sub="Culminus",})
     sets.precast.FC.StatusRemoval = set_combine(sets.precast.FC['Healing Magic'],{legs="Piety Pantaloons +3",
-	back="Alaunus's Cape", head="Eber's Cap+3", body="Ebers Bliaut +3", main= "Kaja Staff", sub="Clemency Grip"
+	back="Alaunus's Cape", head="Ebers Cap+3", body="Ebers Bliaut +3", main= "Kaja Staff", sub="Clemency Grip"
 	---main=
 	})
 	sets.precast.FC.Impact =  set_combine(sets.precast.FC, {head=empty,body="Twilight Cloak"})
@@ -115,15 +115,14 @@ sets.precast.FC['Healing Magic'] = set_combine(
 
     -- Default set for any weaponskill that isn't any more specifically defined
     sets.precast.WS = {
-	neck="Fiota Gorget",
+	neck="Fotia Gorget",
     ear1="Cessance Earring",    
     ear2="Ebers Earring +1",  
 	ring1="Cornelia's Ring",  
     ring2="Mars's Ring",       
-    waist="Fiota Belt",
+    waist="Fotia Belt",
 	legs="Lengo Pants",
 	feet="Medium's Sabots",
-	hands="Gazu Braceles +1",
 	head="Sukeroku Hachimaki"
 	}
 
@@ -203,7 +202,7 @@ sets.ConserveMP = set_combine(
     --          same bug class as FIX 2 with MagicBurst).
     sets.midcast.StatusRemoval = set_combine(sets.midcast.FastRecast, {
         back="Alaunus's Cape",
-        head="Eber's Cap+3",
+        head="Ebers Cap+3",
         body="Ebers Bliaut +3",
         main="Kaja Staff",
         sub="Clemency Grip",
@@ -228,11 +227,11 @@ sets.ConserveMP = set_combine(
 		feet="Theophany Duckbills +4",
 		neck="Null Shawl",
 		ear1="Ebers Earring +1",
-		ear2="Andoaa Earring",  -- [FIX 3]: was ear2=" Earring" (leading space = blank item name, silent equip fail)
+		ear2="Andoaa Earring",  
 		ring2="Murky Ring",
 		ring1="Vertigo Ring",
-		back="Ixion Cape",
-		waist="Siegal Sash",
+		back="Izdubar Mantle",
+		waist="Siegel Sash",
 	main="Marin Staff +1",
 sub="Daduchos Grip"}
 
@@ -252,7 +251,7 @@ sub="Daduchos Grip"}
 		body="Ebers Bliaut +3",
 		legs="Piety Pantaloons +3",
 		hands="Dynasty Mitts",
-		feet="Ebers Duckbills+ +3"
+		feet="Ebers Duckbills +3"
 	})
 
 sets.midcast['Divine Magic'] = {
@@ -269,7 +268,7 @@ sets.midcast['Divine Magic'] = {
 		ear2="Hecate's Earring",
 		ring1="Locus Ring",
 		ring2="Freke Ring",
-		back="Searing Cape",
+		back="Izdubar Mantle",
 		waist="Hachirin-no-obi"
 	}
 
@@ -295,7 +294,7 @@ sets.midcast.Impact = set_combine(sets.precast.FC.Impact, {}) -- [FIX 4]: was se
 sets.midcast['Dark Magic'] = set_combine(
     sets.midcast['Elemental Magic'],   {
         neck = "Null Shawl",
-        ear2 = "Abyssal Earring",
+        ear2 = "Alabaster Earring",
         ring2 = "Archon Ring",
 		ring1="Evanescence Ring",
 		waist="Null Belt"
@@ -377,9 +376,8 @@ sub="Archduke's Shield",
     sets.resting = set_combine(sets.idle, {
     main="Chatoyant Staff",
     sub="Daduchos Grip",
-	body="Inyanga Jibbah +2",
+	body="Inyanga Jubbah +2",
     legs="Assiduity Pants +1",
-    back="Vita Cape",
     ear2="Magnetic Earring"
 })
 

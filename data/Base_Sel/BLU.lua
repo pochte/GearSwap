@@ -99,7 +99,7 @@ function job_setup()
         'Diffusion Ray','Droning Whirlwind','Embalming Earth','Firespit','Foul Waters',
         'Ice Break','Leafstorm','Maelstrom','Rail Cannon','Regurgitation','Rending Deluge',
         'Retinal Glare','Subduction','Tearing Gust','Tem. Upheaval','Water Bomb','Molting Plumage',
-		'Nectarous Deluge','Searing Tempest','Blinding Fulgor','Spectral Floe','Scouring Spate',
+		'Nectarous Deluge','Izdubar Mantle Tempest','Blinding Fulgor','Spectral Floe','Scouring Spate',
 		'Anvil Lightning','Silent Storm','Entomb','Tenebral Crush','Palling Salvo'
     }
 

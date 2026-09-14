@@ -64,6 +64,7 @@ function init_gear_sets()
 	sets.precast.JA['Life Cycle'] = {body="Geo. Tunic +1", back="Nantosuelta's Cape"}
 	sets.precast.JA['Radial Arcana'] = {feet="Bagua Sandals +1"}
 	sets.precast.JA['Mending Halation'] = {legs="Bagua Pants +1"}
+		sets.precast.JA['Cardinal Chant'] = {head="Geomancy Galero +1"}
 	sets.precast.JA['Full Circle'] = {head="Azimuth Hood +1",hands="Bagua Mitaines +1"}
 	
 	-- Indi Duration in slots that would normally have skill here to make entrust more efficient.
@@ -78,7 +79,7 @@ function init_gear_sets()
 	sets.precast.FC = {		
 		main="Cath Palug Hammer",
 		sub="Culminus",
-		head="Artieq Hat",
+		head="Umuthi Hat",
 		body= "Agwu's Robe",
 		legs="Lengo Pants",
 		hands="Mallquis Cuffs +2",
@@ -131,7 +132,7 @@ sets.precast.WS = {
     ammo="Oshasha's Treatise",
     head="Azimuth Hood +1",
     neck="Loricate Torque +1",
-    ear1="Friomisi Earring",
+    ear1="Hecate's Earring",
     ear2="Malignance Earring",
     body="Bagua Tunic +1",
     hands="Bagua Mitaines +1",
@@ -143,10 +144,10 @@ sets.precast.WS = {
 }
 
 	sets.precast.WS['Flash Nova'] = set_combine(sets.precast.WS, {
-		ammo="Pemphredo Tathlum",
+		ammo="Ghastly Tathlum",
 		neck="Baetyl Pendant",
 		ring1="Locus Ring",ring2="Mujin Band",
-		back="Toro Cape",
+		back="Izdubar Mantle",
 		waist="Hachirin-no-obi",
 	})
 
@@ -182,9 +183,9 @@ sets.precast.WS = {
 	sets.precast.Cure = set_combine(sets.precast.FC.Cure, {legs="Doyen Pants", body="Vanya Robe", main="Daybreak",
         sub="Sors Sheild", back="Pahtli Cape"})
 		
-    sets.midcast.LightWeatherCure = {main="Chatoyant Staff",sub="Curatio Grip",ammo="Hasty Pinion +1",
-        head="Amalric Coif +1",neck="Phalaina Locket",ear1="Gifted Earring",ear2="Etiolation Earring",
-        body="Vrikodara Jupon",hands="Telchine Gloves",ring1="Janniston Ring",ring2="Menelaus's Ring",
+    sets.midcast.LightWeatherCure = {main="Chatoyant Staff",sub="Curatio Grip",ammo="Psilomene",
+        head="Amalric Coif +1",neck="Phalaina Locket",ear1="Gifted Earring",ear2="Malignance Earring",
+        body="Vrikodara Jupon",hands="Bokwus Gloves",ring1="Janniston Ring",ring2="Menelaus's Ring",
         back="Twilight Cape",waist="Hachirin-no-Obi",legs="Geo. Pants +1",feet="Vanya Clogs"}
 		
 		--Cureset for if it's not light weather but is light day.
@@ -203,9 +204,9 @@ sets.precast.WS = {
     sets.midcast.Curaga = sets.midcast.Cure
 
 	sets.midcast.Cursna = set_combine(sets.midcast['Healing Magic'], {
-		neck="Debilis Medallion", hands="Hieros Mittens",
-		back="Oretan. Cape +1", ring1="Haoma's Ring", ring2="Menelaus's Ring",
-		waist="Witful Belt", feet="Vanya Clogs"})
+		neck=" Nodens Gorget", hands="Bokwus Gloves",
+		back="Tempered Cape +1",    
+		waist="Cornelia's Belt", feet="Vanya Clogs"})
 
 	
 	sets.midcast.StatusRemoval = set_combine(sets.midcast.FastRecast, {main="Cath Palug Hammer",sub="Clemency Grip"}) -- main was gear.grioavolr_fc_staff (Relic) -- see FC set comment above
@@ -248,7 +249,7 @@ sets.precast.WS = {
       	hands ="Jhakri Cuffs +2",
         feet  ="Jhakri Pigaches +2",
         neck  ="Erra Pendant",
-        ear2  ="Abyssal Earring",
+        ear2  ="Alabaster Earring",
         ear1  ="Malignance Earring",
         ring1 ="Crepuscular Ring",
         ring2="Evanescence Ring",
@@ -381,12 +382,12 @@ sets.precast.WS = {
 		head="Azimuth Hood +1",neck="Loricate Torque +1",        
 		ear1  ="Moonshade Earring",
         ear2  ="Alabaster Earring",
-		body="Jhakri Robe +2",hands="Geo. Mitaines +3",ring1="Defending Ring",ring2="Dark Ring",
+		body="Jhakri Robe +2",hands="Geo. Mitaines +1",ring1="Defending Ring",ring2="Dark Ring",
 		back=gear.idle_jse_back,waist="Isa Belt",legs="Psycloth Lappas",feet="Bagua Sandals +1"}
 
 	sets.idle.PDT.Pet = {main="Solstice",sub="Umbra Strap",range="Dunna",
 		head="Azimuth Hood +1",neck="Loricate Torque +1",ear1="Handler's Earring",ear2="Handler's Earring +1",
-		body="Jhakri Robe +2",hands="Geo. Mitaines +3",ring1="Defending Ring",ring2="Dark Ring",
+		body="Jhakri Robe +2",hands="Geo. Mitaines +1",ring1="Defending Ring",ring2="Dark Ring",
 		back="Nantosuelta's Cape",waist="Isa Belt",legs="Hagondes Pants +1",feet="Bagua Sandals +1"}
 
 	-- .Indi sets are for when an Indi-spell is active.
@@ -416,7 +417,7 @@ sets.precast.WS = {
 	sets.PetHP = {head="Bagua Galero +1", back="Nantosuelta's Cape"}
 	sets.latent_refresh = {waist="Fucho-no-obi"}
 	sets.latent_refresh_grip = {main= "Mpaca's Staff", sub="Oneiros Grip"}
-	sets.TPEat = {neck="Chrys. Torque"}
+ 
 	sets.DayIdle = {}
 	sets.NightIdle = {}
 	
@@ -436,7 +437,7 @@ sets.precast.WS = {
 	--------------------------------------
 	
 	-- Gear that converts elemental damage done to recover MP.	
-	sets.RecoverMP = {body="Seidr Cotehardie"}
+	sets.RecoverMP = {}
 	
 	sets.MagicBurst = set_combine(sets.midcast['Divine Magic'], 
 	{

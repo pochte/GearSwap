@@ -118,7 +118,7 @@
                   Siren->Hysteric Assault
     astralflow    Ifrit->Inferno, Shiva->Diamond Dust, Garuda->Aerial Blast,
                   Titan->Earthen Fury, Ramuh->Judgment Bolt, Leviathan->Tidal Wave,
-                  Carbuncle->Searing Light, Fenrir->Howling Moon, Diabolos->Ruinous Omen,
+                  Carbuncle->Izdubar Mantle Light, Fenrir->Howling Moon, Diabolos->Ruinous Omen,
                   Cait Sith->Altana's Favor. Alexander and Odin are intentionally absent --
                   both auto-fire their own Astral Flow pact the instant they're summoned
                   and take no player command at all (confirmed via bg-wiki).
@@ -154,7 +154,7 @@ function job_setup()
         ['Water']="Water Spirit", ['Wind']="Air Spirit", ['Ice']="Ice Spirit", ['Lightning']="Thunder Spirit"}
 
     magicalRagePacts = S{
-		'Inferno','Earthen Fury','Tidal Wave','Aerial Blast','Diamond Dust','Judgment Bolt','Searing Light','Howling Moon','Ruinous Omen','Clarsach Call','Impact',
+		'Inferno','Earthen Fury','Tidal Wave','Aerial Blast','Diamond Dust','Judgment Bolt','Izdubar Mantle Light','Howling Moon','Ruinous Omen','Clarsach Call','Impact',
 		'Fire II','Stone II','Water II','Aero II','Blizzard II','Thunder II',
 		'Fire IV','Stone IV','Water IV','Aero IV','Blizzard IV','Thunder IV',
 		'Thunderspark','Burning Strike','Meteorite','Nether Blast','Flaming Crush',
@@ -192,7 +192,7 @@ function job_setup()
 		['Diabolos']='Night Terror', ['Cait Sith']='Level ? Holy'}
 	pacts.bp99 = {['Ifrit']='Conflag Strike',['Titan']='Crag Throw',['Ramuh']='Volt Strike', ['Siren']='Hysteric Assault'}
     pacts.astralflow = {['Ifrit']='Inferno', ['Shiva']='Diamond Dust', ['Garuda']='Aerial Blast', ['Titan']='Earthen Fury',
-		['Ramuh']='Judgment Bolt', ['Leviathan']='Tidal Wave', ['Carbuncle']='Searing Light', ['Fenrir']='Howling Moon',
+		['Ramuh']='Judgment Bolt', ['Leviathan']='Tidal Wave', ['Carbuncle']='Izdubar Mantle Light', ['Fenrir']='Howling Moon',
 		['Diabolos']='Ruinous Omen', ['Cait Sith']="Altana's Favor"}
 	
 	--Most commonly used offensive pacts by avatar split into two categories.

@@ -34,7 +34,7 @@ function init_gear_sets()
     --------------------------------------
 
     sets.Enmity = {ammo="Paeapua",
-        head="Dampening Tam",neck="Unmoving Collar +1",ear1="Friomisi Earring",ear2="Trux Earring",
+        head="Dampening Tam",neck="Unmoving Collar +1",ear1="Hecate's Earring",ear2="Trux Earring",
         body="Emet Harness +1",hands="Kurys Gloves",ring1="Petrov Ring",ring2="Vengeful Ring",
         back="Moonlight Cape",waist="Goading Belt",legs=gear.herculean_dt_legs,feet="Amm Greaves"}
 
@@ -117,9 +117,9 @@ function init_gear_sets()
     sets.precast.WS['Blade: Ten'].Fodder = set_combine(sets.precast.WS['Blade: Ten'], {})
 
     sets.precast.WS['Aeolian Edge'] = {ammo="Dosis Tathlum",
-        head="Dampening Tam",neck="Baetyl Pendant",ear1="Friomisi Earring",ear2="Crematio Earring",
+        head="Dampening Tam",neck="Baetyl Pendant",ear1="Hecate's Earring",ear2="Crematio Earring",
         body="Adhemar Jacket +1",hands="Adhemar Wrist. +1",ring1="Shiva Ring +1",ring2="Metamor. Ring +1",
-        back="Toro Cape",waist="Chaac Belt",legs=gear.herculean_dt_legs,feet="Malignance Boots"}
+        back="Izdubar Mantle",waist="Chaac Belt",legs=gear.herculean_dt_legs,feet="Malignance Boots"}
 
 	-- Swap to these on Moonshade using WS if at 3000 TP
 	sets.MaxTP = {ear1="Lugra Earring",ear2="Lugra Earring +1",}
@@ -139,10 +139,10 @@ function init_gear_sets()
         body="Dread Jupon",hands="Mochizuki Tekko +1",ring1="Defending Ring",ring2="Kishar Ring",
         legs="Rawhide Trousers",feet="Malignance Boots"}
 
-    sets.midcast.ElementalNinjutsu = {ammo="Pemphredo Tathlum",
-        head=gear.herculean_nuke_head,neck="Baetyl Pendant",ear1="Crematio Earring",ear2="Friomisi Earring",
+    sets.midcast.ElementalNinjutsu = {ammo="Ghastly Tathlum",
+        head=gear.herculean_nuke_head,neck="Baetyl Pendant",ear1="Crematio Earring",ear2="Hecate's Earring",
         body="Samnuha Coat",hands="Hattori Tekko +1",ring1="Shiva Ring +1",ring2="Metamor. Ring +1",
-        back="Toro Cape",waist="Eschan Stone",legs="Gyve Trousers",feet=gear.herculean_nuke_feet}
+        back="Izdubar Mantle",waist="Eschan Stone",legs="Gyve Trousers",feet=gear.herculean_nuke_feet}
 
 	sets.midcast.ElementalNinjutsu.Proc = sets.midcast.FastRecast
 
@@ -152,7 +152,7 @@ function init_gear_sets()
 
     sets.midcast.NinjutsuDebuff = {ammo="Dosis Tathlum",
         head="Dampening Tam",neck="Incanter's Torque",ear1="Gwati Earring",ear2="Digni. Earring",
-        body="Mekosu. Harness",hands="Mochizuki Tekko +1",ring1="Stikini Ring +1",ring2="Metamor. Ring +1",
+        body="Mekosu. Harness",hands="Mochizuki Tekko +1" ,ring2="Metamor. Ring +1",
         back="Andartia's Mantle",waist="Chaac Belt",legs="Rawhide Trousers",feet="Mochi. Kyahan +1"}
 
     sets.midcast.NinjutsuBuff = set_combine(sets.midcast.FastRecast, {back="Mujin Mantle"})
@@ -178,7 +178,7 @@ function init_gear_sets()
 
     -- Idle sets
     sets.idle = {ammo="Staunch Tathlum +1",
-        head="Malignance Chapeau",neck="Loricate Torque +1",ear1="Etiolation Earring",ear2="Sanare Earring",
+        head="Malignance Chapeau",neck="Loricate Torque +1",ear1="Malignance Earring",ear2="Sanare Earring",
         body="Malignance Tabard",hands="Malignance Gloves",ring1="Defending Ring",ring2="Dark Ring",
         back="Moonlight Cape",waist="Flume Belt +1",legs="Malignance Tights",feet="Malignance Boots"}
 
@@ -190,14 +190,14 @@ function init_gear_sets()
         back="Moonlight Cape",waist="Flume Belt +1",legs=gear.herculean_dt_legs,feet="Malignance Boots"}
 
     sets.defense.MDT = {ammo="Togakushi Shuriken",
-        head="Dampening Tam",neck="Loricate Torque +1",ear1="Etiolation Earring",ear2="Sanare Earring",
+        head="Dampening Tam",neck="Loricate Torque +1",ear1="Malignance Earring",ear2="Sanare Earring",
         body="Emet Harness +1",hands="Malignance Gloves",ring1="Defending Ring",ring2="Shadow Ring",
         back="Engulfer Cape +1",waist="Engraved Belt",legs=gear.herculean_dt_legs,feet="Ahosi Leggings"}
 
 	sets.defense.MEVA = {ammo="Yamarang",
-		head="Dampening Tam",neck="Warder's Charm +1",ear1="Etiolation Earring",ear2="Sanare Earring",
+		head="Dampening Tam",neck="Warder's Charm +1",ear1="Malignance Earring",ear2="Sanare Earring",
 		body="Mekosu. Harness",hands="Leyline Gloves",ring1="Vengeful Ring",Ring2="Purity Ring",
-		back="Toro Cape",waist="Engraved Belt",legs="Samnuha Tights",feet="Ahosi Leggings"}
+		back="Izdubar Mantle",waist="Engraved Belt",legs="Samnuha Tights",feet="Ahosi Leggings"}
 
 
     sets.Kiting = {feet="Danzo Sune-Ate"}

@@ -109,27 +109,27 @@ function init_gear_sets()
         back=gear.wsd_ranger_jse_back,waist="Fotia Belt",legs="Meg. Chausses +2",feet="Meg. Jam. +2"}
 
     sets.precast.WS['Wildfire'] = {
-        head="Orion Beret +3",neck="Baetyl Pendant",ear1="Crematio Earring",ear2="Friomisi Earring",
+        head="Orion Beret +3",neck="Baetyl Pendant",ear1="Crematio Earring",ear2="Hecate's Earring",
         body="Samnuha Coat",hands="Carmine Fin. Ga. +1",ring1="Regal Ring",ring2="Dingir Ring",
         back=gear.wsd_ranger_jse_back,waist="Eschan Stone",legs="Gyve Trousers",feet=gear.herculean_nuke_feet}
 
     sets.precast.WS['Wildfire'].Acc = {
-        head="Orion Beret +3",neck="Sanctity Necklace",ear1="Crematio Earring",ear2="Friomisi Earring",
+        head="Orion Beret +3",neck="Sanctity Necklace",ear1="Crematio Earring",ear2="Hecate's Earring",
         body="Samnuha Coat",hands="Leyline Gloves",ring1="Regal Ring",ring2="Dingir Ring",
         back=gear.wsd_ranger_jse_back,waist="Eschan Stone",legs="Gyve Trousers",feet=gear.herculean_nuke_feet}
 		
     sets.precast.WS['Aeolian Edge'] = {
-        head=gear.herculean_nuke_head,neck="Sanctity Necklace",ear1="Crematio Earring",ear2="Friomisi Earring",
+        head=gear.herculean_nuke_head,neck="Sanctity Necklace",ear1="Crematio Earring",ear2="Hecate's Earring",
         body="Samnuha Coat",hands="Leyline Gloves",ring1="Metamor. Ring +1",ring2="Dingir Ring",
         back=gear.wsd_ranger_jse_back,waist="Eschan Stone",legs="Gyve Trousers",feet=gear.herculean_nuke_feet}
 		
     sets.precast.WS['Trueflight'] = {
-        head="Orion Beret +3",neck="Baetyl Pendant",ear1="Moonshade Earring",ear2="Friomisi Earring",
+        head="Orion Beret +3",neck="Baetyl Pendant",ear1="Moonshade Earring",ear2="Hecate's Earring",
         body="Samnuha Coat",hands="Carmine Fin. Ga. +1",ring1="Regal Ring",ring2="Dingir Ring",
         back=gear.wsd_ranger_jse_back,waist="Eschan Stone",legs="Gyve Trousers",feet=gear.herculean_nuke_feet}
 
     sets.precast.WS['Trueflight'].Acc = {
-        head="Orion Beret +3",neck="Sanctity Necklace",ear1="Crematio Earring",ear2="Friomisi Earring",
+        head="Orion Beret +3",neck="Sanctity Necklace",ear1="Crematio Earring",ear2="Hecate's Earring",
         body="Samnuha Coat",hands="Leyline Gloves",ring1="Regal Ring",ring2="Dingir Ring",
         back=gear.wsd_ranger_jse_back,waist="Eschan Stone",legs="Gyve Trousers",feet=gear.herculean_nuke_feet}
 		

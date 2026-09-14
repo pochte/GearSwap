@@ -63,23 +63,23 @@ function init_gear_sets()
                    
 	-- Specific spells
  
-	sets.midcast['Dark Magic'] = {ammo="Pemphredo Tathlum",
+	sets.midcast['Dark Magic'] = {ammo="Ghastly Tathlum",
 		head="Carmine Mask +1",neck="Erra Pendant",ear1="Digni. Earring",ear2="Malignance Earring",
-		body="Flamma Korazin +2",hands="Flam. Manopolas +2",ring1="Stikini Ring +1",ring2="Stikini Ring +1",
-		back="Toro Cape",waist="Eschan Stone",legs="Eschite Cuisses",feet="Flam. Gambieras +2"}
+		body="Flamma Korazin +2",hands="Flam. Manopolas +2"  ,
+		back="Izdubar Mantle",waist="Eschan Stone",legs="Eschite Cuisses",feet="Flam. Gambieras +2"}
            
-	sets.midcast['Enfeebling Magic'] = {ammo="Pemphredo Tathlum",
+	sets.midcast['Enfeebling Magic'] = {ammo="Ghastly Tathlum",
 		head="Carmine Mask +1",neck="Erra Pendant",ear1="Digni. Earring",ear2="Malignance Earring",
-		body="Flamma Korazin +2",hands="Flam. Manopolas +2",ring1="Stikini Ring +1",ring2="Stikini Ring +1",
-		back="Toro Cape",waist="Eschan Stone",legs="Flamma Dirs +2",feet="Flam. Gambieras +2"}
+		body="Flamma Korazin +2",hands="Flam. Manopolas +2"  ,
+		back="Izdubar Mantle",waist="Eschan Stone",legs="Flamma Dirs +2",feet="Flam. Gambieras +2"}
 		   
 	sets.midcast['Dread Spikes'] = set_combine(sets.midcast['Dark Magic'], {})
 	sets.midcast.Absorb = set_combine(sets.midcast['Dark Magic'], {back="Ankou's Mantle"})
            
-	sets.midcast.Stun = {ammo="Pemphredo Tathlum",
+	sets.midcast.Stun = {ammo="Ghastly Tathlum",
 		head="Carmine Mask +1",neck="Erra Pendant",ear1="Digni. Earring",ear2="Malignance Earring",
-		body="Flamma Korazin +2",hands="Flam. Manopolas +2",ring1="Stikini Ring +1",ring2="Stikini Ring +1",
-		back="Toro Cape",waist="Eschan Stone",legs="Eschite Cuisses",feet="Flam. Gambieras +2"}
+		body="Flamma Korazin +2",hands="Flam. Manopolas +2"  ,
+		back="Izdubar Mantle",waist="Eschan Stone",legs="Eschite Cuisses",feet="Flam. Gambieras +2"}
                    
 	sets.midcast.Drain = set_combine(sets.midcast['Dark Magic'], {ring1="Evanescence Ring",ring2="Archon Ring",back="Niht Mantle"})
 	
@@ -149,7 +149,7 @@ function init_gear_sets()
            
     sets.idle = {ammo="Staunch Tathlum +1",
 		head="Jumalik Helm",neck="Loricate Torque +1",ear1="Genmei Earring",ear2="Ethereal Earring",
-		body="Jumalik Mail",hands="Sulev. Gauntlets +2",ring1="Stikini Ring +1",ring2="Stikini Ring +1",
+		body="Jumalik Mail",hands="Sulev. Gauntlets +2"  ,
 		back="Shadow Mantle",waist="Flume Belt +1",legs="Carmine Cuisses +1",feet="Amm Greaves"}
 		
     sets.idle.PDT = {ammo="Staunch Tathlum +1",

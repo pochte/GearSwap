@@ -57,8 +57,8 @@ function init_gear_sets()
 	sets.precast.JA['Feral Howl'] = {}
 
 	sets.precast.JA.Reward = {
-		neck="Phalaina Locket",ear1="Etiolation Earring",ear2="Domesticator's Earring", --head="Stout Bonnet"
-		body="Tot. Jackcoat +3",hands="Regimen Mittens",ring1="Stikini Ring +1",ring2="Stikini Ring +1",
+		neck="Phalaina Locket",ear1="Malignance Earring",ear2="Domesticator's Earring", --head="Stout Bonnet"
+		body="Tot. Jackcoat +3",hands="Regimen Mittens"  ,
 		back="Pastoralist's Mantle",waist="Klouskap Sash",legs="Ankusa Trousers +1",feet="Ankusa Gaiters +3"}
 
 	sets.precast.JA.Reward.Theta = set_combine(sets.precast.JA.Reward, {ammo="Pet Food Theta"})
@@ -118,7 +118,7 @@ function init_gear_sets()
 
 	sets.midcast.Stoneskin = sets.midcast.FastRecast
 
-	sets.midcast.Cursna = set_combine(sets.midcast.FastRecast, {neck="Debilis Medallion",ring1="Haoma's Ring",ring2="Menelaus's Ring"})
+	sets.midcast.Cursna = set_combine(sets.midcast.FastRecast, {neck=" Nodens Gorget", ,ring2="Menelaus's Ring"})
 
 	sets.midcast.Protect = set_combine(sets.midcast.FastRecast, {ring2="Sheltered Ring"})
 	sets.midcast.Protectra = sets.midcast.Protect
@@ -171,9 +171,9 @@ function init_gear_sets()
 	sets.precast.WS['Onslaught'].WSHighAcc = set_combine(sets.precast.WSHighAcc, {})
 
 	sets.precast.WS['Primal Rend'] = {ammo="Dosis Tathlum",
-		head="Jumalik Helm",neck="Baetyl Pendant",ear1="Crematio Earring",ear2="Friomisi Earring",
+		head="Jumalik Helm",neck="Baetyl Pendant",ear1="Crematio Earring",ear2="Hecate's Earring",
 		body="Jumalik Mail",hands="Leyline Gloves",ring1="Shiva Ring +1",ring2="Shiva Ring +1",
-		back="Toro Cape",waist="Fotia Belt",legs="Tali'ah Sera. +2",feet="Tot. Gaiters +1"}
+		back="Izdubar Mantle",waist="Fotia Belt",legs="Tali'ah Sera. +2",feet="Tot. Gaiters +1"}
 
 	sets.precast.WS['Cloudsplitter'] = set_combine(sets.precast.WS['Primal Rend'], {})
 
@@ -259,14 +259,14 @@ function init_gear_sets()
 	sets.defense.Reraise = set_combine(sets.defense.PDT, {head="Twilight Helm",body="Twilight Mail"})
 
 	sets.defense.MDT = {ammo="Staunch Tathlum +1",
-		head="Genmei Kabuto",neck="Warder's Charm +1",ear1="Sanare Earring",ear2="Etiolation Earring",
+		head="Genmei Kabuto",neck="Warder's Charm +1",ear1="Sanare Earring",ear2="Malignance Earring",
 		body="Jumalik Mail",hands="Macabre Gaunt. +1",ring1="Defending Ring",ring2="Shadow Ring",
 		back="Engulfer Cape +1",waist="Engraved Belt",legs="Tali'ah Sera. +2",feet="Nukumi Ocreae +1"}
 
 	sets.defense.MEVA = {
-		head="Gavialis Helm",neck="Warder's Charm +1",ear1="Sanare Earring",ear2="Etiolation Earring",
+		head="Gavialis Helm",neck="Warder's Charm +1",ear1="Sanare Earring",ear2="Malignance Earring",
 		body="Jumalik Mail",hands="Leyline Gloves",ring1="Vengeful Ring",ring2="Purity Ring",
-		back="Toro Cape",waist="Engraved Belt",legs="Flamma Dirs +2",feet="Valorous Greaves"}
+		back="Izdubar Mantle",waist="Engraved Belt",legs="Flamma Dirs +2",feet="Valorous Greaves"}
 
 	sets.defense.MKiller = set_combine(sets.defense.MDT, {body="Nukumi Gausape +1"})
 

@@ -78,7 +78,7 @@ function init_gear_sets()
         back=gear.stp_jse_back,waist="Olseni Belt",legs="Meg. Chausses +2",feet="Malignance Boots"}
 		
     sets.Enmity = {ammo="Paeapua",
-        head="Genmei Kabuto",neck="Unmoving Collar +1",ear1="Friomisi Earring",ear2="Trux Earring",
+        head="Genmei Kabuto",neck="Unmoving Collar +1",ear1="Hecate's Earring",ear2="Trux Earring",
         body="Emet Harness +1",hands="Malignance Gloves",ring1="Petrov Ring",ring2="Vengeful Ring",
         back="Solemnity Cape",waist="Goading Belt",legs=gear.herculean_dt_legs,feet="Malignance Boots"}
 		
@@ -155,7 +155,7 @@ function init_gear_sets()
 	sets.precast.WS['Pyrrhic Kleos'].Fodder = set_combine(sets.precast.WS['Pyrrhic Kleos'], {})
 
     sets.precast.WS['Aeolian Edge'] = {ammo="Seeth. Bomblet +1",
-        head=gear.herculean_nuke_head,neck="Baetyl Pendant",ear1="Friomisi Earring",ear2="Crematio Earring",
+        head=gear.herculean_nuke_head,neck="Baetyl Pendant",ear1="Hecate's Earring",ear2="Crematio Earring",
         body="Samnuha Coat",hands="Leyline Gloves",ring1="Metamor. Ring +1",ring2="Shiva Ring +1",
         back=gear.wsd_jse_back,waist="Chaac Belt",legs=gear.herculean_wsd_legs,feet=gear.herculean_nuke_feet}
 
@@ -189,7 +189,7 @@ function init_gear_sets()
     -- Idle sets
 
     sets.idle = {ammo="Staunch Tathlum +1",
-        head="Dampening Tam",neck="Loricate Torque +1",ear1="Etiolation Earring",ear2="Sanare Earring",
+        head="Dampening Tam",neck="Loricate Torque +1",ear1="Malignance Earring",ear2="Sanare Earring",
         body="Meg. Cuirie +2",hands="Malignance Gloves",ring1="Defending Ring",ring2="Sheltered Ring",
         back="Moonlight Cape",waist="Flume Belt +1",legs=gear.herculean_dt_legs,feet="Malignance Boots"}
 		
@@ -198,17 +198,17 @@ function init_gear_sets()
     -- Defense sets
 
     sets.defense.PDT = {ammo="Staunch Tathlum +1",
-        head="Dampening Tam",neck="Loricate Torque +1",ear1="Etiolation Earring",ear2="Sanare Earring",
+        head="Dampening Tam",neck="Loricate Torque +1",ear1="Malignance Earring",ear2="Sanare Earring",
         body="Meg. Cuirie +2",hands="Malignance Gloves",ring1="Defending Ring",ring2="Dark Ring",
         back="Shadow Mantle",waist="Flume Belt +1",legs=gear.herculean_dt_legs,feet="Malignance Boots"}
 
     sets.defense.MDT = {ammo="Staunch Tathlum +1",
-        head="Dampening Tam",neck="Loricate Torque +1",ear1="Etiolation Earring",ear2="Sanare Earring",
+        head="Dampening Tam",neck="Loricate Torque +1",ear1="Malignance Earring",ear2="Sanare Earring",
         body="Meg. Cuirie +2",hands="Floral Gauntlets",ring1="Defending Ring",ring2="Dark Ring",
         back="Engulfer Cape +1",waist="Engraved Belt",legs=gear.herculean_dt_legs,feet="Ahosi Leggings"}
 		
 	sets.defense.MEVA = {ammo="Staunch Tathlum +1",
-		head=gear.herculean_fc_head,neck="Warder's Charm +1",ear1="Etiolation Earring",ear2="Sanare Earring",
+		head=gear.herculean_fc_head,neck="Warder's Charm +1",ear1="Malignance Earring",ear2="Sanare Earring",
 		body="Adhemar Jacket +1",hands="Leyline Gloves",ring1="Vengeful Ring",ring2="Purity Ring",
 		back="Mujin Mantle",waist="Engraved Belt",legs="Meg. Chausses +2",feet="Ahosi Leggings"}
 

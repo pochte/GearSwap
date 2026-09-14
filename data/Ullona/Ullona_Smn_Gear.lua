@@ -90,7 +90,7 @@ end
         sub="Willpower Grip",
         head  = "Nahtirah Hat",
         body  = "SV Separates +1",
-        hands = "Gazu Bracelets +1",
+        hands = "SV guantlets +1",
         legs="Querkening Brais",
         feet  = "Regal Pumps",
         neck = "Voltsurge Torque",
@@ -123,7 +123,7 @@ end
         ear1  = "Magnetic Earring",
         ear2  = "Andoaa Earring",
         ring2 = "Vertigo Ring",
-        waist = "Siegal Sash",})
+        waist = "Siegel Sash",})
 	   
         sets.midcast.Regen = set_combine(sets.midcast['Enhancing Magic'], { main="Bolelabunga", })
     sets.precast.FC.Stoneskin = set_combine(sets.precast.FC['Enhancing Magic'], {waist="Siegel Sash", legs="Shedir Seraweels", head="Umuthi Hat", neck  ="Nodens Gorget",})
@@ -145,7 +145,7 @@ end
         body  ="Vrikodara Jupon",
         hands = "Bokwus Gloves",
         feet  = "Vanya Clogs",
-        neck  = "Noden's Gorget",
+        neck  = "Nodens Gorget",
         ear2="Glorious Earring",
         ear1  = "Mendicant's Earring",
         ring2 ="Janniston Ring",
@@ -157,9 +157,9 @@ end
 	sets.Self_Refresh = {}
 		
 sets.midcast.Cursna = set_combine(sets.midcast.Cure, {
-		neck="Debilis Medallion", hands="Hieros Mittens",
-		back="Oretan. Cape +1", ring1="Haoma's Ring", ring2="Menelaus's Ring",
-		waist="Witful Belt", feet="Vanya Clogs"
+		neck=" Nodens Gorget", hands="Bokwus Gloves",
+		back="Tempered Cape +1  ",    
+		waist="Cornelia's Belt", feet="Vanya Clogs"
 	})
 		
 	sets.midcast.StatusRemoval = set_combine(sets.midcast.FastRecast, {sub="Clemency Grip"})
@@ -203,7 +203,7 @@ sets.midcast.Cursna = set_combine(sets.midcast.Cure, {
 		
 	 sets.midcast['Dark Magic'] = set_combine(sets.midcast['Elemental Magic'],{
         neck  ="Erra Pendant",
-        ear2  ="Abyssal Earring",
+        ear2  ="Alabaster Earring",
         ear1  ="Malignance Earring",
         ring1 ="Crepuscular Ring",
         ring2="Evanescence Ring",
@@ -222,7 +222,7 @@ sets.midcast['Enfeebling Magic'] = {
     sub="Mephitis Grip",
     head="Bunzi's Hat",
     body="Bunzi's Robe",
-	legs="Bunzi's Slops",
+	legs="Bunzi's Pants",
     feet="Bunzi's Sabots",
     neck="Null Shawl",
 	ear1="Malignance Earring", 
@@ -245,10 +245,10 @@ sets.midcast['Enfeebling Magic'] = {
 	sets.midcast.Bio = set_combine(sets.midcast['Enfeebling Magic'], sets.TreasureHunter)
 	sets.midcast['Bio II'] = set_combine(sets.midcast['Enfeebling Magic'], sets.TreasureHunter)
 		
-	sets.midcast['Enhancing Magic'] = {main=gear.gada_enhancing_club,sub="Ammurapi Shield",ammo="Hasty Pinion +1",
-		head="Telchine Cap",neck="Incanter's Torque",ear1="Andoaa Earring",ear2="Gifted Earring",
-		body="Telchine Chas.",hands="Telchine Gloves",ring1="Stikini Ring +1",ring2="Stikini Ring +1",
-		back="Perimede Cape",waist="Embla Sash",legs="Telchine Braconi",feet="Telchine Pigaches"}
+	sets.midcast['Enhancing Magic'] = {main=gear.gada_enhancing_club,sub="Ammurapi Shield",ammo="Psilomene",
+		head="Umuthi Hat",neck="Incanter's Torque",ear1="Andoaa Earring",ear2="Gifted Earring",
+		body="Telchine Chas.",hands="Bokwus Gloves",
+		back="Izdubar Mantle",waist="Embla Sash",legs="Telchine Braconi",feet="Telchine Pigaches"}
 		
 	sets.midcast.Refresh = set_combine(sets.midcast['Enhancing Magic'], {head="Amalric Coif +1"})
 	sets.midcast.Aquaveil = set_combine(sets.midcast['Enhancing Magic'], {main="Vadose Rod", sub="Culminus", legs="Shedir Seraweels"})
@@ -304,9 +304,8 @@ sets.midcast['Enfeebling Magic'] = {
     sets.resting =set_combine(sets.idle, {
     main="Chatoyant Staff",
     sub="Achaq Grip",
-	body="Inyanga Jibbah +2",
+	body="Inyanga Jubbah +2",
     legs="Assiduity Pants +1",
-    back="Vita Cape",
     ear2="Magnetic Earring"
 })
     
@@ -382,7 +381,7 @@ sub="Umbra Strap",
     sets.Kiting = {feet="Herald's Gaiters"}
     sets.latent_refresh = {waist="Fucho-no-obi"}
 	sets.latent_refresh_grip = {sub="Oneiros Grip"}
-	sets.TPEat = {neck="Chrys. Torque"}
+ 
 	sets.DayIdle = {}
 	sets.NightIdle = {}
 

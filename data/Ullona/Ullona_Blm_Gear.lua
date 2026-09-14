@@ -92,7 +92,7 @@ sets.TreasureHunter = {ammo="Perfect Lucky Egg", waist="Chaac Belt"}
         sub="Willpower Grip",
         head  = "Nahtirah Hat",
         body  = "Agwu's Robe",
-        hands = "Gazu Bracelets +1",
+        hands = Mallquis Cuffs +2,
         legs="Querkening Brais",
         feet  = "Regal Pumps",
         neck = "Voltsurge Torque",
@@ -109,9 +109,9 @@ sets.TreasureHunter = {ammo="Perfect Lucky Egg", waist="Chaac Belt"}
         waist="Embla Sash"
     })
 
-    -- Stoneskin: Siegal Sash + Shedir legs improve potency
+    -- Stoneskin: Siegel Sash + Shedir legs improve potency
     sets.precast.FC.Stoneskin = set_combine(sets.precast.FC['Enhancing Magic'], {
-        waist = "Siegal Sash",
+        waist = "Siegel Sash",
         legs  = "Querkening Brais",
         head="Umuthi Hat"
     })
@@ -120,7 +120,7 @@ sets.TreasureHunter = {ammo="Perfect Lucky Egg", waist="Chaac Belt"}
         head  = "Wicce Petasos +2",
         neck  = "Baetyl Pendant",
         body  = "Wicce Coat +2",
-        feet  = "Spaekona Sabots +2",
+        feet  = "Spaekona's Sabots +2",
         ring2  = "Mallquis Ring",
     })
 
@@ -154,12 +154,12 @@ sets.TreasureHunter = {ammo="Perfect Lucky Egg", waist="Chaac Belt"}
     -- Precast: Weapon Skills (default)
     -- =========================================================================
     sets.precast.WS = {
-        neck  = "Fiota Gorget",
+        neck  = "Fotia Gorget",
         ear1  = "Cessance Earring",
-        ear2  = "Pixie Earring",
+        ear2  = "Odnowa Earring +1",
         	ring1="Cornelia's Ring",  
         ring2 = "Mars's Ring",
-        waist = "Fiota Belt",
+        waist = "Fotia Belt",
         legs="Perdition slops"
     }
 
@@ -178,7 +178,7 @@ sets.TreasureHunter = {ammo="Perfect Lucky Egg", waist="Chaac Belt"}
         body  ="Vrikodara Jupon",
         hands = "Bokwus Gloves",
         feet  = "Vanya Clogs",
-        neck  = "Noden's Gorget",
+        neck  = "Nodens Gorget",
         ear2="Glorious Earring",
         ear1  = "Mendicant's Earring",
         ring2 ="Janniston Ring",
@@ -210,7 +210,7 @@ sets.TreasureHunter = {ammo="Perfect Lucky Egg", waist="Chaac Belt"}
         ear1  = "Magnetic Earring",
         ear2  = "Andoaa Earring",
         ring2 = "Vertigo Ring",
-        waist = "Siegal Sash",
+        waist = "Siegel Sash",
     }
 
     sets.midcast.Regen = set_combine(sets.midcast['Enhancing Magic'], {
@@ -218,7 +218,7 @@ sets.TreasureHunter = {ammo="Perfect Lucky Egg", waist="Chaac Belt"}
     })
 
     sets.midcast.Stoneskin = set_combine(sets.midcast['Enhancing Magic'], {
-        waist = "Siegal Sash",
+        waist = "Siegel Sash",
         legs  = "Shedir Seraweels",
         feet  = "Medium's Sabots",
         head="Umuthi Hat"
@@ -368,7 +368,7 @@ sets.TreasureHunter = {ammo="Perfect Lucky Egg", waist="Chaac Belt"}
         legs="Archmage's Tonban +3",
         ring2="Freke Ring",
         ring1="Locus Ring",
-        feet="Spaekona Sabots +2",
+        feet="Spaekona's Sabots +2",
         back="Taranus's cape"
     })
 

@@ -108,9 +108,9 @@ function init_gear_sets()
         legs  ="Malignance Tights",
         hands ="Atrophy Gloves +4",
         feet  ="Lethargy Houseaux +3",
-        neck  ="Fiota Gorget",
+        neck  ="Fotia Gorget",
         back  ="Sucellos's Cape",
-        waist ="Fiota Belt",
+        waist ="Fotia Belt",
         ear2  ="Ishvara Earring",
         ear1  ="Crepuscular Earring",
         ring2 ="Rufescent Ring",
@@ -162,9 +162,9 @@ sets.midcast.FastRecast = sets.precast.FC
 	--           anywhere in this file (per FIX 2, it's sets.midcast['Healing Magic']).
 	--           Was combining against nil.
 	sets.midcast.Cursna = set_combine(sets.midcast['Healing Magic'], {
-		neck="Debilis Medallion", hands="Hieros Mittens",
-		back="Oretan. Cape +1", ring1="Haoma's Ring", ring2="Menelaus's Ring",
-		waist="Witful Belt", feet="Vanya Clogs"
+		neck=" Nodens Gorget", hands="Bokwus Gloves",
+		back="Tempered Cape +1  ",    
+		waist="Cornelia's Belt", feet="Vanya Clogs"
 	})
 
 	-- [FIX 12]: was a direct alias to sets.midcast.Cure (undefined) — same nil-reference
@@ -174,7 +174,7 @@ sets.midcast.FastRecast = sets.precast.FC
 
 	sets.Self_Healing = {}
 	sets.Cure_Received = {}
-	sets.Self_Refresh = {}
+	sets.Self_Refresh = {head="Amalric Coif +1"}
 
 	sets.midcast['Enhancing Magic'] = {
 	    head  ="Lethargy Chappel +3",
@@ -200,7 +200,7 @@ sets.midcast.FastRecast = sets.precast.FC
 	--Red Mage enhancing sets are handled in a different way from most, layered on due to the way Composure works
 	--Don't set combine a full set with these spells, they should layer on Enhancing Set > Composure (If Applicable) > Spell
 
-	sets.midcast.BoostStat = {hands="Vitiation Gloves +2"}
+	sets.midcast.BoostStat = {hands="Vitiation Gloves +3"}
 	sets.Self_Refresh  = set_combine(sets.midcast['Enhancing Magic'],{feet="Inspirited Boots"})
     sets.midcast.Regen       = set_combine(sets.midcast['Enhancing Magic'], {main="Bolelabunga"})
     sets.EnhancingSkill      = set_combine(sets.midcast['Enhancing Magic'], {hands="Vitiation Gloves +3"})
@@ -252,14 +252,14 @@ sets.midcast.FastRecast = sets.precast.FC
 	sets.midcast.Silence = set_combine(sets.midcast.DurationOnlyEnfeebling, {})
 	sets.midcast.Silence.Resistant = sets.midcast['Enfeebling Magic'].Resistant
 	sets.midcast.Sleep = set_combine(sets.midcast.DurationOnlyEnfeebling,{})
-	sets.midcast.Sleep.Resistant = set_combine(sets.midcast['Enfeebling Magic'].Resistant,{waist="Acuity Belt +1"})
+	sets.midcast.Sleep.Resistant = set_combine(sets.midcast['Enfeebling Magic'].Resistant,{waist=" Null Belt"})
 	sets.midcast.Bind = set_combine(sets.midcast.DurationOnlyEnfeebling,{})
-	sets.midcast.Bind.Resistant = set_combine(sets.midcast['Enfeebling Magic'].Resistant,{waist="Acuity Belt +1"})
+	sets.midcast.Bind.Resistant = set_combine(sets.midcast['Enfeebling Magic'].Resistant,{waist=" Null Belt"})
 	sets.midcast.Break = set_combine(sets.midcast.DurationOnlyEnfeebling,{})
-	sets.midcast.Break.Resistant = set_combine(sets.midcast['Enfeebling Magic'].Resistant,{waist="Acuity Belt +1"})
+	sets.midcast.Break.Resistant = set_combine(sets.midcast['Enfeebling Magic'].Resistant,{waist=" Null Belt"})
 	sets.midcast.Dispel = set_combine(sets.midcast['Enfeebling Magic'].Resistant, {})
 	sets.midcast.Dispelga = set_combine(sets.midcast['Enfeebling Magic'].Resistant,{main="Daybreak", sub="Culminus"})
-	sets.midcast.SkillBasedEnfeebling = set_combine(sets.midcast['Enfeebling Magic'], {ear1="Vor Earring",hands="Leth. Gantherots +1",ring1="Stikini Ring +1",legs="Psycloth Lappas"})
+	sets.midcast.SkillBasedEnfeebling = set_combine(sets.midcast['Enfeebling Magic'], {ear1="Alabaster Earring",hands="Leth. Gantherots +1",legs="Psycloth Lappas"})
 	sets.midcast['Frazzle II'] = set_combine(sets.midcast['Enfeebling Magic'].Resistant, {})
 	sets.midcast['Frazzle III']            = set_combine(sets.midcast.SkillBasedEnfeebling, {})
 	sets.midcast['Frazzle III'].Resistant  = sets.midcast['Enfeebling Magic'].Resistant
@@ -337,7 +337,7 @@ sets.midcast.FastRecast = sets.precast.FC
         hands ="Malignance Gloves",
         feet  ="Jhakri Pigaches +2",
         neck  ="Erra Pendant",
-        ear2  ="Abyssal Earring",
+        ear2  ="Alabaster Earring",
         ear1  ="Malignance Earring",
         ring1 ="Crepuscular Ring",
         ring2="Evanescence Ring",
@@ -394,7 +394,7 @@ sets.midcast.FastRecast = sets.precast.FC
     sets.idle.DTHippo = set_combine(sets.idle, {})
 	
 	sets.idle.DTHippo = set_combine(sets.idle.PDT, {
-	back="Umbra Cape",
+	back="Archon Cape",
 	legs="Carmine Cuisses +1",
 	--feet="Hippo. Socks +1"
 	})
@@ -411,7 +411,7 @@ sets.midcast.FastRecast = sets.precast.FC
 	sets.Kiting = {legs="Carmine Cuisses +1", main="Daybreak", sub="Sacro Bulwark", ammo="Crepuscular Pebble"}
 	sets.latent_refresh = {waist="Fucho-no-obi"}
 	sets.latent_refresh_grip = {main= "Mpaca's Staff", sub="Oneiros Grip"}
-	sets.TPEat = {neck="Chrys. Torque"}
+ 
 	sets.DayIdle = {}
 	sets.NightIdle = {}
 	
@@ -468,7 +468,7 @@ sets.engaged = {
 sets.engaged.EnspellMelee = sets.engaged
 
 sets.engaged.Acc = set_combine(sets.engaged, {ammo="Ginsen", waist="Null Loop"})
-sets.engaged.FullAcc = set_combine(sets.engaged.Acc, {back="Null Cape", neck="Null Loop",})
+sets.engaged.FullAcc = set_combine(sets.engaged.Acc, {back="Null Shawl", neck="Null Loop",})
 sets.engaged.DT = set_combine(sets.engaged, {})
 sets.engaged.Acc.DT = set_combine(sets.engaged.Acc, {})
 sets.engaged.FullAcc.DT = set_combine(sets.engaged.FullAcc, {})
