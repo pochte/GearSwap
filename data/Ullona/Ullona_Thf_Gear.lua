@@ -126,7 +126,7 @@ function init_gear_sets()
     sets.precast.JA['Trick Attack'] = sets.buff['Trick Attack']
 
     -- Waltz set (chr and vit)
-    sets.precast.Waltz = {body= "Gleti's Cuirass", head="Mummu Bonnet +2", hands="Slither Gloves +1", ring1="Asklepian Ring", feet="Rawhide Boots",}
+    sets.precast.Waltz = {body= "Gleti's Cuirass", head="Mummu Bonnet +2", hands="Slither Gloves +1", ring1="Asklepian Ring", feet="Rawhide Boots", ammo="Yamarang"}
 	sets.Self_Waltz =   sets.precast.Waltz 
     sets.precast.Waltz['Healing Waltz'] =   sets.precast.Waltz 
 

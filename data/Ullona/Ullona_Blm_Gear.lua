@@ -79,7 +79,7 @@ sets.TreasureHunter = {ammo="Perfect Lucky Egg", waist="Chaac Belt"}
     sets.precast.JA['Mana Wall'] = {back="Taranus's Cape", feet="Wicce Sabots +2"}
 
     -- Manafont: body gives the most benefit
-    sets.precast.JA.Manafont     = {body="Archmage's Coat +2"}
+    sets.precast.JA.Manafont     = {body="Archmage's Coat +3"}
 
     -- Convert: empty — equip nothing special; keep whatever is on
     sets.precast.JA.Convert      = {}
@@ -106,7 +106,9 @@ sets.TreasureHunter = {ammo="Perfect Lucky Egg", waist="Chaac Belt"}
     -- Enhancing: swap in Magnetic Earring for Conserve MP
     sets.precast.FC['Enhancing Magic'] = set_combine(sets.precast.FC, {
         ear1="Magnetic Earring",
-        waist="Embla Sash"
+        waist="Embla Sash",
+        main="Daybreak",
+        sub="Ammurapi Shield",
     })
 
     -- Stoneskin: Siegel Sash + Shedir legs improve potency
@@ -120,7 +122,7 @@ sets.TreasureHunter = {ammo="Perfect Lucky Egg", waist="Chaac Belt"}
         head  = "Wicce Petasos +2",
         neck  = "Baetyl Pendant",
         body  = "Wicce Coat +2",
-        feet  = "Spaekona's Sabots +2",
+        feet  = "Spaekona's Sabots +3",
         ring2  = "Mallquis Ring",
     })
 
@@ -202,6 +204,8 @@ sets.TreasureHunter = {ammo="Perfect Lucky Egg", waist="Chaac Belt"}
     -- Midcast: Enhancing / Stoneskin / Bar-spells
     -- =========================================================================
     sets.midcast['Enhancing Magic'] = {
+                main="Daybreak",
+        sub="Ammurapi Shield",
         head  = "Mallquis Chapeau +2",
         body  = "Mallquis Saio +2",
         hands = "Bokwus Gloves",
@@ -251,7 +255,7 @@ sets.TreasureHunter = {ammo="Perfect Lucky Egg", waist="Chaac Belt"}
 
     sets.midcast['Enfeebling Magic'].Resistant = set_combine(sets.midcast['Enfeebling Magic'], {
         main  = "Mpaca's Staff",
-        body  = "Spaekona's Coat +2",
+        body  = "Spaekona's Coat +3",
         ear1="Gwati Earring",
         waist="Null Belt"
         
@@ -260,7 +264,7 @@ sets.TreasureHunter = {ammo="Perfect Lucky Egg", waist="Chaac Belt"}
     -- Elemental enfeebles (INT- or MND-based)
     sets.midcast.ElementalEnfeeble = set_combine(sets.midcast['Enfeebling Magic'], {
         back = "Taranus's Cape",
-        body = "Spaekona's Coat +2",
+        body = "Spaekona's Coat +3",
         legs = "Archmage's Tonban +3",
         feet = "Archmage's Sabots +2"
     })
@@ -281,7 +285,7 @@ sets.TreasureHunter = {ammo="Perfect Lucky Egg", waist="Chaac Belt"}
         sub="Daduchos Grip",
         head   = "Mallquis Chapeau +2",
         body  = "Wicce Coat +2",
-        hands  = "Archmage's Gloves +2",
+        hands  = "Archmage's Gloves +3",
         legs   = "Spaekona's Tonban +2",
         feet   = "Wicce Sabots +2",
         neck   = "Erra Pendant",
@@ -295,7 +299,7 @@ sets.TreasureHunter = {ammo="Perfect Lucky Egg", waist="Chaac Belt"}
 
     sets.midcast.Drain      = set_combine(sets.midcast['Dark Magic'], {neck="Erra Pendant", waist="Fucho-no-obi", feet="Agwu's Pigaches"
 })
-    sets.midcast.Aspir      = set_combine(sets.midcast.Drain, {})
+    sets.midcast.Aspir      = set_combine(sets.midcast.Drain, { feet ="Archmage's Sabots +2"})
     sets.midcast.Aspir.Death = sets.midcast['Dark Magic']
 
     -- Impact midcast base (GearSwap `empty` clears head slot)
@@ -356,7 +360,7 @@ sets.TreasureHunter = {ammo="Perfect Lucky Egg", waist="Chaac Belt"}
 
     -- RecoverMP: Spaekona body converts elemental damage dealt into MP recovered
     sets.RecoverMP = {
-        body="Spaekona's Coat +2",
+        body="Spaekona's Coat +3",
     }
 
     -- MagicBurst: overlaid on nukes when CastingMode contains 'MB' (was MagicBurstMode ~= 'Off', now retired)
@@ -364,11 +368,11 @@ sets.TreasureHunter = {ammo="Perfect Lucky Egg", waist="Chaac Belt"}
         head  = "Archmage's Petasos +3",
         neck  = "Sorcerer's Stole +1",
         body="Agwu's Robe",
-        hands = "Archmage's Gloves +2",
+        hands = "Archmage's Gloves +3",
         legs="Archmage's Tonban +3",
         ring2="Freke Ring",
         ring1="Locus Ring",
-        feet="Spaekona's Sabots +2",
+        feet="Spaekona's Sabots +3",
         back="Taranus's cape"
     })
 

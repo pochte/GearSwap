@@ -70,7 +70,9 @@ function init_gear_sets()
     sets.precast.FC.DT = sets.precast.FC 
 
     sets.precast.FC['Enhancing Magic'] = set_combine(sets.precast.FC, {
-		body="Ebers Bliaut +3",
+    main = "Daybreak",
+    sub  = "Ammurapi Shield",
+     body="Ebers Bliaut +3",
 		legs="Gyve Trousers",
 		neck="Null Shawl",
 		ear1="Magnetic Earring",
@@ -232,14 +234,14 @@ sets.ConserveMP = set_combine(
 		ring1="Vertigo Ring",
 		back="Izdubar Mantle",
 		waist="Siegel Sash",
-	main="Marin Staff +1",
-sub="Daduchos Grip"}
+    main = "Daybreak",
+    sub  = "Ammurapi Shield"}
 
 	sets.midcast.Stoneskin = set_combine(sets.midcast['Enhancing Magic'], {waist="Siegel Sash", legs="Shedir Seraweels", feet="Piety Duckbills +4", head="Umuthi Hat", neck  ="Nodens Gorget"})
 	sets.midcast.Auspice = set_combine(sets.midcast['Enhancing Magic'], {})
 	sets.midcast.Regen = set_combine(sets.midcast['Enhancing Magic'], {
 		main="Bolelabunga",
-		sub="Culminus",
+    sub  = "Ammurapi Shield",
 		body="Piety Bliaut +4",
 		hands="Ebers Mitts +3",
 		legs="Theophany Pantaloons +4",

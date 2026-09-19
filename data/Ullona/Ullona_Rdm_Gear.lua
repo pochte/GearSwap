@@ -175,9 +175,14 @@ sets.midcast.FastRecast = sets.precast.FC
 	sets.Self_Healing = {}
 	sets.Cure_Received = {}
 	sets.Self_Refresh = {head="Amalric Coif +1"}
-
+sets.precast['Enhancing Magic'] = set_combine(sets.precast.FC, {
+    main = "Daybreak",
+    sub  = "Ammurapi Shield",
+})
 	sets.midcast['Enhancing Magic'] = {
-	    head  ="Lethargy Chappel +3",
+	    main="Daybreak",
+        sub="Ammurapi Shield",
+        head  ="Lethargy Chappel +3",
         body  ="Lethargy Sayon +3",
         legs  ="Lethargy Fuseau +3",
         hands ="Lethargy Gantherots +3",

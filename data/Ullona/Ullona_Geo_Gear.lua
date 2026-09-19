@@ -104,6 +104,8 @@ function init_gear_sets()
 	sets.Self_Refresh = {feet="inspirited Boots"}
 	
 	sets.precast.FC['Enhancing Magic'] = set_combine(sets.precast.FC, {
+		main="Daybreak",
+        sub="Ammurapi Shield",
 		head  ="Umuthi Hat",
         body  ="Bagua Tunic +1",
         legs  ="Bagua Pants +1",
