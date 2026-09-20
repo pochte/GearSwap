@@ -286,7 +286,7 @@ sets.TreasureHunter = {ammo="Perfect Lucky Egg", waist="Chaac Belt"}
         head   = "Mallquis Chapeau +2",
         body  = "Wicce Coat +2",
         hands  = "Archmage's Gloves +3",
-        legs   = "Spaekona's Tonban +2",
+        legs   = "Spaekona's Tonban +3",
         feet   = "Wicce Sabots +2",
         neck   = "Erra Pendant",
         ear2   ="Malignance Earring",   
