@@ -1,74 +1,5 @@
 -- =============================================================================
 -- RDM.lua — Changelog
--- 2026-08-13: [FIX] handle_elemental's 'weather' command (gs c elemental weather) was casting
---             Phalanx instead of the actual storm spell for any subjob other than SCH -- an
---             apparent leftover from before Phalanx was split into its own handle_phalanx()
---             command on 2026-08-09, never updated to match. Non-SCH now correctly casts
---             data.elements.storm_of[ElementalMode] (matching the SCH branch, minus the
---             Klimaform swap which only applies with SCH sub). This is what looked like
---             "weather and phalanx casting on the same keybind" -- there was only ever one
---             command involved; it was just casting the wrong spell.
--- 2026-08-09: [REVISED] Phalanx handling moved from automatic precast interception to an
---             explicit command: gs c phalanx [target] (no target -> <me>). Precast
---             interception is removed entirely -- macros casting Phalanx/Phalanx II
---             directly now just go out as typed, no redirect. The command always attempts
---             Phalanx (tier 1) first via handle_phalanx() (near handle_elemental), and the
---             existing job_aftercast escalation to Phalanx II still applies if that tier 1
---             cast comes back spell.interrupted. This sidesteps the macro-targeting
---             ambiguity that kept defeating the precast-based approach.
--- 2026-08-09: [REVISED] Phalanx/Phalanx II redesigned again -- target-detection (both
---             spell.target.type and the identity-based spell.target.id follow-up) kept
---             failing to actually change behavior in practice. New approach per direct
---             instruction: abandon detection entirely, always attempt Phalanx (tier 1)
---             first regardless of target, then escalate to Phalanx II via job_aftercast
---             ONLY if that tier 1 cast comes back spell.interrupted == true. Tracked via
---             a new phalanx_fallback_target variable (job_setup).
--- 2026-08-09: [FIX] Phalanx/Phalanx II self-detection switched from spell.target.type ==
---             'SELF' to an identity check (spell.target.id == player.id). The type check
---             only reports 'SELF' for a literal <me> cast -- targeting yourself any other
---             way (clicking your own HP bar, tabbing to yourself and casting with <t>)
---             reported as 'PLAYER' instead, so the downgrade silently never fired for
---             Phalanx II cast that way, and the reverse (Phalanx -> Phalanx II upgrade)
---             had the same blind spot in the opposite direction.
--- 2026-08-09: [FIX] weather-before-nuke block had no exclusion for Enspells -- since
---             Enspells are Elemental Magic skill same as real nukes, casting Enfire/
---             Enfire II etc. was getting cancelled and detoured through a weather cast
---             first whenever weather didn't match, delaying a simple self-buff by 2-5
---             seconds for no reason. Excluded via data.spells.enspells:contains() check.
--- 2026-08-09: Added Accession-Enspell downgrade -- confirmed against the wiki that Accession
---             explicitly excludes Enstone II/Enaero II/Enwater II/Enblizzard II/Enthunder II/
---             Enfire II (same exclusion list Phalanx II is already on). Casting any Enspell
---             II while Accession is up now redirects to the tier I version instead, mirroring
---             the existing Phalanx II -> Phalanx redirect.
--- 2026-08-09: [FIX] Composure-first block (self-target Enhancing Magic) was catching
---             Phalanx II cast on yourself and detouring it through a Composure cast before
---             the Phalanx II->Phalanx downgrade below could run -- still landed as Phalanx
---             eventually, but delayed rather than instant. Excluded Phalanx/Phalanx II from
---             that block so the downgrade fires immediately again, as before.
--- 2026-08-09: Added check_ecphoria_for_ja(spell) call at the top of job_precast(), outside
---             the action_type=='Magic' block (job abilities aren't Magic) -- correctly wires
---             the Amnesia -> Ecphoria Ring precast hook (see Ullona-Globals.lua).
--- 2026-08-01: Cure/Cure II Aurorastorm handling downgraded from cancel-and-reschedule to a
---             non-blocking reminder. It used to cancel the cast, fire Aurorastorm, then
---             reschedule the real heal ~4 seconds later -- fragile, since any interruption
---             along that chain meant the actual heal never went out. Per direct instruction: a
---             party member's health always comes before weather, no exceptions. The Cure/Cure
---             II cast is now NEVER cancelled or delayed for Aurorastorm -- worst case you get a
---             chat reminder and the heal still lands immediately regardless.
--- 2026-08-01: Reworked the low-MP Convert logic into a shared handle_convert() core, used by
---             BOTH the automatic tick check and a new manual "gs c convert" command -- one
---             source of truth instead of two copies drifting apart. HP safety threshold raised
---             from 50% to 75% (Convert trades HP for MP roughly 1:1, and 50% still felt too
---             risky mid-fight). Below 75% HP it now echoes "HP too low to safely convert" and
---             refuses to fire, giving you a chance to heal up and try again -- previously it
---             silently echoed the generic "Low on MP" message instead, which didn't tell you
---             WHY it was refusing.
--- 2026-08-01: New check_low_mp(), hooked into job_tick(). If MP drops under 200, tries
---             Convert followed by a Cure IV a couple seconds later (once the MP has actually
---             landed). Convert trades HP for MP roughly 1:1, so this is skipped entirely if
---             Convert is on cooldown (ability recast ID 49, confirmed via Windower/Resources
---             job_abilities.lua) or HP is too low to risk it, echoes "Low on MP" instead
---             (rate-limited to once per 30s so it doesn't spam every tick).
 -- 2026-07-15: Fixed WS gear getting clobbered when an active enspell's element matched current
 --             weather at intensity 2 (e.g. Enfire II during a Firestorm cast on you). Root
 --             cause: job_customize_melee_set's Hachirin-no-Obi swap (an ENGAGED-gear bonus,
@@ -482,13 +413,8 @@ end
 
 -- Modify the default idle set after it was constructed.
 function job_customize_idle_set(idleSet)
-    -- [FIX] Kaja Bow retired -- range/ammo now just come from sets.weapons.DualWeapons /
-    -- sets.weapons.EnspellMelee (range=empty, ammo="Crepuscular Pebble"), no override needed.
-    -- EnspellMelee's main/sub pin stays since that's a weapon choice, not a Kaja Bow leftover.
-    if state.Weapons.value == 'EnspellMelee' then
-        idleSet = set_combine(idleSet, {main="Naegling", sub="Culminus"})
-    end
-
+    -- [FIX] Kaja Bow retired -- range/ammo come from sets.weapons.* (range=empty,
+    -- ammo="Crepuscular Pebble"). Main/sub come from the selected weapon set, no pin here.
     if buffactive['Sublimation: Activated'] then
         if (state.IdleMode.value == 'Normal' or state.IdleMode.value:contains('Sphere')) and sets.buff.Sublimation then
             idleSet = set_combine(idleSet, sets.buff.Sublimation)
@@ -522,11 +448,7 @@ end
 
 function job_customize_melee_set(meleeSet)
     -- [FIX] Kaja Bow retired -- same reasoning as job_customize_idle_set above.
-    if state.Weapons.value == 'EnspellMelee' then
-        meleeSet = set_combine(meleeSet, {main="Naegling", sub="Culminus"})
-    end
-
-    if state.Weapons.value:contains('Enspell') and enspell ~= '' then
+    if state.Weapons.value ~= 'None' and state.Weapons.value ~= 'DualWeapons' and enspell ~= '' then
 		local enspell_element = data.elements.enspells_lookup[enspell]
 		if sets.element.enspell and sets.element.enspell[enspell_element] then
 			meleeSet = set_combine(meleeSet, sets.element.enspell[enspell_element])

@@ -94,9 +94,16 @@ function init_gear_sets()
 	sets.precast.FC.Geomancy = set_combine(sets.precast.FC, {range="Dunna",ammo=empty, main="Solstice"})
 	
     sets.precast.FC['Elemental Magic'] = set_combine(sets.precast.FC, {ear2="Malignance Earring",hands="Bagua Mitaines +1"})
-	sets.precast.Cure = set_combine(sets.precast['Healing Magic'], {legs="Doyen Pants", body="Vanya Robe", main="Daybreak",
-        sub="Sors Shield", back="Pahtli Cape"})
-		
+sets.precast.Cure = set_combine(
+    sets.precast['Healing Magic'],
+    {
+        legs="Doyen Pants",
+        body="Vanya Robe",
+        main="Daybreak",
+        sub="Sors Shield",
+        back="Pahtli Cape"
+    }
+)		
 
 	
 	sets.Self_Healing = {}
@@ -117,7 +124,8 @@ function init_gear_sets()
         ring2 ="Lebeche Ring",
         back  ="Estoqueur's Cape",
         waist ="Embla Sash"})
-	sets.precast['Healing Magic'] = set_combine(sets.precast.FC, {
+	
+		sets.precast['Healing Magic'] = set_combine(sets.precast.FC, {
         main  ="Daybreak",
         sub="Sors Sheild",
         legs="Doyen Pants",
@@ -185,10 +193,23 @@ sets.precast.WS = {
 	sets.precast.Cure = set_combine(sets.precast.FC.Cure, {legs="Doyen Pants", body="Vanya Robe", main="Daybreak",
         sub="Sors Sheild", back="Pahtli Cape"})
 		
-    sets.midcast.LightWeatherCure = {main="Chatoyant Staff",sub="Curatio Grip",ammo="Psilomene",
-        head="Amalric Coif +1",neck="Phalaina Locket",ear1="Gifted Earring",ear2="Malignance Earring",
-        body="Vrikodara Jupon",hands="Bokwus Gloves",ring1="Janniston Ring",ring2="Menelaus's Ring",
-        back="Twilight Cape",waist="Hachirin-no-Obi",legs="Geo. Pants +1",feet="Vanya Clogs"}
+sets.midcast.LightWeatherCure = {
+    main="Chatoyant Staff",
+    sub="Curatio Grip",
+    ammo="Psilomene",
+    head="Amalric Coif +1",
+    neck="Phalaina Locket",
+    ear1="Gifted Earring",
+    ear2="Malignance Earring",
+    body="Vrikodara Jupon",
+    hands="Bokwus Gloves",
+    ring1="Janniston Ring",
+    ring2="Menelaus's Ring",
+    back="Twilight Cape",
+    waist="Hachirin-no-Obi",
+    legs="Geo. Pants +1",
+    feet="Vanya Clogs"
+}
 		
 		--Cureset for if it's not light weather but is light day.
     -- main=gear.gada_healing_club, -- [PLACEHOLDER] Gada (Empyrean) -- swap back in once owned
@@ -275,11 +296,11 @@ sets.precast.WS = {
 		main  ="Mpaca's Staff",
        --- sub="Daduchos Grip", --currently unable to equip until master
 	   sub="Willpower Grip",
-        head  ="Azimuth Hood +1",
+     --   head  ="Azimuth Hood +1",
         body  ="Vanya Robe",
-        legs  ="Bagua Pants +1",
-        hands ="Bagua Mitaines +1",
-        feet  ="Azimuth Gaiters +1",
+       -- legs  ="Bagua Pants +1",
+        --hands ="Bagua Mitaines +1",
+        feet  ="Skaoi Boots",
 		ring1  = "Mallquis Ring",
         ring2 ="Kishar Ring",
         ear2="Malignance Earring",   
@@ -380,18 +401,42 @@ sets.precast.WS = {
 	}
 
 	-- .Pet sets are for when Luopan is present.
-	sets.idle.Pet = {main="Solstice",sub="Culminus",range="Dunna",
-		head="Azimuth Hood +1",neck="Loricate Torque +1",        
-		ear1  ="Moonshade Earring",
-        ear2  ="Alabaster Earring",
-		body="Jhakri Robe +2",hands="Geo. Mitaines +1",ring1="Defending Ring",ring2="Dark Ring",
-		back=gear.idle_jse_back,waist="Isa Belt",legs="Psycloth Lappas",feet="Bagua Sandals +1"}
+sets.idle.Pet = {
+    main="Solstice",
+    sub="Culminus",
+    range="Dunna",
+    head="Azimuth Hood +1",
+    neck="Loricate Torque +1",
+    ear1="Enmerkar Earring",
+    ear2="Alabaster Earring",
+    body="Jhakri Robe +2",
+    hands="Geo. Mitaines +1",
+    ring1="Defending Ring",
+    ring2="Dark Ring",
+    back=gear.idle_jse_back,
+    waist="Isa Belt",
+    legs="Psycloth Lappas",
+    feet="Bagua Sandals +1",
+    neck="Bagua Charm +1"
+}
 
-	sets.idle.PDT.Pet = {main="Solstice",sub="Umbra Strap",range="Dunna",
-		head="Azimuth Hood +1",neck="Loricate Torque +1",ear1="Handler's Earring",ear2="Handler's Earring +1",
-		body="Jhakri Robe +2",hands="Geo. Mitaines +1",ring1="Defending Ring",ring2="Dark Ring",
-		back="Nantosuelta's Cape",waist="Isa Belt",legs="Hagondes Pants +1",feet="Bagua Sandals +1"}
-
+sets.idle.PDT.Pet = {
+    main="Solstice",
+    sub="Umbra Strap",
+    range="Dunna",
+    head="Azimuth Hood +1",
+    neck="Loricate Torque +1",
+    ear1="Handler's Earring",
+    ear2="Handler's Earring +1",
+    body="Jhakri Robe +2",
+    hands="Geo. Mitaines +1",
+    ring1="Defending Ring",
+    ring2="Dark Ring",
+    back="Nantosuelta's Cape",
+    waist="Isa Belt",
+    legs="Hagondes Pants +1",
+    feet="Bagua Sandals +1"
+}
 	-- .Indi sets are for when an Indi-spell is active.
 	sets.idle.Indi = set_combine(sets.idle, {})
 	sets.idle.Pet.Indi = set_combine(sets.idle.Pet, {}) 

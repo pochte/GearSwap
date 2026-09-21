@@ -25,7 +25,7 @@ function user_job_setup()
     state.PhysicalDefenseMode:options('PDT','NukeLock')
     state.MagicalDefenseMode:options('MDT')
     state.ResistDefenseMode:options('MEVA')
-    state.Weapons:options('None','DualWeapons','EnspellMelee')
+    state.Weapons:options('None','Sword','Dagger','Club','DualWeapons')
 
     -- =========================================================================
     -- Macro Book
@@ -58,6 +58,12 @@ function init_gear_sets()
 	--------------------------------------
 	-- Start defining the sets
 	--------------------------------------
+	-- Weapons sets
+	sets.weapons.DualWeapons = {main="Naegling", sub="Demersal Degen +1", range=empty, ammo="Crepuscular Pebble"} -- Ctrl+W cycle target for NIN-sub dual wield; ammo/range locked via RDM.lua's job_customize_idle_set/melee_set
+	sets.weapons.Sword = {main="Naegling", sub="Culminus", range=empty, ammo="Crepuscular Pebble"}
+	sets.weapons.Dagger = {main="Tauret", sub="Culminus", range=empty, ammo="Crepuscular Pebble"}
+	sets.weapons.Club = {main="Kaja Rod", sub="Culminus", range=empty, ammo="Crepuscular Pebble"}
+
 	
 	-- Precast Sets
 	sets.precast.JA['Chainspell'] = {body="Vitiation Tabard +4"}
@@ -420,11 +426,6 @@ sets.precast['Enhancing Magic'] = set_combine(sets.precast.FC, {
 	sets.DayIdle = {}
 	sets.NightIdle = {}
 	
-	-- Weapons sets
-	sets.weapons.Naegling = {main="Naegling",sub="Archduke's Shield", range=empty, ammo="Crepuscular Pebble"} -- Default (non-NIN sub) Naegling loadout; range explicitly cleared so a lingering Kaja Bow can't clash with ammo
-	sets.weapons.DualWeapons = {main="Naegling", sub="Demersal Degen +1", range=empty, ammo="Crepuscular Pebble"} -- Ctrl+W cycle target for NIN-sub dual wield; ammo/range locked via RDM.lua's job_customize_idle_set/melee_set
-	sets.weapons.EnspellMelee = {main="Naegling", sub="Culminus", range=empty, ammo="Crepuscular Pebble"} -- Non-NIN-sub melee: rides enspell procs via Culminus instead of using a shield; Kaja Bow locked same as DualWeapons
-
 	-- Elemental bonus overlay sets. 
 	sets.element = {
 		Fire = {},
@@ -470,7 +471,9 @@ sets.engaged = {
         range=empty} 
         
 
-sets.engaged.EnspellMelee = sets.engaged
+sets.engaged.Sword = sets.engaged
+sets.engaged.Dagger = sets.engaged
+sets.engaged.Club = sets.engaged
 
 sets.engaged.Acc = set_combine(sets.engaged, {ammo="Ginsen", waist="Null Loop"})
 sets.engaged.FullAcc = set_combine(sets.engaged.Acc, {back="Null Shawl", neck="Null Loop",})

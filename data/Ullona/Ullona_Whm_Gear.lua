@@ -37,7 +37,7 @@ function init_gear_sets()
     --------------------------------------
 
 	-- Weapons sets
-	sets.weapons.MeleeWeapons = {}
+	sets.weapons.MeleeWeapons = {main="Kaja Rod", sub="Culminus", range=empty, ammo="Crepuscular Pebble"}
 	sets.weapons.DualWeapons = {}
 	
     sets.buff.Sublimation = {waist="Embla Sash"}

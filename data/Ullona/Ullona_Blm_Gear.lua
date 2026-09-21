@@ -98,7 +98,7 @@ sets.TreasureHunter = {ammo="Perfect Lucky Egg", waist="Chaac Belt"}
         neck = "Voltsurge Torque",
         ear2="Malignance Earring",   
         ear1  = "Alabaster Earring",
-                ring2 ="Kishar Ring",
+        ring2 ="Kishar Ring",
 		ring1="Naji's Loop",
         waist = "Cornelia's Belt",
     }
@@ -242,7 +242,7 @@ sets.TreasureHunter = {ammo="Perfect Lucky Egg", waist="Chaac Belt"}
         body   = "Vanya Robe",
         hands  = "Wicce Gloves +2",
         legs   = "Wicce Chausses +2",
-        feet   = "Uk'uxkaj Boots",
+        feet   = "Skaoi Boots",
         neck   = "Sorcerer's Stole +1",
         ring1  = "Mallquis Ring",
         ring2 ="Kishar Ring",
@@ -299,7 +299,7 @@ sets.TreasureHunter = {ammo="Perfect Lucky Egg", waist="Chaac Belt"}
 
     sets.midcast.Drain      = set_combine(sets.midcast['Dark Magic'], {neck="Erra Pendant", waist="Fucho-no-obi", feet="Agwu's Pigaches"
 })
-    sets.midcast.Aspir      = set_combine(sets.midcast.Drain, { feet ="Archmage's Sabots +2"})
+    sets.midcast.Aspir      = set_combine(sets.midcast.Drain, { feet ="Archmage's Sabots +3"})
     sets.midcast.Aspir.Death = sets.midcast['Dark Magic']
 
     -- Impact midcast base (GearSwap `empty` clears head slot)
