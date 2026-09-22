@@ -213,8 +213,8 @@ function init_gear_sets()
         ear1="Sherida Earring",           
         body="Malignance Tabard",            
         hands="Malignance Gloves",       
-        ring1="Mars's Ring",             
-        ring2="Rajas Ring",              
+        ring1 ="Petrov Ring",
+        ring2 ="Rajas Ring",              
         back="Toutatis's Cape",          
         waist="Sailfi Belt +1",            
         legs="Malignance Tights",       
@@ -222,7 +222,7 @@ function init_gear_sets()
     }
 		
     sets.engaged.SomeAcc = set_combine(sets.engaged, {waist=gear.default.waist, neck="Sanctity Necklace", ear2="Cessance Earring"})
-	sets.engaged.Acc = set_combine(sets.engaged.SomeAcc, {neck="Null Loop"})
+	sets.engaged.Acc = set_combine(sets.engaged.SomeAcc, {neck="Null Loop", ring1="Mars's Ring"})
     -- [FIX 2 cont.]: was set_combine(sets.Acc, ...) — sets.Acc never existed (typo for
     --          sets.engaged.Acc), so this branch was silently equipping a table missing
     --          everything SomeAcc/Acc had contributed. Now correctly builds on Acc.

@@ -1,27 +1,19 @@
 -- =============================================================================
 -- RDM.lua — Changelog
--- 2026-07-15: Fixed WS gear getting clobbered when an active enspell's element matched current
---             weather at intensity 2 (e.g. Enfire II during a Firestorm cast on you). Root
---             cause: job_customize_melee_set's Hachirin-no-Obi swap (an ENGAGED-gear bonus,
---             correct behavior on its own) was somehow interfering with WeaponSkill gear too --
---             waist stuck on Hachirin-no-Obi, other WS-specific slots reverting to regular
---             engaged values instead of the weaponskill's own set. Rather than chase the exact
---             call-order interaction through a core file with no visibility into it, added a
---             final, unconditional re-equip of the correct WS gear at the start of
---             job_post_precast's WeaponSkill branch (before the existing Moonshade/MaxTP
---             override, so that override still layers on top correctly). WS gear now always
---             wins over whatever ran earlier in the same pass.
+-- 2026-08-13: [FIX] handle_elemental's 'weather' command (gs c elemental weather) was casting
+--             Phalanx instead of the actual storm spell for any subjob other than SCH -- an
+--             apparent leftover from before Phalanx was split into its own handle_phalanx()
+--             command on 2026-08-09, never updated to match. Non-SCH now correctly casts
+--             data.elements.storm_of[ElementalMode] (matching the SCH branch, minus the
+--             Klimaform swap which only applies with SCH sub). This is what looked like
+--             "weather and phalanx casting on the same keybind" -- there was only ever one
+--             command involved; it was just casting the wrong spell.
 -- =============================================================================
 
 -- Initialization function for this job file.
 function get_sets()
     -- Load and initialize the include file.
     include('Sel-Include.lua')
-    -- [ADDED 2026-08-30] Was never included at all for RDM -- get_sets() only had
-    -- Sel-Include.lua and Ullona-shortcuts.lua. Every other job that subs SCH (WHM/BLM/GEO/
-    -- SCH itself) already includes this. Enables smart_caster_precast()/try_sublimation()/
-    -- smart_caster_buff_change(), now wired into job_precast/job_aftercast/job_buff_change
-    -- above.
     include('Smart-Caster.lua')
 include('Ullona-shortcuts.lua')
 end
@@ -38,25 +30,12 @@ function job_setup()
     LowTierNukes = S{'Stone', 'Water', 'Aero', 'Fire', 'Blizzard', 'Thunder',
         'Stone II', 'Water II', 'Aero II', 'Fire II', 'Blizzard II', 'Thunder II',
         'Stonega', 'Waterga', 'Aeroga', 'Firaga', 'Blizzaga', 'Thundaga'}
-
-    -- [ADDED 2026-08-14] Hard cap on nuke tier this job can actually cast, used by
-    -- handle_elemental's explicit 'tierN' command (gs c elemental tier6, etc.) to refuse
-    -- anything above what the job has access to instead of firing a nonexistent spell at
-    -- the server. RDM tops out at Tier V. BLM.lua should set MaxNukeTier = 6; SCH.lua and
-    -- GEO.lua should each set MaxNukeTier = 5, the same way, in their own job_setup().
     MaxNukeTier = 5
-	
-	-- [FIX 2026-08-30] state.RecoverMode retired -- MP recovery is now handled globally via
-	-- try_recover_mp() (Ullona-Globals.lua), fixed at 75% MP with no modal to cycle. Matches
-	-- the same migration BLM.lua (2026-07-25) and GEO.lua (2026-08-30) already went through --
-	-- RDM was the last mage job still carrying the old local modal.
 	
 	autows = "Savage Blade"
 	autofood = 'Pear Crepe'
 	enspell = ''
 	low_mp_reminded_at = 0
-	-- [ADDED 2026-08-09] Tracks the original target of a Phalanx/Phalanx II cast so
-	-- job_aftercast can escalate to Phalanx II if the tier 1 attempt fails to land.
 	phalanx_fallback_target = nil
 	
 	update_melee_groups()
@@ -66,8 +45,6 @@ end
 -------------------------------------------------------------------------------------------------------------------
 -- Job-specific hooks for standard casting events.
 -------------------------------------------------------------------------------------------------------------------
--- Set eventArgs.handled to true if we don't want any automatic gear equipping to be done.
--- Set eventArgs.useMidcastGear to true if we want midcast gear equipped on precast.
 
 function job_filtered_action(spell, eventArgs)
 
@@ -78,31 +55,12 @@ function job_pretarget(spell, spellMap, eventArgs)
 end
 
 function job_precast(spell, spellMap, eventArgs)
-	-- [ADDED 2026-08-09] Amnesia -> Ecphoria Ring: swaps ring2 to Ecphoria Ring the moment
-	-- a job ability is attempted while Amnesia is up (see check_ecphoria_for_ja() in
-	-- Ullona-Globals.lua for the actual logic -- this is just the required per-job wiring).
-	-- Placed OUTSIDE the action_type=='Magic' block below since job abilities aren't Magic.
 	check_ecphoria_for_ja(spell)
 
 	if spell.action_type == 'Magic' then
 		if state.Buff.Chainspell then
 			eventArgs.handled = true
 		end
-
-		-- [NEW] Composure-first for self-target Enhancing Magic. If Composure isn't up
-		-- when casting ANY Enhancing spell on yourself, pop Composure first so the buff
-		-- that follows gets Composure's extended-duration bonus. Runs before the Phalanx/
-		-- Phalanx II redirect below — on the rescheduled retry (once Composure is up)
-		-- that logic still applies normally, since buffactive.Composure will be true by
-		-- then. Skipped during Chainspell so it doesn't interrupt the burst-cast sequence.
-		-- Recast ID 50 = Composure (confirmed via Windower/Resources job_abilities.lua) —
-		-- checked here so this doesn't cancel your buff and fire a dead ability if
-		-- Composure happens to be on cooldown; falls through to a normal cast instead.
-		-- [FIX 2026-08-09] Excludes Phalanx/Phalanx II -- this block was catching the
-		-- self-target Phalanx II->Phalanx downgrade below and detouring it through a
-		-- Composure cast first (technically still landed as Phalanx on the delayed retry,
-		-- but not the instant downgrade it used to be). Per direct instruction, restored to
-		-- go straight to the downgrade logic below, no Composure detour, for these two.
 		if spell.skill == 'Enhancing Magic' and spell.target.type == 'SELF'
 			and not buffactive.Composure and not state.Buff.Chainspell
 			and spell.english ~= 'Phalanx' and spell.english ~= 'Phalanx II' then
@@ -115,15 +73,6 @@ function job_precast(spell, spellMap, eventArgs)
 				return
 			end
 		end
-
-		-- [NEW 2026-08-09] Accession-Enspell downgrade. Confirmed against the wiki: Accession
-		-- explicitly does NOT work with Enstone II/Enaero II/Enwater II/Enblizzard II/
-		-- Enthunder II/Enfire II -- same exclusion list Phalanx II is on, which is why that
-		-- redirect already exists below. Casting tier II while Accession is up just spends
-		-- the extra MP for nothing, so this redirects to tier I instead. Has to live here as
-		-- its own check rather than folded into the Cure/Elemental/Phalanx elseif chain below,
-		-- since Enspells are Elemental Magic skill and would already be claimed by that
-		-- chain's Elemental Magic branch before ever reaching a later elseif for this.
 		if buffactive.Accession and spell.english:endswith(' II') and data.spells.enspells:contains(spell.english) then
 			local tier1_name = spell.english:gsub(' II$', '')
 			eventArgs.cancel = true
@@ -131,29 +80,10 @@ function job_precast(spell, spellMap, eventArgs)
 			windower.chat.input('/ma "'..tier1_name..'" '..spell.target.raw)
 			return
 		end
-
-		-- [FIX] Used to cancel a Cure/Cure II cast, fire Aurorastorm, then reschedule the real
-		-- heal ~4 seconds later -- fragile, since any interruption along that chain meant the
-		-- actual heal never landed. Per direct instruction: a party member's health always
-		-- comes before weather, full stop. This is now reminder-only -- the Cure/Cure II cast
-		-- is NEVER cancelled or delayed for Aurorastorm, no matter what.
 		if (spell.english == 'Cure' or spell.english == 'Cure II')
 			and player.sub_job == 'SCH' and not buffactive['Aurorastorm'] then
 			add_to_chat(167, 'Aurorastorm is down')
 		end
-
-		-- [NEW] Sub-SCH weather-before-nuke. If Magic Burst Mode is OFF and the nuke's
-		-- element doesn't already match current weather, cast weather first (Klimaform if
-		-- the storm's already up but Klimaform isn't, otherwise the storm spell itself),
-		-- then reschedule the original nuke. SKIPPED ENTIRELY once Magic Burst Mode is on
-		-- — no time to weather, burst only. Recast ID 287 = Klimaform (already used by
-		-- the 'weather' command in handle_elemental below — reused here for consistency).
-		-- [FIX 2026-08-09] Excludes Enspells -- this block had no exclusion for them, and
-		-- Enspells are Elemental Magic skill same as real nukes, so casting Enfire/Enfire II
-		-- etc. was getting cancelled and detoured through a weather cast first whenever the
-		-- weather didn't match, delaying a simple self-buff by 2-5 seconds for no reason.
-		-- Enspells are self-buffs, not burst nukes -- they were never meant to go through
-		-- this detour at all.
 		if spell.skill == 'Elemental Magic' and default_spell_map ~= 'ElementalEnfeeble'
 			and spell.english ~= 'Impact' and player.sub_job == 'SCH'
 			and not is_magic_bursting()
@@ -190,27 +120,10 @@ function job_precast(spell, spellMap, eventArgs)
 				gear.default.obi_back = gear.obi_high_nuke_back
 				gear.default.obi_waist = gear.obi_high_nuke_waist
 			end
-		end
-		-- [REMOVED 2026-08-09] Automatic Phalanx/Phalanx II precast interception is gone --
-		-- both spell.target.type and the identity-based spell.target.id follow-up kept
-		-- failing to actually change behavior in practice (macro targeting apparently isn't
-		-- reading the way GearSwap expects here). Replaced entirely by an explicit command,
-		-- gs c phalanx [target] -- see handle_phalanx() near job_self_command below. Casting
-		-- Phalanx/Phalanx II directly from a macro now just goes out as typed, no redirect.
-		
+		end	
         if state.CastingMode.value == 'Proc' then
             classes.CustomClass = 'Proc'
         end
-
-		-- [ADDED 2026-08-30] Smart-Caster.lua wasn't wired in at all for RDM -- get_sets()
-		-- didn't even include the file. Given RDM commonly subs SCH (Dark Arts/Light Arts/
-		-- Addendum/Manifestation binds already exist in the gear file), this matters: Arts-
-		-- aware precast handling and Sublimation auto-reactivation should apply here the
-		-- same way they already do for WHM/BLM/GEO/SCH. Placed last, after RDM's own
-		-- extensive tailored precast logic above (Composure-first, Accession-Enspell
-		-- downgrade, Aurorastorm reminder, weather-before-nuke, Phalanx handling), so
-		-- anything RDM already handles explicitly keeps priority -- this only runs if none
-		-- of that already cancelled+returned. No-ops harmlessly when not subbing SCH.
 		smart_caster_precast(spell, spellMap, eventArgs)
     end
 
@@ -220,18 +133,6 @@ function job_post_precast(spell, spellMap, eventArgs)
 	if spell.type == 'WeaponSkill' then
 		local WSset = standardize_set(get_precast_set(spell, spellMap))
 		local wsacc = check_ws_acc()
-
-		-- [FIX] Final, unconditional re-equip of the correct WS gear, done FIRST in this
-		-- function (before the Moonshade/MaxTP override below, so that override can still
-		-- correctly layer on top of it rather than getting undone by it). This exists because
-		-- job_customize_melee_set's Hachirin-no-Obi swap (fires when an active enspell's
-		-- element matches current weather at intensity 2 -- e.g. Enfire II during a Firestorm)
-		-- was clobbering WS gear entirely: waist stuck on Hachirin-no-Obi and other WS-specific
-		-- slots reverting to regular engaged values instead of the weaponskill's own set. Same
-		-- fix pattern as the earlier ammo/range leak -- rather than chase the exact call-order
-		-- interaction through a core file we don't have visibility into, just force-reassert
-		-- the correct WS gear before anything else in this function runs. WS gear now always
-		-- wins over whatever ran earlier in the same pass.
 		equip(WSset)
 
 		if (WSset.ear1 == "Moonshade Earring" or WSset.ear2 == "Moonshade Earring") then
@@ -247,32 +148,15 @@ function job_post_precast(spell, spellMap, eventArgs)
 		end
 	end
 end
-
--- Run after the default midcast() is done.
--- eventArgs is the same one used in job_midcast, in case information needs to be persisted.
 function job_post_midcast(spell, spellMap, eventArgs)
 
 	if spell.skill == 'Elemental Magic' and default_spell_map ~= 'ElementalEnfeeble' and spell.english ~= 'Impact' then
 		try_magic_burst()
-
-		-- [RESTORED 2026-09-03] try_zodiac_ring() now actually exists (Ullona-Globals.lua) --
-		-- it was being called before but was never defined, throwing a nil-global error on
-		-- every matching Elemental Magic cast. The ring's bonus is day-element only, so the
-		-- function itself checks spell.element against world.day_element internally; no
-		-- weather check needed here anymore.
 		try_zodiac_ring(spell)
 
 		if spell.element and sets.element[spell.element] then
 			equip(sets.element[spell.element])
 		end
-		
-		-- [FIX 2026-08-30] Was a local state.RecoverMode modal ('35%'/'60%'/'Always'/'Never')
-		-- that had to be manually cycled. Now calls the shared global try_recover_mp()
-		-- (Ullona-Globals.lua) -- fixed 75% MP threshold, same RecoverBurst/
-		-- ResistantRecoverBurst selection logic preserved exactly, no modal to forget to set.
-		-- Matches the same migration BLM.lua and GEO.lua already went through -- RDM was the
-		-- last mage job still carrying the old local modal, which is why it kept showing up
-		-- on your display when the others didn't.
 		try_recover_mp()
 		
     elseif spell.skill == 'Enfeebling Magic' then
@@ -309,13 +193,6 @@ function job_post_midcast(spell, spellMap, eventArgs)
 			equip(sets.midcast[spellMap])
 		end
     end
-	
-	-- [FIX] Kaja Bow retired -- Regal Gem now covers Magic Accuracy in every weapon mode, so
-	-- this swap no longer excludes DualWeapons/EnspellMelee. (As written before, this block
-	-- was actually dead code: state.Weapons only ever has three values -- None, DualWeapons,
-	-- EnspellMelee -- and all three were excluded, so it could never fire.) The old
-	-- unconditional Kaja Bow relock that used to run after this is gone too, since it was
-	-- what re-equipped the bow after every precast regardless of what a midcast set wanted.
 	if spell.skill == 'Enfeebling Magic' or spell.skill == 'Dark Magic' or default_spell_map == 'ElementalEnfeeble' or spell.english == 'Impact' then
 		if item_available('Regal Gem') then
 			equip({range=empty,ammo="Regal Gem"})
@@ -324,17 +201,7 @@ function job_post_midcast(spell, spellMap, eventArgs)
 end
 
 function job_aftercast(spell, spellMap, eventArgs)
-    -- [ADDED 2026-08-30] Auto-reactivates Sublimation whenever it drops, if subbing SCH.
-    -- No-ops harmlessly on any other subjob. Pairs with the smart_caster_precast() wiring
-    -- added to job_precast above -- Smart-Caster.lua wasn't included in this job at all
-    -- before now.
     try_sublimation()
-
-    -- [ADDED 2026-08-09] Phalanx fallback escalation. Pairs with the always-try-tier-1-first
-    -- redirect in job_precast above. If the tier 1 Phalanx cast we fired actually failed to
-    -- land (spell.interrupted), escalate to Phalanx II on the same original target instead.
-    -- If it landed fine, just clear the tracker -- no escalation needed. Checked first,
-    -- before the not-interrupted block below, since this needs to run on BOTH outcomes.
     if spell.english == 'Phalanx' and phalanx_fallback_target then
         if spell.interrupted then
             windower.chat.input('/ma "Phalanx II" '..phalanx_fallback_target)
@@ -347,9 +214,6 @@ function job_aftercast(spell, spellMap, eventArgs)
             send_command('@timers c "'..spell.english..' ['..spell.target.name..']" 60 down spells/00220.png')
         elseif state.UseCustomTimers.value and spell.english == 'Sleep II' then
             send_command('@timers c "'..spell.english..' ['..spell.target.name..']" 90 down spells/00220.png')
-		-- [FIX 2026-08-30] Removed the "reset MagicBurstMode after one Elemental Magic cast in
-		-- Single mode" branch here -- MagicBurstMode is retired, folded into CastingMode.
-		-- MB is now a PERSISTENT toggle per direct instruction; nothing auto-reverts it.
 		elseif data.spells.enspells:contains(spell.english) then
 			enspell = spell.english
 			update_melee_groups()
@@ -358,19 +222,6 @@ function job_aftercast(spell, spellMap, eventArgs)
 end
 
 function job_buff_change(buff, gain)
-	-- [REVERTED 2026-08-24] Removed the user_buff_change(buff, gain) call added here on the
-	-- theory that this job-level job_buff_change was clobbering Sel-Include.lua's dispatch to
-	-- user_buff_change. Having now actually seen Sel-Include.lua's buff_change() (line 2217),
-	-- that theory was wrong: it calls user_buff_change unconditionally, completely independent
-	-- of whether job_buff_change is defined -- there was never any clobbering. The added call
-	-- was making Soul Devour/haste-tier/Amnesia-revert fire TWICE per buff event. Reverted.
-	--
-	-- [ADDED 2026-08-30] smart_caster_buff_change(buff, gain) is a DIFFERENT function from
-	-- user_buff_change above -- Ullona-Globals.lua's own user_buff_change never calls it, so
-	-- there's no double-fire risk here the way there was with the reverted call. It just
-	-- re-triggers try_sublimation() the instant Sublimation's buff state changes, for
-	-- slightly more immediate reactivity than waiting on job_aftercast's own try_sublimation()
-	-- call to catch it on the next cast. Matches the same wiring GEO.lua already has.
 	smart_caster_buff_change(buff, gain)
 
 	if buff == enspell and not gain then
@@ -447,8 +298,7 @@ function job_customize_idle_set(idleSet)
 end
 
 function job_customize_melee_set(meleeSet)
-    -- [FIX] Kaja Bow retired -- same reasoning as job_customize_idle_set above.
-    if state.Weapons.value ~= 'None' and state.Weapons.value ~= 'DualWeapons' and enspell ~= '' then
+    if state.Weapons.value ~= 'None' and enspell ~= '' then
 		local enspell_element = data.elements.enspells_lookup[enspell]
 		if sets.element.enspell and sets.element.enspell[enspell_element] then
 			meleeSet = set_combine(meleeSet, sets.element.enspell[enspell_element])
@@ -466,8 +316,6 @@ function job_customize_melee_set(meleeSet)
 
     return meleeSet
 end
-
--- Set eventArgs.handled to true if we don't want the automatic display to be run.
 function display_current_job_state(eventArgs)
     display_current_caster_state()
     eventArgs.handled = true
@@ -482,7 +330,6 @@ function job_get_spell_map(spell, default_spell_map)
                 return 'LightDayCure'
         end
 	end	
-	
 	if spell.skill == 'Enfeebling Magic' then
 		if spell.english:startswith('Dia') then
 			return "Dia"
@@ -491,8 +338,7 @@ function job_get_spell_map(spell, default_spell_map)
         else
             return 'IntEnfeebles'
         end
-    end
-	
+    end	
 	if spell.skill == 'Elemental Magic' and default_spell_map ~= 'ElementalEnfeeble'
 		and not data.spells.enspells:contains(spell.english) then
         if LowTierNukes:contains(spell.english) then
@@ -505,32 +351,20 @@ function job_get_spell_map(spell, default_spell_map)
 end
 
 -- Handling Elemental spells within Gearswap.
--- Format: gs c elemental <nuke, helix, skillchain1, skillchain2, weather>
--- Quick enspell shortcut hooked to the elemental wheel: gs c enspell
--- Casts tier II of whatever element ElementalMode is currently set to (Fire/Ice/Wind/etc,
--- same Ctrl+` wheel used everywhere else). Falls back to tier I if II isn't learned yet
--- OR is on cooldown — same silent_can_use + spell_recasts pairing used for the Cure IV
--- checks in WHM/BLM's smartcure functions.
 function handle_enspell_shortcut(cmdParams)
 	local element = data.elements.enspell_of[state.ElementalMode.value]
-	-- Real spell names only capitalize the leading "E" (Enfire, Enblizzard, Enstone...) --
-	-- element comes back capitalized (e.g. "Fire", "Blizzard"), so it must be lowercased here
-	-- or the concatenated name (e.g. "EnFire II") won't match anything in the spell resources
-	-- and get_spell_table_by_name returns false instead of a table, crashing the .id lookup below.
 	local element_lower = element:lower()
 	local tier2_name = 'En'..element_lower..' II'
 	local tier1_name = 'En'..element_lower
 	local spell_recasts = windower.ffxi.get_spell_recasts()
 	local tier2_spell = get_spell_table_by_name(tier2_name)
 	local tier1_spell = get_spell_table_by_name(tier1_name)
-
 	-- Safety net: if either name still doesn't resolve (e.g. an element with no matching
 	-- spell), bail cleanly instead of indexing .id on a false and crashing self_command again.
 	if not tier1_spell then
 		add_to_chat(123,'Abort: Could not find a spell named "'..tier1_name..'".')
 		return
 	end
-
 	local tier2_id = tier2_spell and tier2_spell.id
 	local tier1_id = tier1_spell.id
 
@@ -542,11 +376,6 @@ function handle_enspell_shortcut(cmdParams)
 		add_to_chat(123,'Abort: Enspell tiers on cooldown.')
 	end
 end
-
--- [ADDED 2026-08-09] gs c phalanx [target] -- explicit command replacing the old precast-
--- interception approach (see job_precast changelog above for why that got abandoned).
--- No target given -> <me>. Always attempts Phalanx (tier 1) first; job_aftercast escalates
--- to Phalanx II on the same target if that tier 1 cast comes back spell.interrupted.
 function handle_phalanx(cmdParams)
 	local target = cmdParams[2] and table.concat(cmdParams, ' ', 2) or '<me>'
 	phalanx_fallback_target = target
@@ -554,9 +383,6 @@ function handle_phalanx(cmdParams)
 end
 
 function handle_elemental(cmdParams)
-    -- cmdParams[1] == 'elemental'
-    -- cmdParams[2] == ability to use
-
     if not cmdParams[2] then
         add_to_chat(123,'Error: No elemental command given.')
         return
@@ -574,12 +400,6 @@ function handle_elemental(cmdParams)
 		end
 		return
 	elseif command == 'weather' then
-		-- [FIX 2026-08-13] This branch was casting Phalanx instead of the actual weather/storm
-		-- spell -- looks like a leftover from before Phalanx got split into its own
-		-- handle_phalanx() command on 2026-08-09; this branch never got updated to match and
-		-- was still firing the old Phalanx cast. Now casts the storm spell for the current
-		-- ElementalMode element, same as the SCH branch below (minus the Klimaform swap, which
-		-- only applies with SCH sub).
 		if player.sub_job ~= 'SCH' then
 			windower.chat.input('/ma "'..data.elements.storm_of[state.ElementalMode.value]..'"')
 		else
@@ -656,11 +476,6 @@ function handle_elemental(cmdParams)
 		local spell_recasts = windower.ffxi.get_spell_recasts()
 		local tierlist = {['tier1']='',['tier2']=' II',['tier3']=' III',['tier4']=' IV',['tier5']=' V',['tier6']=' VI'}
 		local tiernum  = {['tier1']=1,['tier2']=2,['tier3']=3,['tier4']=4,['tier5']=5,['tier6']=6}
-
-		-- [ADDED 2026-08-14] Job-tier-cap guard. Previously this branch blindly sent whatever
-		-- tier was typed straight out via /ma -- 'gs c elemental tier6' on RDM (max Tier V)
-		-- fired a cast attempt at a spell RDM doesn't have. Capping here means an over-tier
-		-- request just aborts with a chat message instead of ever reaching windower.chat.input.
 		local requested = tiernum[command]
 		if not requested then
 			add_to_chat(123,'Abort: Unrecognized tier command "'..command..'".')
@@ -684,7 +499,6 @@ function handle_elemental(cmdParams)
 		else
 			windower.chat.input('/ma "'..data.elements.nukega_of[state.ElementalMode.value]..'ga" '..target..'')
 		end
-		
 	elseif command == 'helix' then
 		windower.chat.input('/ma "'..data.elements.helix_of[state.ElementalMode.value]..'helix" '..target..'')
 		
@@ -705,19 +519,7 @@ function job_tick()
 	if check_buffup() then return true end
 	return false
 end
-
--- =============================================================================
 -- CONVERT + CURE IV CHAIN
--- Shared core used by BOTH the automatic low-MP tick check (check_low_mp, below)
--- and the manual "gs c convert" command -- one source of truth for the HP-safety
--- and cooldown logic instead of two copies that could drift out of sync.
---
--- Convert trades HP for MP roughly 1:1 -- it's a swap, not a refill of either
--- stat. Below 75% HP this refuses to fire at all and echoes a warning instead, so
--- you can top yourself off (Waltz, a cure, whatever) and try again once it's
--- actually safe. At 75%+ HP, fires Convert immediately, then a Cure IV two
--- seconds later once the MP has landed.
--- =============================================================================
 function handle_convert(cmdParams)
 	if player.hpp < 75 then
 		windower.chat.input('/echo HP too low to safely convert')
@@ -736,13 +538,7 @@ function handle_convert(cmdParams)
 		return false
 	end
 end
-
--- =============================================================================
--- LOW MP AUTO-CONVERT: hooked into job_tick(). If MP drops under 200, calls the
--- shared handle_convert() above. Rate-limited to one attempt every 30 seconds --
--- covers the HP-too-low warning, the on-cooldown abort, AND a successful Convert
--- alike, so a long fight sitting under 200 MP doesn't spam any of them every tick.
--- =============================================================================
+-- LOW MP AUTO-CONVERT:
 function check_low_mp()
 	if player.mp >= 200 then return false end
 	if os.clock() <= low_mp_reminded_at then return false end
@@ -756,7 +552,6 @@ function check_low_mp()
 
 	return false
 end
-
 function check_arts()	
 	if buffup ~= '' or (not data.areas.cities:contains(world.area) and ((state.AutoArts.value and player.in_combat) or state.AutoBuffMode.value ~= 'Off')) then
 
@@ -829,10 +624,7 @@ function check_buffup()
 	end
 end
 
--- [FIX 2]: Tiers capped at Cure IV throughout — Red Mage cannot cast Cure V or VI,
---          so those branches (copy-pasted from WHM/BLM originally) would have silently
---          done nothing when reached. Thresholds re-tuned to fall back sensibly within
---          the tiers RDM actually has access to.
+
 function handle_smartcure(cmdParams)
 		if cmdParams[2] then
 			if tonumber(cmdParams[2]) then
@@ -856,14 +648,6 @@ function handle_smartcure(cmdParams)
 		
 		local missingHP
 		local spell_recasts = windower.ffxi.get_spell_recasts()
-
-		-- [FIX] Monster targets no longer cure-nuke at all. Cancels out and casts whatever
-		-- nuke the ElementalMode wheel is currently set to instead, reusing handle_elemental's
-		-- existing 'nuke' logic (tier fallback, MP check, all of it) rather than duplicating it.
-		-- Also fixes a real crash that existed here before: this branch cast its spell but never
-		-- returned, so execution fell through to `missingHP < 250` below with missingHP still
-		-- nil (never assigned for monster targets), throwing "attempt to compare nil with
-		-- number" every time smartcure was used on a monster.
 		if cureTarget.type == 'MONSTER' then
 			handle_elemental({'elemental', 'nuke', tostring(cureTarget.id)})
 			return
@@ -905,8 +689,6 @@ function handle_smartcure(cmdParams)
 				add_to_chat(123,'Abort: Appropriate cures are on cooldown.')
 			end
 		else
-			-- [FIX 2 cont.]: This branch previously reached for Cure V/VI first, which
-			--          RDM can't cast. Now caps out at Cure IV, RDM's actual ceiling.
 			if spell_recasts[4] < spell_latency then
 				windower.chat.input('/ma "Cure IV" '..cureTarget.id..'')
 			elseif spell_recasts[3] < spell_latency then

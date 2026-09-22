@@ -25,7 +25,7 @@ function user_job_setup()
     state.PhysicalDefenseMode:options('PDT','NukeLock')
     state.MagicalDefenseMode:options('MDT')
     state.ResistDefenseMode:options('MEVA')
-    state.Weapons:options('None','Sword','Dagger','Club','DualWeapons')
+    state.Weapons:options('None','Sword','Dagger','Club','DualWeaponsEnspell','DualWeaponsTP')
 
     -- =========================================================================
     -- Macro Book
@@ -59,8 +59,9 @@ function init_gear_sets()
 	-- Start defining the sets
 	--------------------------------------
 	-- Weapons sets
-	sets.weapons.DualWeapons = {main="Naegling", sub="Demersal Degen +1", range=empty, ammo="Crepuscular Pebble"} -- Ctrl+W cycle target for NIN-sub dual wield; ammo/range locked via RDM.lua's job_customize_idle_set/melee_set
-	sets.weapons.Sword = {main="Naegling", sub="Culminus", range=empty, ammo="Crepuscular Pebble"}
+	sets.weapons.DualWeaponsEnspell = {main="Naegling", sub="Demersal Degen +1", range=empty, ammo="Crepuscular Pebble"} -- Ctrl+W cycle target for NIN-sub dual wield; ammo/range locked via RDM.lua's job_customize_idle_set/melee_set
+	sets.weapons.DualWeaponsTP = {main="Naegling", sub="Machaera", range=empty, ammo="Crepuscular Pebble"} -- Ctrl+W cycle target for NIN-sub dual wield; ammo/range locked via RDM.lua's job_customize_idle_set/melee_set
+    sets.weapons.Sword = {main="Naegling", sub="Culminus", range=empty, ammo="Crepuscular Pebble"}
 	sets.weapons.Dagger = {main="Tauret", sub="Culminus", range=empty, ammo="Crepuscular Pebble"}
 	sets.weapons.Club = {main="Kaja Rod", sub="Culminus", range=empty, ammo="Crepuscular Pebble"}
 
@@ -461,7 +462,7 @@ sets.engaged = {
         ear2  ="Cessance Earring",
         body  ="Malignance Tabard",
         hands ="Malignance Gloves",
-        ring1 ="Mars's Ring",
+        ring1 ="Petrov Ring",
         ring2 ="Rajas Ring",
         back="Sucellos's Cape",
         waist ="Sailfi Belt +1",
@@ -475,7 +476,7 @@ sets.engaged.Sword = sets.engaged
 sets.engaged.Dagger = sets.engaged
 sets.engaged.Club = sets.engaged
 
-sets.engaged.Acc = set_combine(sets.engaged, {ammo="Ginsen", waist="Null Loop"})
+sets.engaged.Acc = set_combine(sets.engaged, {ammo="Ginsen", waist="Null Loop", ring1="Mars's Ring"})
 sets.engaged.FullAcc = set_combine(sets.engaged.Acc, {back="Null Shawl", neck="Null Loop",})
 sets.engaged.DT = set_combine(sets.engaged, {})
 sets.engaged.Acc.DT = set_combine(sets.engaged.Acc, {})
@@ -486,4 +487,18 @@ sets.engaged.DW.FullAcc = set_combine(sets.engaged.FullAcc, {})
 sets.engaged.DW.DT = set_combine(sets.engaged, {})
 sets.engaged.DW.Acc.DT = set_combine(sets.engaged.Acc, {})
 sets.engaged.DW.FullAcc.DT = set_combine(sets.engaged.FullAcc, {})
+
+sets.engaged.DualWeaponsEnspell = sets.engaged.DW
+sets.engaged.DualWeaponsEnspell.Acc = sets.engaged.DW.Acc
+sets.engaged.DualWeaponsEnspell.FullAcc = sets.engaged.DW.FullAcc
+sets.engaged.DualWeaponsEnspell.DT = sets.engaged.DW.DT
+sets.engaged.DualWeaponsEnspell.Acc.DT = sets.engaged.DW.Acc.DT
+sets.engaged.DualWeaponsEnspell.FullAcc.DT = sets.engaged.DW.FullAcc.DT
+
+sets.engaged.DualWeaponsTP = sets.engaged.DW
+sets.engaged.DualWeaponsTP.Acc = sets.engaged.DW.Acc
+sets.engaged.DualWeaponsTP.FullAcc = sets.engaged.DW.FullAcc
+sets.engaged.DualWeaponsTP.DT = sets.engaged.DW.DT
+sets.engaged.DualWeaponsTP.Acc.DT = sets.engaged.DW.Acc.DT
+sets.engaged.DualWeaponsTP.FullAcc.DT = sets.engaged.DW.FullAcc.DT
 end
