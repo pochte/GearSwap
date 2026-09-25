@@ -460,38 +460,38 @@ state.SkipProcWeapons = M(true, 'Skip Proc Weapons')
 state.NotifyBuffs = M(false, 'Notify Buffs')
 
 -- Keyboard bindings.
-send_command('bind ^` gs c cycle ElementalMode')
-send_command('bind ~^` gs c cycleback ElementalMode')
-send_command('bind !@^f7 gs c toggle AutoWSMode')
-send_command('bind !^f7 gs c toggle AutoFoodMode')
-send_command('bind ^f7 gs c cycle Weapons')
-send_command('bind !f7 gs c cycle OffWeapon')
-send_command('bind @f8 gs c toggle AutoNukeMode')
-send_command('bind ^f8 gs c toggle AutoStunMode')
-send_command('bind !f8 gs c toggle AutoDefenseMode')
-send_command('bind ^@!f8 gs c toggle AutoTrustMode')
-send_command('bind @pause gs c cycle AutoBuffMode')
-send_command('bind @scrolllock gs c cycle Passive')
-send_command('bind ^!f9 gs c cycle OffenseMode')
-send_command('bind ^f9 gs c cycle HybridMode')
-send_command('bind @f9 gs c cycle RangedMode')
-send_command('bind !f9 gs c cycle WeaponskillMode')
-send_command('bind ^!f10 gs c cycle DefenseMode')
-send_command('bind ^f10 gs c cycledefensesub')
-send_command('bind !f10 gs c toggle Kiting')
-send_command('bind !` gs c cycle CastingMode')
-send_command('bind !f11 gs c cycle ExtraMeleeMode')
-send_command('bind @f12 gs c cycle IdleMode')
-send_command('bind ^@!f12 gs reload')
-send_command('bind pause gs c update user')
-send_command('bind ^@!pause gs org')
-send_command('bind ^@!backspace gs c buffup')
-send_command('bind ^r gs c weapons Default')
-send_command('bind ^z gs c toggle Capacity')
-send_command('bind ^y gs c toggle AutoCleanupMode')
-send_command('bind ^t gs c cycle treasuremode')
-send_command('bind !t input /target <bt>')
-send_command('bind ^o fillmode')
+send_command('bind ^` gs c cycle ElementalMode') -- Ctrl+` = cycle Elemental Mode
+send_command('bind ~^` gs c cycleback ElementalMode') -- Ctrl+Shift+` = cycle Elemental Mode backwards
+send_command('bind !@^f7 gs c toggle AutoWSMode') -- Alt+Windows+Ctrl+F7 = toggle Auto WS Mode
+send_command('bind !^f7 gs c toggle AutoFoodMode') -- Alt+Ctrl+F7 = toggle Auto Food Mode
+send_command('bind !f7 gs c cycle MainWeapon') -- Alt+F7 = cycle Main Weapon
+send_command('bind ^f7 gs c cycle OffWeapon') -- Ctrl+F7 = cycle Sub Weapon
+send_command('bind @f8 gs c toggle AutoNukeMode') -- Windows+F8 = toggle Auto Nuke Mode
+send_command('bind ^f8 gs c toggle AutoStunMode') -- Ctrl+F8 = toggle Auto Stun Mode
+send_command('bind !f8 gs c toggle AutoDefenseMode') -- Alt+F8 = toggle Auto Defense Mode
+send_command('bind ^@!f8 gs c toggle AutoTrustMode') -- Ctrl+Windows+Alt+F8 = toggle Auto Trust Mode
+send_command('bind @pause gs c cycle AutoBuffMode') -- Windows+Pause = cycle Auto Buff Mode
+send_command('bind @scrolllock gs c cycle Passive') -- Windows+Scroll Lock = cycle Passive Mode
+send_command('bind ^!f9 gs c cycle OffenseMode') -- Ctrl+Alt+F9 = cycle Offense Mode
+send_command('bind ^f9 gs c cycle HybridMode') -- Ctrl+F9 = cycle Hybrid Mode
+send_command('bind @f9 gs c cycle RangedMode') -- Windows+F9 = cycle Ranged Mode
+send_command('bind !f9 gs c cycle WeaponskillMode') -- Alt+F9 = cycle Weaponskill Mode
+send_command('bind ^!f10 gs c cycle DefenseMode') -- Ctrl+Alt+F10 = cycle Defense Mode
+send_command('bind ^f10 gs c cycledefensesub') -- Ctrl+F10 = cycle Defense Submode
+send_command('bind !f10 gs c toggle Kiting') -- Alt+F10 = toggle Kiting
+send_command('bind !` gs c cycle CastingMode') -- Alt+` = cycle Casting Mode
+send_command('bind !f11 gs c cycle ExtraMeleeMode') -- Alt+F11 = cycle Extra Melee Mode
+send_command('bind @f12 gs c cycle IdleMode') -- Windows+F12 = cycle Idle Mode
+send_command('bind ^@!f12 gs reload') -- Ctrl+Windows+Alt+F12 = reload GearSwap
+send_command('bind pause gs c update user') -- Pause = update GearSwap
+send_command('bind ^@!pause gs org') -- Ctrl+Windows+Alt+Pause = run organizer
+send_command('bind ^@!backspace gs c buffup') -- Ctrl+Windows+Alt+Backspace = buff up
+send_command('bind ^r gs c weapons Default') -- Ctrl+R = reset weapons to Default
+send_command('bind ^z gs c toggle Capacity') -- Ctrl+Z = toggle Capacity Mode
+send_command('bind ^y gs c toggle AutoCleanupMode') -- Ctrl+Y = toggle Auto Cleanup Mode
+send_command('bind ^t gs c cycle treasuremode') -- Ctrl+T = cycle Treasure Mode
+send_command('bind !t input /target <bt>') -- Alt+T = target battle target
+send_command('bind ^o fillmode') -- Ctrl+O = toggle fill mode
 
 NotifyBuffs = S{'doom','petrification'}
 

@@ -1329,15 +1329,28 @@ function handle_equipping_gear(playerStatus, petStatus)
         job_handle_equipping_gear(playerStatus, eventArgs)
     end
 
-	if state.ReEquip.value and state.Weapons.value ~= 'None' and not state.UnlockWeapons.value then
-		if player.equipment.main ~= sets.weapons[state.Weapons.value].main or (sets.weapons[state.Weapons.value].sub and player.equipment.sub ~= sets.weapons[state.Weapons.value].sub) or (sets.weapons[state.Weapons.value].range and player.equipment.range ~= sets.weapons[state.Weapons.value].range) then
+	-- Re-equip the selected weapon set only when the selected set actually exists.
+	-- Some jobs can have a Weapons state value that has no corresponding sets.weapons entry.
+	-- The old code indexed .main/.sub/.range before checking for that entry, which caused a nil error.
+	local selectedWeaponSet = nil
+	if state.ReEquip and state.ReEquip.value and state.Weapons and state.Weapons.value ~= 'None'
+		and state.UnlockWeapons and not state.UnlockWeapons.value and sets and sets.weapons then
+		selectedWeaponSet = sets.weapons[state.Weapons.value]
+	end
+
+	if selectedWeaponSet then
+		if player.equipment.main ~= selectedWeaponSet.main
+			or (selectedWeaponSet.sub and player.equipment.sub ~= selectedWeaponSet.sub)
+			or (selectedWeaponSet.range and player.equipment.range ~= selectedWeaponSet.range) then
 			handle_weapons()
 		end
 	end
 
-	if player.equipment.ammo == 'empty' and sets.weapons[state.Weapons.value] and not state.UnlockWeapons.value and sets.weapons[state.Weapons.value].ammo then
+	-- Restore ammo for the selected weapon set, but only if that set exists.
+	if player.equipment.ammo == 'empty' and selectedWeaponSet
+		and not state.UnlockWeapons.value and selectedWeaponSet.ammo then
 		enable('ammo')
-		equip({ammo=sets.weapons[state.Weapons.value].ammo})
+		equip({ammo=selectedWeaponSet.ammo})
 		disable('ammo')
 	end
 	
