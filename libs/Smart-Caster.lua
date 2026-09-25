@@ -1,83 +1,6 @@
 -- =============================================================================
 -- Smart-Caster.lua — Changelog
--- 2026-08-09: [REVISED -- BUGFIX] Removed the self-shortcut and <t> resolution from SmartNa,
---             both added earlier this session. The self-shortcut's Bar-hint half was a real
---             bug: it checked YOUR OWN Bar-spell hints before ever considering a target, so
---             having e.g. Barblindra up on yourself (a ward, not a real debuff) silently
---             hijacked the cast onto yourself even while trying to cure an ally's ACTUAL
---             Blindness. <t> resolution also proved troublesome enough in practice to drop
---             rather than keep patching. Simplified to: explicit name wins if given,
---             otherwise always <st> -- click who you mean, yourself included.
--- 2026-08-09: [REVISED] SmartNa reworked to mirror handle_smartwaltz's pattern
---             (Ullona-Globals.lua): if you actually have a real debuff/hint yourself, it
---             cures YOU directly now, no targeting at all -- previously it would still try
---             to resolve a target first even when you were the one who needed curing. And
---             when you ARE resolving an ally target, <t> is only trusted if it isn't a
---             monster (same .type=='MONSTER' check smartwaltz uses) -- otherwise falls to
---             <st>. Closes the gap where meleeing with a monster targeted would have tried
---             to cast a curing spell at the monster.
--- 2026-08-09: [REVISED] SmartNa target resolution -- no more silent self-cast default.
---             gs c smartna now targets <t> (whatever's currently selected) if you have one,
---             or prompts <st> if you don't, rather than always assuming yourself. An
---             explicit name (gs c smartna <name>) still overrides both. Since the priority
---             chain was already inference from your own state either way (see [LIMITATION]
---             note below), self and targeted casts are now one unified flow instead of two
---             separate branches -- <t> resolving to yourself behaves exactly like the old
---             self-cast path.
--- 2026-08-09: [FIX] Self-cast SmartNa (gs c smartna, no target) never checked the Bar-spell
---             hint table -- only the targeted branch did. So Barwatera/Barpoisonra being up
---             on you (your own poison-prep signal, per direct instruction) did nothing when
---             you weren't already showing an actual Poison debuff. Mirrored the same hint
---             check into the self-cast branch now.
--- 2026-08-09: SmartNa targeted casts (gs c smartna <name>) upgraded from "always Cursna" to
---             a 3-step priority chain: (1) mirror whatever debuff YOU currently have onto the
---             target, (2) if you're clean, check your own Bar-status buffs as a hint toward
---             the expected threat (includes Barwatera as a deliberate poison-prep heuristic,
---             not the literal Bar-poison spell), (3) Cursna as the final catch-all. Per
---             direct instruction -- this is inference from your own state, not actual
---             detection of the target's specific debuff (still not possible, see
---             [LIMITATION] note in the SmartNa section below).
--- 2026-08-09: Added SmartNa (handle_smart_curena) -- auto-detects which status ailment
---             YOU are currently under and casts the matching -na spell (Poisona, Paralyna,
---             Blindna, Silena, Stona, Viruna), falling back to Cursna for anything without
---             its own dedicated cure (Doom, Curse, Amnesia, Charm, Terror) or if the
---             specific spell is on cooldown/unavailable. Wired up as a self-command
---             ("smartna") dispatched from Ullona-Globals.lua's user_self_command, nil-checked
---             so jobs that don't include this file don't error. [LIMITATION]: party-member
---             detection isn't reliable through Windower/GearSwap -- you can't tell WHICH
---             debuff someone else has, only that they have one -- so targeting anyone but
---             yourself always reaches straight for Cursna as the broadest catch-all rather
---             than pretending to detect something that can't actually be read. Reuses the
---             list from the existing SCH Accession block (already covers all these spell
---             names), so Accession-AoE / Celerity-fastcast apply automatically, no extra
---             wiring required.
--- 2026-08-01: Cure/Cure II Aurorastorm handling downgraded from cancel-and-reschedule to a
---             non-blocking reminder, matching the Curaga treatment below. It used to cancel the
---             cast, fire Aurorastorm, then reschedule the real heal ~1.2s later -- fragile,
---             since any interruption along that chain meant the actual heal never went out at
---             all. Per direct instruction: a party member's health always comes before weather.
---             The Cure/Cure II cast is now NEVER cancelled or delayed for any reason related to
---             Aurorastorm -- worst case you get a chat reminder and the heal still lands
---             immediately. WHM.lua's own duplicate version of this same cancel-and-reschedule
---             block was removed entirely (see its own changelog) since this is now the single
---             non-blocking source of truth for every job subbing SCH, not just WHM.
--- 2026-08-01: Removed the standalone Curaga Aurorastorm reminder added earlier -- it was
---             firing ALONGSIDE check_aurorastorm_for_cure() (Ullona-Globals.lua), which every
---             gs c smartcuraga/smartcura call already runs before the actual cast fires. Since
---             that resulting Curaga cast flows through job_precast -> smart_caster_precast()
---             regardless, both systems fired their own "Aurorastorm is down" message for the
---             exact same event -- visible as two back-to-back chat lines on the same tick.
---             check_aurorastorm_for_cure is the single source of truth for this reminder now;
---             nothing in Smart-Caster.lua echoes about Curaga/Aurorastorm anymore.
--- 2026-08-01: Narrowed the SCH Aurorastorm precast block from "any Healing Magic spell" down
---             to Cure/Cure II only, and added a self-preservation guard: never delay for
---             weather if healing yourself under 75% HP. Previously this fired for ANY Healing
---             Magic cast under Light Arts -- Cure I-VI, Curaga, Cursna, even Raise/Reraise --
---             with zero HP awareness, meaning it would delay an emergency Cure V/VI (or worse,
---             a raise) to go cast weather first. That's the exact conflict reported: Aurorastorm
---             firing before emergency cures. Now matches WHM.lua's own job_precast rule --
---             routine, low-stakes Cure/Cure II casts are worth a GCD delay for weather; nothing
---             else is.
+
 -- =============================================================================
 
 -------------------------------------------------------------------------------------------------------------------
@@ -402,6 +325,7 @@ function smart_caster_precast(spell, spellMap, eventArgs)
         and (is_sch_main or is_sch_sub)
         and player.hpp >= 75
         and not_bursting
+        and player.status ~= 'Engaged'
         and not has_weather(spell.element)
         and not crowd_control_spells[spell.english] then
 

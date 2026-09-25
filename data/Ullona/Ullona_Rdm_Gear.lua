@@ -25,7 +25,10 @@ function user_job_setup()
     state.PhysicalDefenseMode:options('PDT','NukeLock')
     state.MagicalDefenseMode:options('MDT')
     state.ResistDefenseMode:options('MEVA')
-    state.Weapons:options('None','Sword','Dagger','Club','DualWeaponsEnspell','DualWeaponsTP')
+    state.MainWeapon = M{['description']='Main Weapon'}
+    state.OffWeapon = M{['description']='Off Weapon'}
+    state.MainWeapon:options('None','Naegling','KajaRod','Tauret')
+    state.OffWeapon:options('None','DemersalDegen','Machaera','GletisKnife','Daybreak','Culminus','SacroBulwark')
 
     -- =========================================================================
     -- Macro Book
@@ -58,12 +61,18 @@ function init_gear_sets()
 	--------------------------------------
 	-- Start defining the sets
 	--------------------------------------
-	-- Weapons sets
-	sets.weapons.DualWeaponsEnspell = {main="Naegling", sub="Demersal Degen +1", range=empty, ammo="Crepuscular Pebble"} -- Ctrl+W cycle target for NIN-sub dual wield; ammo/range locked via RDM.lua's job_customize_idle_set/melee_set
-	sets.weapons.DualWeaponsTP = {main="Naegling", sub="Machaera", range=empty, ammo="Crepuscular Pebble"} -- Ctrl+W cycle target for NIN-sub dual wield; ammo/range locked via RDM.lua's job_customize_idle_set/melee_set
-    sets.weapons.Sword = {main="Naegling", sub="Culminus", range=empty, ammo="Crepuscular Pebble"}
-	sets.weapons.Dagger = {main="Tauret", sub="Culminus", range=empty, ammo="Crepuscular Pebble"}
-	sets.weapons.Club = {main="Kaja Rod", sub="Culminus", range=empty, ammo="Crepuscular Pebble"}
+	-- Weapons: main/off-hand are locked independently via state.MainWeapon / state.OffWeapon,
+	-- forced every pass in RDM.lua's job_customize_idle_set/melee_set. No sets.weapons.* table
+	-- needed anymore -- that only worked for a fixed, named list of combos; with two
+	-- independent slots (3 mains x 6 offs = 18 combos) direct name-locking is far less to
+	-- maintain. sets.engaged.DW is picked up automatically by the library whenever OffWeapon
+	-- is an actual weapon (dagger/sword) rather than a shield -- no named alias needed for that
+	-- either.
+
+	-- Weapon-mode -> weaponskill command: see handle_autows() in RDM.lua (gs c ws).
+	-- Tauret=Exenterator, Kaja Rod=Black Halo, Naegling=Savage Blade. WS gear overrides
+	-- for Exenterator/Black Halo are set up below (empty for now, combined onto sets.precast.WS).
+
 
 	
 	-- Precast Sets
@@ -128,6 +137,11 @@ function init_gear_sets()
     }
 		
 	sets.precast.WS.Proc = 	sets.precast.WS
+
+	-- Per-weaponskill overrides, empty for now -- fill in slot changes later.
+	sets.precast.WS['Savage Blade'] = set_combine(sets.precast.WS, {})
+	sets.precast.WS['Exenterator']  = set_combine(sets.precast.WS, {})
+	sets.precast.WS['Black Halo']   = set_combine(sets.precast.WS, {})
 
 	-- Midcast Sets
 
@@ -472,10 +486,6 @@ sets.engaged = {
         range=empty} 
         
 
-sets.engaged.Sword = sets.engaged
-sets.engaged.Dagger = sets.engaged
-sets.engaged.Club = sets.engaged
-
 sets.engaged.Acc = set_combine(sets.engaged, {ammo="Ginsen", waist="Null Loop", ring1="Mars's Ring"})
 sets.engaged.FullAcc = set_combine(sets.engaged.Acc, {back="Null Shawl", neck="Null Loop",})
 sets.engaged.DT = set_combine(sets.engaged, {})
@@ -487,18 +497,7 @@ sets.engaged.DW.FullAcc = set_combine(sets.engaged.FullAcc, {})
 sets.engaged.DW.DT = set_combine(sets.engaged, {})
 sets.engaged.DW.Acc.DT = set_combine(sets.engaged.Acc, {})
 sets.engaged.DW.FullAcc.DT = set_combine(sets.engaged.FullAcc, {})
-
-sets.engaged.DualWeaponsEnspell = sets.engaged.DW
-sets.engaged.DualWeaponsEnspell.Acc = sets.engaged.DW.Acc
-sets.engaged.DualWeaponsEnspell.FullAcc = sets.engaged.DW.FullAcc
-sets.engaged.DualWeaponsEnspell.DT = sets.engaged.DW.DT
-sets.engaged.DualWeaponsEnspell.Acc.DT = sets.engaged.DW.Acc.DT
-sets.engaged.DualWeaponsEnspell.FullAcc.DT = sets.engaged.DW.FullAcc.DT
-
-sets.engaged.DualWeaponsTP = sets.engaged.DW
-sets.engaged.DualWeaponsTP.Acc = sets.engaged.DW.Acc
-sets.engaged.DualWeaponsTP.FullAcc = sets.engaged.DW.FullAcc
-sets.engaged.DualWeaponsTP.DT = sets.engaged.DW.DT
-sets.engaged.DualWeaponsTP.Acc.DT = sets.engaged.DW.Acc.DT
-sets.engaged.DualWeaponsTP.FullAcc.DT = sets.engaged.DW.FullAcc.DT
+-- No named per-weapon-mode aliases needed anymore: sets.engaged is used regardless of
+-- MainWeapon/OffWeapon choice, and the library auto-selects sets.engaged.DW whenever
+-- OffWeapon is an actual weapon rather than a shield (see can_dual_wield).
 end

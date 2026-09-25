@@ -105,6 +105,9 @@ function update_job_states()
     -- Define labels for each modal state
     local labels = {
 		Weapons = "Weapons",
+		MainWeapon = "Main Weapon",
+		OffWeapon = "Off Weapon",
+		RangedWeapon = "Ranged Weapon",
         OffenseMode = "Offense",
 		RangedMode = "Ranged",
         DefenseMode = "Defense",

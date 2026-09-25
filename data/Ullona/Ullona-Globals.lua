@@ -61,6 +61,34 @@ function user_self_command(cmdParams, eventArgs)
         return
     end
 
+    -- Weapons/MainWeapon compatibility: jobs migrated to the MainWeapon/OffWeapon split
+    -- (currently RDM, THF) no longer have a state.Weapons at all, so the Ctrl+F7 bind below
+    -- ('gs c cycle Weapons') would silently do nothing on those jobs. Redirect to MainWeapon
+    -- when it exists; unmigrated jobs still cycle the old Weapons state exactly as before.
+    if cmdParams[2] and cmdParams[2]:lower() == 'weapons' and (cmdParams[1]:lower() == 'cycle' or cmdParams[1]:lower() == 'cycleback') then
+        local target = state.MainWeapon or state.Weapons
+        if target then
+            if cmdParams[1]:lower() == 'cycleback' then
+                target:cycleback()
+            else
+                target:cycle()
+            end
+        end
+        eventArgs.handled = true
+        return
+    end
+
+    -- Same compatibility fix for Ctrl+R ('gs c weapons Default') -- only intercepts on
+    -- migrated jobs (state.MainWeapon present); unmigrated jobs fall through untouched to
+    -- the library's own 'weapons <name>' handling, same as always.
+    if cmdParams[1]:lower() == 'weapons' and cmdParams[2] and cmdParams[2]:lower() == 'default' and state.MainWeapon then
+        send_command('gs c set MainWeapon None')
+        if state.OffWeapon then send_command('gs c set OffWeapon None') end
+        if state.RangedWeapon then send_command('gs c set RangedWeapon None') end
+        eventArgs.handled = true
+        return
+    end
+
     -- Cycle defense submode.
     if cmdParams[1]:lower() == 'cycledefensesub' then
         if state.DefenseMode.value == 'None' then
@@ -437,6 +465,7 @@ send_command('bind ~^` gs c cycleback ElementalMode')
 send_command('bind !@^f7 gs c toggle AutoWSMode')
 send_command('bind !^f7 gs c toggle AutoFoodMode')
 send_command('bind ^f7 gs c cycle Weapons')
+send_command('bind !f7 gs c cycle OffWeapon')
 send_command('bind @f8 gs c toggle AutoNukeMode')
 send_command('bind ^f8 gs c toggle AutoStunMode')
 send_command('bind !f8 gs c toggle AutoDefenseMode')

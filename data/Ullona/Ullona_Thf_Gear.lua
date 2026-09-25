@@ -13,10 +13,12 @@ function user_job_setup()
     state.MagicalDefenseMode:options('MDT')
     state.ResistDefenseMode:options('MEVA')
 
-    -- [FUTURE] Uncomment 'Exenterator' and 'AccExenterator' below (and the matching
-    -- sets.weapons entries further down) once you actually have that weapon.
-    -- state.Weapons:options('Exenterator','AccExenterator', ...)
-    state.Weapons:options('Default','Evisceration','Waltz','Savage','AccSavage','Throwing','SwordThrowing','AoE')
+    -- state.MainWeapon / state.OffWeapon / state.RangedWeapon are constructed in THF.lua's
+    -- job_setup() (must exist before init_job_states() runs there) -- just setting their
+    -- option lists here.
+    state.MainWeapon:options('None','Naegling','Tauret')
+    state.OffWeapon:options('None','GletisKnife','Tauret','Sandung')
+    state.RangedWeapon:options('None','Wingcutter')
 
     state.ExtraMeleeMode = M{['description']='Extra Melee Mode','None','Suppa','DWMax','Parry'}
     state.AmbushMode = M(false, 'Ambush Mode')
@@ -34,9 +36,9 @@ function user_job_setup()
     send_command('bind @` gs c cycle SkillchainMode')             -- Win + `          : Cycle SkillchainMode
     send_command('bind @f10 gs c toggle AmbushMode')              -- Win + F10        : Toggle AmbushMode
     send_command('bind ^backspace input /item "Thief\'s Tools" <t>') -- Ctrl + Backspace : Thief's Tools
-    send_command('bind !q gs c weapons SwordThrowing')            -- Alt + Q          : Sword/Throwing weapons
+    send_command('bind !q gs c set MainWeapon Naegling;gs c set OffWeapon GletisKnife;gs c set RangedWeapon Wingcutter') -- Alt + Q : Sword + Throwing
     send_command('bind !backspace input /ja "Hide" <me>')         -- Alt + Backspace  : Hide
-    send_command('bind ^a gs c weapons Default;gs c set WeaponSkillMode match') -- Ctrl + A : Default weapons + Match WS
+    send_command('bind ^a gs c set MainWeapon None;gs c set OffWeapon None;gs c set RangedWeapon None;gs c set WeaponskillMode Match') -- Ctrl + A : Unlock weapons + Match WS
     send_command('bind ^\\\\ input /ja "Despoil" <t>')            -- Ctrl + \         : Despoil
     send_command('bind !\\\\ input /ja "Mug" <t>')                -- Alt + \          : Mug
 end
@@ -69,19 +71,14 @@ function init_gear_sets()
 	sets.Parry = {}
 	sets.Ambush = {}
 	
-	-- Weapons sets
-	sets.weapons.Default = {}
-	sets.weapons.Evisceration = {main="Tauret",sub="Gleti's Knife"}
-	sets.weapons.Waltz = {main="Tauret",sub="Gleti's Knife"}
-	sets.weapons.Savage = {main="Naegling",sub="Gleti's Knife"}
-	sets.weapons.AccSavage = {main="Naegling",sub="Tauret"}
-	sets.weapons.Throwing = {main="Tauret",sub="Gleti's Knife",range="Wingcutter",ammo=empty}
-	sets.weapons.SwordThrowing = {main="Naegling",sub="Gleti's Knife",range="Wingcutter",ammo=empty}
-	-- AoE/farming set -- keeps Sandung on purpose (not swapped to Gleti's Knife like
-	-- the sets above) since Sandung carries Treasure Hunter and this is the loot-farming set.
-	sets.weapons.AoE = {main="Tauret",sub="Sandung"}
-
-	
+	-- Weapons: Main/Off/Ranged are locked independently via state.MainWeapon / state.OffWeapon
+	-- / state.RangedWeapon, forced every pass in THF.lua's job_customize_idle_set/melee_set.
+	-- No sets.weapons.* table needed -- Evisceration/Waltz used to be identical combos under
+	-- two names (Tauret+Gleti's Knife); now that's just MainWeapon=Tauret, OffWeapon=GletisKnife,
+	-- picked once instead of duplicated. RangedWeapon=Wingcutter also clears ammo (was baked
+	-- into the old Throwing/SwordThrowing combos) -- handled in the customize functions.
+	-- OffWeapon=Sandung (the old AoE set) is the TH-farming pick -- Sandung carries Treasure
+	-- Hunter, same reason it was used before.
     -- Actions we want to use to tag TH.
     sets.precast.Step = {
         head="Mummu Bonnet +2",              

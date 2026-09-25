@@ -10,6 +10,12 @@
 --             command involved; it was just casting the wrong spell.
 -- =============================================================================
 
+-- Weapon-mode option values must stay single-word (spaces/apostrophes break the console
+-- status bar display) -- real item names are looked up from the short token instead.
+main_weapon_items = {Naegling="Naegling", KajaRod="Kaja Rod", Tauret="Tauret"}
+off_weapon_items = {DemersalDegen="Demersal Degen +1", Machaera="Machaera",
+    GletisKnife="Gleti's Knife", Daybreak="Daybreak", Culminus="Culminus", SacroBulwark="Sacro Bulwark"}
+
 -- Initialization function for this job file.
 function get_sets()
     -- Load and initialize the include file.
@@ -21,6 +27,14 @@ end
 
 -- Setup vars that are user-independent.  state.Buff vars initialized here will automatically be tracked.
 function job_setup()
+
+    -- Construct our two custom weapon-lock states here, before init_job_states() runs below --
+    -- unlike the library's own built-in states (Weapons, OffenseMode, etc., created even
+    -- earlier by Sel-Include.lua itself), MainWeapon/OffWeapon are new and must exist before
+    -- init_job_states() reads them, which happens in THIS function, before user_job_setup()
+    -- (where their :options() lists get set) ever runs.
+    state.MainWeapon = M{['description']='Main Weapon'}
+    state.OffWeapon = M{['description']='Off Weapon'}
 
     state.Buff.Saboteur = buffactive.Saboteur or false
 	state.Buff.Stymie = buffactive.Stymie or false
@@ -39,7 +53,7 @@ function job_setup()
 	phalanx_fallback_target = nil
 	
 	update_melee_groups()
-	init_job_states({"Capacity","AutoRuneMode","AutoTrustMode","AutoNukeMode","AutoWSMode","AutoShadowMode","AutoFoodMode","AutoStunMode","AutoDefenseMode",},{"AutoBuffMode","AutoSambaMode","Weapons","OffenseMode","WeaponskillMode","IdleMode","Passive","RuneElement","ElementalMode","CastingMode",})
+	init_job_states({"Capacity","AutoRuneMode","AutoTrustMode","AutoNukeMode","AutoWSMode","AutoShadowMode","AutoFoodMode","AutoStunMode","AutoDefenseMode",},{"AutoBuffMode","AutoSambaMode","MainWeapon","OffWeapon","OffenseMode","WeaponskillMode","IdleMode","Passive","RuneElement","ElementalMode","CastingMode",})
 end
 
 -------------------------------------------------------------------------------------------------------------------
@@ -255,6 +269,9 @@ function job_self_command(commandArgs, eventArgs)
 	elseif commandArgs[1]:lower() == 'convert' then
 		handle_convert(commandArgs)
 		eventArgs.handled = true
+	elseif commandArgs[1]:lower() == 'ws' then
+		handle_autows(commandArgs)
+		eventArgs.handled = true
 	end
 end
 
@@ -264,8 +281,15 @@ end
 
 -- Modify the default idle set after it was constructed.
 function job_customize_idle_set(idleSet)
-    -- [FIX] Kaja Bow retired -- range/ammo come from sets.weapons.* (range=empty,
-    -- ammo="Crepuscular Pebble"). Main/sub come from the selected weapon set, no pin here.
+    -- Lock main/off independently to whatever state.MainWeapon/state.OffWeapon are set to.
+    -- 'None' on either leaves that slot alone (whatever the library would otherwise equip).
+    if state.MainWeapon.value ~= 'None' then
+        idleSet = set_combine(idleSet, {main=main_weapon_items[state.MainWeapon.value]})
+    end
+    if state.OffWeapon.value ~= 'None' then
+        idleSet = set_combine(idleSet, {sub=off_weapon_items[state.OffWeapon.value]})
+    end
+
     if buffactive['Sublimation: Activated'] then
         if (state.IdleMode.value == 'Normal' or state.IdleMode.value:contains('Sphere')) and sets.buff.Sublimation then
             idleSet = set_combine(idleSet, sets.buff.Sublimation)
@@ -280,7 +304,7 @@ function job_customize_idle_set(idleSet)
 				idleSet = set_combine(idleSet, sets.latent_refresh)
 			end
 			
-			if (state.Weapons.value == 'None' or state.UnlockWeapons.value) and idleSet.main then
+			if (state.MainWeapon.value == 'None' or state.UnlockWeapons.value) and idleSet.main then
 				local main_table = get_item_table(idleSet.main)
 
 				if  main_table and main_table.skill == 12 and sets.latent_refresh_grip then
@@ -298,7 +322,16 @@ function job_customize_idle_set(idleSet)
 end
 
 function job_customize_melee_set(meleeSet)
-    if state.Weapons.value ~= 'None' and enspell ~= '' then
+    -- Lock main/off independently, same as idle -- must be re-asserted here too since this
+    -- is a separate set built fresh from sets.engaged, not derived from idleSet.
+    if state.MainWeapon.value ~= 'None' then
+        meleeSet = set_combine(meleeSet, {main=main_weapon_items[state.MainWeapon.value]})
+    end
+    if state.OffWeapon.value ~= 'None' then
+        meleeSet = set_combine(meleeSet, {sub=off_weapon_items[state.OffWeapon.value]})
+    end
+
+    if state.MainWeapon.value ~= 'None' and enspell ~= '' then
 		local enspell_element = data.elements.enspells_lookup[enspell]
 		if sets.element.enspell and sets.element.enspell[enspell_element] then
 			meleeSet = set_combine(meleeSet, sets.element.enspell[enspell_element])
@@ -520,6 +553,21 @@ function job_tick()
 	return false
 end
 -- CONVERT + CURE IV CHAIN
+-- WEAPON-MODE WEAPONSKILL: gs c ws -- fires the WS matching state.MainWeapon.
+-- Naegling (sword) -> Savage Blade; Tauret (dagger) -> Exenterator; Kaja Rod (club) -> Black
+-- Halo. Gear for each comes from sets.precast.WS['<name>'] in the gear file.
+function handle_autows(cmdParams)
+	local ws_name
+	if state.MainWeapon.value == 'Tauret' then
+		ws_name = 'Exenterator'
+	elseif state.MainWeapon.value == 'KajaRod' then
+		ws_name = 'Black Halo'
+	else -- Naegling, or 'None'
+		ws_name = 'Savage Blade'
+	end
+	windower.chat.input('/ws "'..ws_name..'" <t>')
+end
+
 function handle_convert(cmdParams)
 	if player.hpp < 75 then
 		windower.chat.input('/echo HP too low to safely convert')

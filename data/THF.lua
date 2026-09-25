@@ -1,41 +1,12 @@
 -- =============================================================================
 -- THF.lua — Changelog
--- 2026-08-19: Added a SATA -> Assassin's Charge chain in job_precast(), gated behind
---             state.SATAMode. Before a WS, works through Sneak Attack -> Trick Attack ->
---             Assassin's Charge in order, using cancel/retry against the WS the same way
---             Assassin's Charge already did on its own -- each step only fires if the buff
---             isn't already up and the ability's off cooldown, otherwise it falls through to
---             the next one. Requires state.SATAMode to exist as a boolean state in the gear
---             file's user_job_setup() (same pattern as AmbushMode/ExtraMeleeMode) -- add it
---             there if it isn't defined yet, or this whole block just silently never fires.
--- 2026-08-09: Added check_ecphoria_for_ja(spell) call at the top of job_precast() --
---             correctly wires the Amnesia -> Ecphoria Ring precast hook here (see
---             Ullona-Globals.lua). This is the correct home for that call; a stray copy had
---             been accidentally pasted into Ullona_Thf_Gear.lua instead as a full function
---             definition, which was silently overriding this entire job_precast -- see that
---             file's own changelog for details. Fixed on both ends.
--- 2026-08-01: get_ability_recast_id_by_name() moved back OUT of THF.lua and into
---             Ullona-Globals.lua -- for real this time. Turns out it's genuinely shared: the
---             global smartwaltz system (Reverse Flourish pre-step) calls it too, not just
---             Assassin's Charge here. The previous "moved to Globals" changelog entry was
---             never actually true (the function was deleted from here but never added there),
---             which silently broke smartwaltz on every non-THF job while THF kept working by
---             accident, since this file happened to still define it. Now there's exactly ONE
---             copy, living in Globals where both callers can reach it -- nothing left here.
--- 2026-07-26: Added th_action_check() (ported from a friend's THF file) -- extends Treasure
---             Hunter credit to Provoke, Animated Flourish, and the unblinkable Quick/Box/
---             Stutter Step + Desperate/Violent Flourish, on top of the standard ranged-attack/
---             Aeolian Edge cases. Kept THF-specific rather than global since I can't confirm
---             whether Sel-TreasureHunter (not in this project's files) supports an
---             undocumented global variant the way the other Sel-Include hooks do -- the
---             literal th_action_check name is the safe, standard contract to rely on.
--- 2026-07-15: Added Assassin's Charge before every weapon skill, if it's not already up and
---             off cooldown -- guarantees the Triple Attack lands on the WS's first hit rather
---             than potentially going to waste on a random melee swing between skills. Uses a
---             name-based lookup against Windower's standard res.job_abilities resource table
---             instead of a hardcoded recast ID (which I couldn't verify from any source I had
---             access to, and didn't want to guess).
 -- =============================================================================
+
+-- Weapon-mode option values must stay single-word (spaces/apostrophes break the console
+-- status bar display) -- real item names are looked up from the short token instead.
+main_weapon_items = {Naegling="Naegling", Tauret="Tauret"}
+off_weapon_items = {GletisKnife="Gleti's Knife", Tauret="Tauret", Sandung="Sandung"}
+ranged_weapon_items = {Wingcutter="Wingcutter"}
 
 -- Initialization function for this job file.
 function get_sets()
@@ -46,6 +17,13 @@ end
 
 -- Setup vars that are user-independent.  state.Buff vars initialized here will automatically be tracked.
 function job_setup()
+
+    -- Construct our custom weapon-lock states here, before init_job_states() runs below --
+    -- unlike the library's own built-in states (Weapons, OffenseMode, etc.), these are new
+    -- and must exist before init_job_states() reads them.
+    state.MainWeapon = M{['description']='Main Weapon'}
+    state.OffWeapon = M{['description']='Off Weapon'}
+    state.RangedWeapon = M{['description']='Ranged Weapon'}
 
     state.Buff['Sneak Attack'] = buffactive['Sneak Attack'] or false
     state.Buff['Trick Attack'] = buffactive['Trick Attack'] or false
@@ -65,7 +43,7 @@ function job_setup()
 	autofood = 'Soy Ramen'
 	
 	update_melee_groups()
-	init_job_states({"Capacity","AutoRuneMode","AutoTrustMode","AutoWSMode","AutoShadowMode","AutoFoodMode","AutoStunMode","AutoDefenseMode",},{"AutoBuffMode","AutoSambaMode","Weapons","OffenseMode","WeaponskillMode","IdleMode","Passive","RuneElement","TreasureMode",})
+	init_job_states({"Capacity","AutoRuneMode","AutoTrustMode","AutoWSMode","AutoShadowMode","AutoFoodMode","AutoStunMode","AutoDefenseMode",},{"AutoBuffMode","AutoSambaMode","MainWeapon","OffWeapon","RangedWeapon","OffenseMode","WeaponskillMode","IdleMode","Passive","RuneElement","TreasureMode",})
 end
 
 -------------------------------------------------------------------------------------------------------------------
@@ -255,11 +233,29 @@ end
 
 
 function job_customize_idle_set(idleSet)
+    if state.MainWeapon.value ~= 'None' then
+        idleSet = set_combine(idleSet, {main=main_weapon_items[state.MainWeapon.value]})
+    end
+    if state.OffWeapon.value ~= 'None' then
+        idleSet = set_combine(idleSet, {sub=off_weapon_items[state.OffWeapon.value]})
+    end
+    if state.RangedWeapon.value ~= 'None' then
+        idleSet = set_combine(idleSet, {range=ranged_weapon_items[state.RangedWeapon.value], ammo=empty})
+    end
     return idleSet
 end
 
 -- Modify the default melee set after it was constructed.
 function job_customize_melee_set(meleeSet)
+    if state.MainWeapon.value ~= 'None' then
+        meleeSet = set_combine(meleeSet, {main=main_weapon_items[state.MainWeapon.value]})
+    end
+    if state.OffWeapon.value ~= 'None' then
+        meleeSet = set_combine(meleeSet, {sub=off_weapon_items[state.OffWeapon.value]})
+    end
+    if state.RangedWeapon.value ~= 'None' then
+        meleeSet = set_combine(meleeSet, {range=ranged_weapon_items[state.RangedWeapon.value], ammo=empty})
+    end
 
     if state.AmbushMode.value == true then
         meleeSet = set_combine(meleeSet, sets.Ambush)
