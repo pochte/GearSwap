@@ -157,7 +157,7 @@ function init_gear_sets()
         head="Sukeroku Hachimaki",          
         neck="Fotia Gorget",            
         ear2="Ishvara Earring",           
-        ear1="Crepuscular Earring",           
+        ear1="Moonshade Earring",          
         body="Gleti's Cuirass",           
         hands="Meghanada Gloves +2",       
 	ring1="Cornelia's Ring",             
@@ -169,15 +169,17 @@ function init_gear_sets()
         ammo="Oshasha's Treatise"
     }
     
-    sets.precast.WS.SomeAcc = set_combine(sets.precast.WS, {
-        hands="Leyline Gloves",         
-        ring2="Meghanada Ring",                                   
-        waist="Fotia Belt",
-        legs="Malignance Tights"
-    })
-    
-    sets.precast.WS.Acc = set_combine(sets.precast.Step, {})
-	sets.precast.WS.FullAcc = set_combine(sets.precast.Step, {})
+sets.precast.WS.SomeAcc = set_combine(sets.precast.WS, {
+    hands="Leyline Gloves",
+    ring2="Meghanada Ring",
+    waist="Fotia Belt",
+    legs="Malignance Tights",
+    ear1="Crepuscular Earring",
+})
+
+sets.precast.WS.Acc = set_combine(sets.precast.WS.SomeAcc, {})
+
+sets.precast.WS.FullAcc = set_combine(sets.precast.WS.Acc, {})
 
 
 

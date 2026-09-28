@@ -691,8 +691,11 @@ function job_self_command(commandArgs, eventArgs)
         handle_convert(commandArgs)
         eventArgs.handled = true
 
-    elseif commandArgs[1]:lower() == 'ws' then
+    elseif commandArgs[1]:lower() == 'castws' then
+        -- [FIX] Renamed from 'ws' -- that word collides with Sel-SelfCommands.lua's own
+        -- built-in command for setting the autows variable, which silently swallows it.
 
+        ----- THIS PART HANDLES SMART WS FILE. ADD TO OTHER FILES LATER -----
         handle_autows(commandArgs)
         eventArgs.handled = true
 
@@ -796,10 +799,7 @@ function job_customize_idle_set(idleSet)
 
             end
 
-            if (
-                state.MainWeapon.value == 'None'
-                or state.UnlockWeapons.value
-            )
+            if state.MainWeapon.value == 'None'
                 and idleSet.main then
 
                 local main_table =
@@ -1580,42 +1580,6 @@ end
 
 
 -------------------------------------------------------------------------------------------------------------------
--- Weapon-mode weapon skill.
---
--- gs c ws
---
--- Naegling  -> Savage Blade
--- Tauret    -> Exenterator
--- Kaja Rod  -> Black Halo
--------------------------------------------------------------------------------------------------------------------
-
-function handle_autows(cmdParams)
-
-    local ws_name
-
-    if state.MainWeapon.value == 'Tauret' then
-
-        ws_name = 'Exenterator'
-
-    elseif state.MainWeapon.value == 'KajaRod' then
-
-        ws_name = 'Black Halo'
-
-    else
-
-        -- Naegling, or None.
-        ws_name = 'Savage Blade'
-
-    end
-
-    windower.chat.input(
-        '/ws "'..ws_name..'" <t>'
-    )
-
-end
-
-
--------------------------------------------------------------------------------------------------------------------
 -- Convert + Cure IV chain.
 -------------------------------------------------------------------------------------------------------------------
 
@@ -1768,17 +1732,17 @@ function check_buff()
             windower.ffxi.get_spell_recasts()
 
         for i in pairs(
-            buff_spell_lists[state.AutoBuffMode.Value]
+            buff_spell_lists[state.AutoBuffMode.value]
         ) do
 
             if not buffactive[
-                buff_spell_lists[state.AutoBuffMode.Value][i].Buff
+                buff_spell_lists[state.AutoBuffMode.value][i].Buff
             ]
                 and (
-                    buff_spell_lists[state.AutoBuffMode.Value][i].When == 'Always'
+                    buff_spell_lists[state.AutoBuffMode.value][i].When == 'Always'
 
                     or (
-                        buff_spell_lists[state.AutoBuffMode.Value][i].When == 'Combat'
+                        buff_spell_lists[state.AutoBuffMode.value][i].When == 'Combat'
                         and (
                             player.in_combat
                             or being_attacked
@@ -1786,17 +1750,17 @@ function check_buff()
                     )
 
                     or (
-                        buff_spell_lists[state.AutoBuffMode.Value][i].When == 'Engaged'
+                        buff_spell_lists[state.AutoBuffMode.value][i].When == 'Engaged'
                         and player.status == 'Engaged'
                     )
 
                     or (
-                        buff_spell_lists[state.AutoBuffMode.Value][i].When == 'Idle'
+                        buff_spell_lists[state.AutoBuffMode.value][i].When == 'Idle'
                         and player.status == 'Idle'
                     )
 
                     or (
-                        buff_spell_lists[state.AutoBuffMode.Value][i].When == 'OutOfCombat'
+                        buff_spell_lists[state.AutoBuffMode.value][i].When == 'OutOfCombat'
                         and not (
                             player.in_combat
                             or being_attacked
@@ -1804,15 +1768,15 @@ function check_buff()
                     )
                 )
                 and spell_recasts[
-                    buff_spell_lists[state.AutoBuffMode.Value][i].SpellID
+                    buff_spell_lists[state.AutoBuffMode.value][i].SpellID
                 ] < spell_latency
                 and silent_can_use(
-                    buff_spell_lists[state.AutoBuffMode.Value][i].SpellID
+                    buff_spell_lists[state.AutoBuffMode.value][i].SpellID
                 ) then
 
                 windower.chat.input(
                     '/ma "'..
-                    buff_spell_lists[state.AutoBuffMode.Value][i].Name..
+                    buff_spell_lists[state.AutoBuffMode.value][i].Name..
                     '" <me>'
                 )
 

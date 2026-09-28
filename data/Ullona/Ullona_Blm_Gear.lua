@@ -4,7 +4,7 @@
 
 function user_job_setup()
     -- Options: Override default values
-    state.CastingMode:options('Normal','Resistant','Fodder','Proc','OccultAcumen','MB','MB Resistant')
+    state.CastingMode:options('Normal','Resistant','OccultAcumen','MB','MB Resistant')
     state.OffenseMode:options('Normal')
     state.IdleMode:options('Normal','PDT','DTHippo')
     state.Weapons:options('None','BurstWeapons','Khatvanga','Lathi')
@@ -393,7 +393,7 @@ sets.TreasureHunter = {ammo="Perfect Lucky Egg", waist="Chaac Belt"}
         feet  = "Herald's Gaiters",
         neck  = "Null Loop",  
         ear1  = "Alabaster Earring",
-        ear2  = "Moonshade Earring",
+        ear2  = "Odnowa Earring +1",
         ring1 = "Archon Ring",
         ring2 = "Murky Ring",
         back  = "Archon Cape",

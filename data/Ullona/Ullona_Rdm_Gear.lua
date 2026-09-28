@@ -1,5 +1,9 @@
 -- =============================================================================
 -- Ullona_Rdm_Gear.lua — Changelog
+-- 2026-09-27: [NEW] gs c castws logic moved out of RDM.lua into a standalone, job-agnostic
+--             smart-ws.lua (libs folder). This file now just supplies the weapon->weaponskill
+--             mapping (ws_by_main_weapon / ws_by_main_weapon_default) and includes
+--             smart-ws.lua -- only pulled in for jobs whose gear file opts in.
 -- 2026-08-30: [FIX -- MAIN WEAPON DROP BUG] Added sets.midcast.Cure, which was never
 --             actually defined anywhere in this file -- only sets.midcast['Healing Magic']
 --             (the base) and sets.midcast.Curaga (an explicit copy of it) existed. Casting
@@ -13,6 +17,16 @@
 --             Fixed the same way Curaga already was: an explicit copy of Healing Magic.
 -- =============================================================================
 
+-- gs c castws (see smart-ws.lua): fires the WS matching whichever key here matches
+-- state.MainWeapon's current value; anything not listed falls back to the default.
+ws_by_main_weapon = {
+    Tauret = 'Exenterator',
+    KajaRod = 'Black Halo',
+}
+ws_by_main_weapon_default = 'Savage Blade'
+
+include('smart-ws.lua')
+
 
 function user_job_setup()
     -- Options: Override default values
@@ -25,8 +39,8 @@ function user_job_setup()
     state.PhysicalDefenseMode:options('PDT','NukeLock')
     state.MagicalDefenseMode:options('MDT')
     state.ResistDefenseMode:options('MEVA')
-    state.MainWeapon = M{['description']='Main Weapon'}
-    state.OffWeapon = M{['description']='Off Weapon'}
+    -- state.MainWeapon / state.OffWeapon are constructed in RDM.lua's job_setup() (must exist
+    -- before init_job_states() runs there) -- just setting their option lists here.
     state.MainWeapon:options('None','Naegling','KajaRod','Tauret')
     state.OffWeapon:options('None','DemersalDegen','Machaera','GletisKnife','Daybreak','Culminus','SacroBulwark')
 
@@ -69,7 +83,8 @@ function init_gear_sets()
 	-- is an actual weapon (dagger/sword) rather than a shield -- no named alias needed for that
 	-- either.
 
-	-- Weapon-mode -> weaponskill command: see handle_autows() in RDM.lua (gs c ws).
+	-- Weapon-mode -> weaponskill command: see handle_autows() in smart-ws.lua, and the
+	-- ws_by_main_weapon table near the top of this file (gs c castws).
 	-- Tauret=Exenterator, Kaja Rod=Black Halo, Naegling=Savage Blade. WS gear overrides
 	-- for Exenterator/Black Halo are set up below (empty for now, combined onto sets.precast.WS).
 
@@ -139,9 +154,9 @@ function init_gear_sets()
 	sets.precast.WS.Proc = 	sets.precast.WS
 
 	-- Per-weaponskill overrides, empty for now -- fill in slot changes later.
-	sets.precast.WS['Savage Blade'] = set_combine(sets.precast.WS, {})
+	sets.precast.WS['Savage Blade'] = set_combine(sets.precast.WS, {ear1="Moonshade Earring"})
 	sets.precast.WS['Exenterator']  = set_combine(sets.precast.WS, {})
-	sets.precast.WS['Black Halo']   = set_combine(sets.precast.WS, {})
+	sets.precast.WS['Black Halo']   = set_combine(sets.precast.WS, {ear1="Moonshade Earring"})
 
 	-- Midcast Sets
 
@@ -404,8 +419,8 @@ sets.precast['Enhancing Magic'] = set_combine(sets.precast.FC, {
         hands ="Malignance Gloves",
         feet  ="Malignance Boots",
         neck  ="Null Loop",
-        ear1  ="Moonshade Earring",
-        ear2  ="Alabaster Earring",
+        ear1  ="Alabaster Earring",
+        ear2  ="Odnowa Earring +1",
         ring1="Ayanmo Ring",
         ring2 ="Murky Ring",
         back  ="Archon Cape",
