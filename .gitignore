@@ -20,3 +20,6 @@ README.md
 # Keep custom data files
 !data/
 !data/**/
+data/rainekumo.lua
+data/rainesu.lua
+data/smollpopoto.lua
