@@ -2,66 +2,49 @@
 --
 -- Weapon-mode option values must stay single-word (spaces/apostrophes break the console
 -- status bar display) -- real item names are looked up from the short token instead.
-
 main_weapon_items = {
     Naegling = "Naegling",
     KajaRod = "Kaja Rod",
     Tauret = "Tauret"
 }
-
 off_weapon_items = {
     DemersalDegen = "Demersal Degen +1",
     Machaera = "Machaera",
     GletisKnife = "Gleti's Knife",
     Daybreak = "Daybreak",
     Culminus = "Culminus",
-    SacroBulwark = "Sacro Bulwark"
+    SacroBulwark = "Sacro Bulwark",
+    ArchdukeShield = "Archduke's Shield"
 }
-
--- ================================================================
 -- Initialization function for this job file.
--- ================================================================
 function get_sets()
-
     -- Load and initialize the include file.
     include('Sel-Include.lua')
     include('Smart-Caster.lua')
     include('Ullona-shortcuts.lua')
-
 end
-
-
--- ================================================================
 -- Setup vars that are user-independent.
 -- state.Buff vars initialized here will automatically be tracked.
--- ================================================================
 function job_setup()
-
     -- Construct our custom weapon states before init_job_states().
     state.MainWeapon = M{['description']='Main Weapon'}
     state.OffWeapon = M{['description']='Off Weapon'}
-
     state.Buff.Saboteur = buffactive.Saboteur or false
     state.Buff.Stymie = buffactive.Stymie or false
     state.Buff.Chainspell = buffactive.Chainspell or false
     state.Buff['Aftermath: Lv.3'] = buffactive['Aftermath: Lv.3'] or false
-
     LowTierNukes = S{
         'Stone', 'Water', 'Aero', 'Fire', 'Blizzard', 'Thunder',
         'Stone II', 'Water II', 'Aero II', 'Fire II', 'Blizzard II', 'Thunder II',
         'Stonega', 'Waterga', 'Aeroga', 'Firaga', 'Blizzaga', 'Thundaga'
     }
-
     MaxNukeTier = 5
-
     autows = "Savage Blade"
     autofood = 'Pear Crepe'
     enspell = ''
     low_mp_reminded_at = 0
     phalanx_fallback_target = nil
-
     update_melee_groups()
-
     init_job_states(
         {
             "Capacity",
@@ -88,23 +71,18 @@ function job_setup()
             "CastingMode"
         }
     )
-
-    -- ============================================================
     -- Weapon choices.
     --
     -- Alt+F7  = cycle MainWeapon
     -- Ctrl+F7 = cycle OffWeapon
     --
     -- "None" unlocks that slot and allows normal GearSwap behavior.
-    -- ============================================================
-
     state.MainWeapon:options(
         'None',
         'Naegling',
         'KajaRod',
         'Tauret'
     )
-
     state.OffWeapon:options(
         'None',
         'DemersalDegen',
@@ -114,11 +92,7 @@ function job_setup()
         'Culminus',
         'SacroBulwark'
     )
-
 end
-
-
--- ================================================================
 -- Weapon locking helper.
 --
 -- This is deliberately separate from job_update().
@@ -126,40 +100,29 @@ end
 -- GearSwap's disable() prevents future GearSwap equip commands
 -- from changing that slot, so we MUST equip the selected weapon
 -- first and only then lock the slot.
--- ================================================================
 function lock_selected_weapons()
-
     -- Make sure GearSwap is allowed to change the slots first.
     enable('main', 'sub')
-
     -- Equip the currently selected main weapon.
     if state.MainWeapon.value ~= 'None' then
-
         local main_weapon =
             main_weapon_items[state.MainWeapon.value]
-
         if main_weapon then
             equip({
                 main = main_weapon
             })
         end
-
     end
-
     -- Equip the currently selected offhand.
     if state.OffWeapon.value ~= 'None' then
-
         local off_weapon =
             off_weapon_items[state.OffWeapon.value]
-
         if off_weapon then
             equip({
                 sub = off_weapon
             })
         end
-
     end
-
     -- NOW lock the selected slots.
     --
     -- We only lock a slot when that slot has a selected weapon.
@@ -167,84 +130,55 @@ function lock_selected_weapons()
     if state.MainWeapon.value ~= 'None' then
         disable('main')
     end
-
     if state.OffWeapon.value ~= 'None' then
         disable('sub')
     end
-
 end
-
-
--- ================================================================
 -- Called whenever one of our weapon states changes.
 --
 -- IMPORTANT:
 -- We unlock FIRST so the newly selected weapon can actually equip.
 -- The lock is then applied shortly afterward.
--- ================================================================
 function job_state_change(stateField, newValue, oldValue)
-
     if stateField == 'Main Weapon'
         or stateField == 'MainWeapon' then
-
         -- Unlock main so the newly selected weapon can equip.
         enable('main')
-
         -- If MainWeapon is None, leave main unlocked.
         if newValue == 'None' then
             enable('main')
         end
-
         -- Give GearSwap time to process the state/equipment update,
         -- then equip and lock the selected weapon.
         send_command(
             'wait 0.2; gs c lockselectedweapons'
         )
-
     elseif stateField == 'Off Weapon'
         or stateField == 'OffWeapon' then
-
         -- Unlock sub so the newly selected weapon can equip.
         enable('sub')
-
         -- If OffWeapon is None, leave sub unlocked.
         if newValue == 'None' then
             enable('sub')
         end
-
         -- Give GearSwap time to process the state/equipment update,
         -- then equip and lock the selected weapon.
         send_command(
             'wait 0.2; gs c lockselectedweapons'
         )
-
     end
-
 end
-
-
--------------------------------------------------------------------------------------------------------------------
 -- Job-specific hooks for standard casting events.
--------------------------------------------------------------------------------------------------------------------
-
 function job_filtered_action(spell, eventArgs)
 end
-
-
 function job_pretarget(spell, spellMap, eventArgs)
 end
-
-
 function job_precast(spell, spellMap, eventArgs)
-
     check_ecphoria_for_ja(spell)
-
     if spell.action_type == 'Magic' then
-
         if state.Buff.Chainspell then
             eventArgs.handled = true
         end
-
         -- Automatically use Composure for self-targeted enhancing magic.
         if spell.skill == 'Enhancing Magic'
             and spell.target.type == 'SELF'
@@ -252,58 +186,44 @@ function job_precast(spell, spellMap, eventArgs)
             and not state.Buff.Chainspell
             and spell.english ~= 'Phalanx'
             and spell.english ~= 'Phalanx II' then
-
             local abil_recasts =
                 windower.ffxi.get_ability_recasts()
-
             if abil_recasts[50] < latency then
-
                 eventArgs.cancel = true
                 cancel_spell()
-
                 windower.chat.input(
                     '/ja "Composure" <me>'
                 )
-
                 windower.chat.input:schedule(
                     2,
                     '/ma "'..spell.english..'" '..spell.target.raw..''
                 )
-
                 return
             end
         end
-
         -- Accession II spells become their Tier I version.
         if buffactive.Accession
             and spell.english:endswith(' II')
             and data.spells.enspells:contains(spell.english) then
-
             local tier1_name =
                 spell.english:gsub(' II$', '')
-
             eventArgs.cancel = true
             cancel_spell()
-
             windower.chat.input(
                 '/ma "'..tier1_name..'" '..spell.target.raw
             )
-
             return
         end
-
         -- Warn if Aurorastorm is down for SCH cures.
         if (spell.english == 'Cure'
             or spell.english == 'Cure II')
             and player.sub_job == 'SCH'
             and not buffactive['Aurorastorm'] then
-
             add_to_chat(
                 167,
                 'Aurorastorm is down'
             )
         end
-
         -- Klimaform / storm handling for elemental magic.
         if spell.skill == 'Elemental Magic'
             and default_spell_map ~= 'ElementalEnfeeble'
@@ -313,867 +233,568 @@ function job_precast(spell, spellMap, eventArgs)
             and spell.element ~= world.weather_element
             and data.elements.storm_of[spell.element]
             and not data.spells.enspells:contains(spell.english) then
-
             local spell_recasts =
                 windower.ffxi.get_spell_recasts()
-
             local storm_name =
                 data.elements.storm_of[spell.element]
-
             if buffactive[storm_name]
                 and not buffactive['Klimaform']
                 and spell_recasts[287] < spell_latency then
-
                 eventArgs.cancel = true
                 cancel_spell()
-
                 windower.chat.input(
                     '/ma "Klimaform" <me>'
                 )
-
                 windower.chat.input:schedule(
                     2,
                     '/ma "'..spell.english..'" '..spell.target.raw..''
                 )
-
                 return
-
             elseif spell_recasts[
                 get_spell_table_by_name(storm_name).id
             ] < spell_latency then
-
                 eventArgs.cancel = true
                 cancel_spell()
-
                 windower.chat.input(
                     '/ma "'..storm_name..'" <me>'
                 )
-
                 windower.chat.input:schedule(
                     5,
                     '/ma "'..spell.english..'" '..spell.target.raw..''
                 )
-
                 return
             end
         end
-
         -- Obi selection.
         if spellMap == 'Cure'
             or spellMap == 'Curaga' then
-
             gear.default.obi_back =
                 gear.obi_cure_back
-
             gear.default.obi_waist =
                 gear.obi_cure_waist
-
         elseif spell.skill == 'Elemental Magic'
             and default_spell_map ~= 'ElementalEnfeeble' then
-
             if LowTierNukes:contains(spell.english)
                 or spell.english:endswith('helix') then
-
                 gear.default.obi_back =
                     gear.obi_low_nuke_back
-
                 gear.default.obi_waist =
                     gear.obi_low_nuke_waist
-
             else
-
                 gear.default.obi_back =
                     gear.obi_high_nuke_back
-
                 gear.default.obi_waist =
                     gear.obi_high_nuke_waist
-
             end
         end
-
         if state.CastingMode.value == 'Proc' then
             classes.CustomClass = 'Proc'
         end
-
         smart_caster_precast(
             spell,
             spellMap,
             eventArgs
         )
-
     end
 end
-
-
 function job_post_precast(spell, spellMap, eventArgs)
-
     if spell.type == 'WeaponSkill' then
-
         local WSset =
             standardize_set(
                 get_precast_set(spell, spellMap)
             )
-
         local wsacc =
             check_ws_acc()
-
         equip(WSset)
-
         if WSset.ear1 == "Moonshade Earring"
             or WSset.ear2 == "Moonshade Earring" then
-
             -- Replace Moonshade Earring if we're at cap TP.
             if get_effective_player_tp(spell, WSset) > 3200 then
-
                 if wsacc:contains('Acc')
                     and not buffactive['Sneak Attack']
                     and sets.AccMaxTP then
-
                     equip(
                         sets.AccMaxTP[spell.english]
                         or sets.AccMaxTP
                     )
-
                 elseif sets.MaxTP then
-
                     equip(
                         sets.MaxTP[spell.english]
                         or sets.MaxTP
                     )
-
                 end
             end
         end
     end
 end
-
-
 function job_post_midcast(spell, spellMap, eventArgs)
-
     if spell.skill == 'Elemental Magic'
         and default_spell_map ~= 'ElementalEnfeeble'
         and spell.english ~= 'Impact' then
-
         try_magic_burst()
         try_zodiac_ring(spell)
-
         if spell.element
             and sets.element[spell.element] then
-
             equip(
                 sets.element[spell.element]
             )
         end
-
         try_recover_mp()
-
     elseif spell.skill == 'Enfeebling Magic' then
-
         if state.Buff.Stymie
             and state.CastingMode.value:contains('Resistant') then
-
             if sets.midcast[spell.english]
                 and sets.midcast[spell.english].Fodder then
-
                 equip(
                     sets.midcast[spell.english].Fodder
                 )
-
             elseif sets.midcast[spell.english] then
-
                 equip(
                     sets.midcast[spell.english]
                 )
-
             elseif sets.midcast['Enfeebling Magic'].Fodder then
-
                 equip(
                     sets.midcast['Enfeebling Magic'].Fodder
                 )
-
             else
-
                 equip(
                     sets.midcast['Enfeebling Magic']
                 )
-
             end
         end
-
         if state.Buff.Saboteur then
             equip(sets.buff.Saboteur)
         end
-
     elseif spell.skill == 'Enhancing Magic' then
-
         equip(
             sets.midcast['Enhancing Magic']
         )
-
         if buffactive.Composure
             and spell.target.type == 'PLAYER' then
-
             equip(
                 sets.buff.ComposureOther
             )
         end
-
         if can_dual_wield
             and sets.midcast[spell.english]
             and sets.midcast[spell.english].DW then
-
             equip(
                 sets.midcast[spell.english].DW
             )
-
         elseif can_dual_wield
             and sets.midcast[spellMap]
             and sets.midcast[spellMap].DW then
-
             equip(
                 sets.midcast[spellMap].DW
             )
-
         elseif sets.midcast[spell.english] then
-
             equip(
                 sets.midcast[spell.english]
             )
-
         elseif sets.midcast[spellMap] then
-
             equip(
                 sets.midcast[spellMap]
             )
-
         end
     end
-
     if spell.skill == 'Enfeebling Magic'
         or spell.skill == 'Dark Magic'
         or default_spell_map == 'ElementalEnfeeble'
         or spell.english == 'Impact' then
-
         if item_available('Regal Gem') then
-
             equip({
                 range = empty,
                 ammo = "Regal Gem"
             })
-
         end
     end
 end
-
-
 function job_aftercast(spell, spellMap, eventArgs)
-
     try_sublimation()
-
     if spell.english == 'Phalanx'
         and phalanx_fallback_target then
-
         if spell.interrupted then
-
             windower.chat.input(
                 '/ma "Phalanx II" '..phalanx_fallback_target
             )
-
         end
-
         phalanx_fallback_target = nil
-
     end
-
     if not spell.interrupted then
-
         if state.UseCustomTimers.value
             and (
                 spell.english == 'Sleep'
                 or spell.english == 'Sleepga'
             ) then
-
             send_command(
                 '@timers c "'..
                 spell.english..
                 ' ['..spell.target.name..']" 60 down spells/00220.png'
             )
-
         elseif state.UseCustomTimers.value
             and spell.english == 'Sleep II' then
-
             send_command(
                 '@timers c "'..
                 spell.english..
                 ' ['..spell.target.name..']" 90 down spells/00220.png'
             )
-
         elseif data.spells.enspells:contains(spell.english) then
-
             enspell = spell.english
             update_melee_groups()
-
         end
     end
-
     -- Re-lock selected weapons after a completed action.
     -- The slots are already equipped correctly by the selected state.
     send_command(
         'wait 0.1; gs c lockselectedweapons'
     )
-
 end
-
-
 function job_buff_change(buff, gain)
-
     smart_caster_buff_change(
         buff,
         gain
     )
-
     if buff == enspell
         and not gain then
-
         enspell = ''
-
     end
-
     update_melee_groups()
-
 end
-
-
--------------------------------------------------------------------------------------------------------------------
 -- Job-specific hooks for non-casting events.
--------------------------------------------------------------------------------------------------------------------
-
 function job_update(cmdParams, eventArgs)
-
     update_melee_groups()
-
     -- Re-apply the selected weapons and then lock them.
     send_command(
         'wait 0.1; gs c lockselectedweapons'
     )
-
 end
-
-
--------------------------------------------------------------------------------------------------------------------
 -- User command handling.
--------------------------------------------------------------------------------------------------------------------
-
 function job_self_command(commandArgs, eventArgs)
-
     if commandArgs[1]:lower() == 'elemental' then
-
         handle_elemental(commandArgs)
         eventArgs.handled = true
-
     elseif commandArgs[1]:lower() == 'phalanx' then
-
         handle_phalanx(commandArgs)
         eventArgs.handled = true
-
     elseif commandArgs[1]:lower() == 'smartcure' then
-
         handle_smartcure(commandArgs)
         eventArgs.handled = true
-
     elseif commandArgs[1]:lower() == 'enspell' then
-
         handle_enspell_shortcut(commandArgs)
         eventArgs.handled = true
-
     elseif commandArgs[1]:lower() == 'convert' then
-
         handle_convert(commandArgs)
         eventArgs.handled = true
-
     elseif commandArgs[1]:lower() == 'castws' then
         -- [FIX] Renamed from 'ws' -- that word collides with Sel-SelfCommands.lua's own
         -- built-in command for setting the autows variable, which silently swallows it.
-
         ----- THIS PART HANDLES SMART WS FILE. ADD TO OTHER FILES LATER -----
         handle_autows(commandArgs)
         eventArgs.handled = true
-
     elseif commandArgs[1]:lower() == 'lockselectedweapons' then
-
         -- This command exists specifically so weapon state changes
         -- can equip first and lock second.
         lock_selected_weapons()
         eventArgs.handled = true
-
     end
-
 end
-
-
--------------------------------------------------------------------------------------------------------------------
 -- Idle gear customization.
--------------------------------------------------------------------------------------------------------------------
-
 function job_customize_idle_set(idleSet)
-
-    -- ============================================================
     -- Main weapon selection.
     -- Alt+F7 cycles MainWeapon.
-    -- ============================================================
     if state.MainWeapon.value ~= 'None' then
-
         local weapon =
             main_weapon_items[state.MainWeapon.value]
-
         if weapon then
-
             idleSet = set_combine(
                 idleSet,
                 {
                     main = weapon
                 }
             )
-
         end
     end
-
-    -- ============================================================
     -- Offhand weapon selection.
     -- Ctrl+F7 cycles OffWeapon.
-    -- ============================================================
     if state.OffWeapon.value ~= 'None' then
-
         local weapon =
             off_weapon_items[state.OffWeapon.value]
-
         if weapon then
-
             idleSet = set_combine(
                 idleSet,
                 {
                     sub = weapon
                 }
             )
-
         end
     end
-
     -- Sublimation gear.
     if buffactive['Sublimation: Activated'] then
-
         if (
             state.IdleMode.value == 'Normal'
             or state.IdleMode.value:contains('Sphere')
         )
             and sets.buff.Sublimation then
-
             idleSet = set_combine(
                 idleSet,
                 sets.buff.Sublimation
             )
-
         elseif state.IdleMode.value:contains('DT')
             and sets.buff.DTSublimation then
-
             idleSet = set_combine(
                 idleSet,
                 sets.buff.DTSublimation
             )
-
         end
     end
-
     -- Latent refresh.
     if state.IdleMode.value == 'Normal'
         or state.IdleMode.value:contains('Sphere') then
-
         if player.mpp < 51 then
-
             if sets.latent_refresh then
-
                 idleSet = set_combine(
                     idleSet,
                     sets.latent_refresh
                 )
-
             end
-
             if state.MainWeapon.value == 'None'
                 and idleSet.main then
-
                 local main_table =
                     get_item_table(idleSet.main)
-
                 if main_table
                     and main_table.skill == 12
                     and sets.latent_refresh_grip then
-
                     idleSet = set_combine(
                         idleSet,
                         sets.latent_refresh_grip
                     )
-
                 end
-
                 if player.tp > 10
                     and sets.TPEat then
-
                     idleSet = set_combine(
                         idleSet,
                         sets.TPEat
                     )
-
                 end
             end
         end
     end
-
     return idleSet
-
 end
-
-
--------------------------------------------------------------------------------------------------------------------
 -- Melee gear customization.
--------------------------------------------------------------------------------------------------------------------
-
 function job_customize_melee_set(meleeSet)
-
-    -- ============================================================
     -- Main weapon selection.
     -- Alt+F7 cycles MainWeapon.
-    -- ============================================================
     if state.MainWeapon.value ~= 'None' then
-
         local weapon =
             main_weapon_items[state.MainWeapon.value]
-
         if weapon then
-
             meleeSet = set_combine(
                 meleeSet,
                 {
                     main = weapon
                 }
             )
-
         end
     end
-
-    -- ============================================================
     -- Offhand weapon selection.
     -- Ctrl+F7 cycles OffWeapon.
-    -- ============================================================
     if state.OffWeapon.value ~= 'None' then
-
         local weapon =
             off_weapon_items[state.OffWeapon.value]
-
         if weapon then
-
             meleeSet = set_combine(
                 meleeSet,
                 {
                     sub = weapon
                 }
             )
-
         end
     end
-
     -- Enspell-specific melee gear.
     if state.MainWeapon.value ~= 'None'
         and enspell ~= '' then
-
         local enspell_element =
             data.elements.enspells_lookup[enspell]
-
         if sets.element.enspell
             and sets.element.enspell[enspell_element] then
-
             meleeSet = set_combine(
                 meleeSet,
                 sets.element.enspell[enspell_element]
             )
-
         end
-
         local hachirin_avail =
             item_available('Hachirin-no-Obi')
-
         if hachirin_avail
             and enspell_element == world.weather_element
             and world.weather_intensity == 2 then
-
             meleeSet = set_combine(
                 meleeSet,
                 {
                     waist = "Hachirin-no-Obi"
                 }
             )
-
         elseif item_available("Orpheus's Sash") then
-
             meleeSet = set_combine(
                 meleeSet,
                 {
                     waist = "Orpheus's Sash"
                 }
             )
-
         elseif hachirin_avail
             and (
                 enspell_element == world.weather_element
                 or enspell_element == world.day_element
             ) then
-
             meleeSet = set_combine(
                 meleeSet,
                 {
                     waist = "Hachirin-no-Obi"
                 }
             )
-
         end
     end
-
     return meleeSet
-
 end
-
-
--------------------------------------------------------------------------------------------------------------------
 -- Job state display.
--------------------------------------------------------------------------------------------------------------------
-
 function display_current_job_state(eventArgs)
-
     display_current_caster_state()
-
     eventArgs.handled = true
-
 end
-
-
--------------------------------------------------------------------------------------------------------------------
 -- Custom spell mapping.
--------------------------------------------------------------------------------------------------------------------
-
 function job_get_spell_map(spell, default_spell_map)
-
     if default_spell_map == 'Cure'
         or default_spell_map == 'Curaga' then
-
         if world.weather_element == 'Light' then
-
             return 'LightWeatherCure'
-
         elseif world.day_element == 'Light' then
-
             return 'LightDayCure'
-
         end
     end
-
     if spell.skill == 'Enfeebling Magic' then
-
         if spell.english:startswith('Dia') then
-
             return "Dia"
-
         elseif spell.type == "WhiteMagic"
             or spell.english:startswith('Frazzle')
             or spell.english:startswith('Distract') then
-
             return 'MndEnfeebles'
-
         else
-
             return 'IntEnfeebles'
-
         end
     end
-
     if spell.skill == 'Elemental Magic'
         and default_spell_map ~= 'ElementalEnfeeble'
         and not data.spells.enspells:contains(spell.english) then
-
         if LowTierNukes:contains(spell.english) then
-
             return 'LowTierNuke'
-
         else
-
             return 'HighTierNuke'
-
         end
     end
-
 end
-
-
--------------------------------------------------------------------------------------------------------------------
 -- Enspell shortcut.
--------------------------------------------------------------------------------------------------------------------
-
 function handle_enspell_shortcut(cmdParams)
-
     local element =
         data.elements.enspell_of[state.ElementalMode.value]
-
     local element_lower =
         element:lower()
-
     local tier2_name =
         'En'..element_lower..' II'
-
     local tier1_name =
         'En'..element_lower
-
     local spell_recasts =
         windower.ffxi.get_spell_recasts()
-
     local tier2_spell =
         get_spell_table_by_name(tier2_name)
-
     local tier1_spell =
         get_spell_table_by_name(tier1_name)
-
     -- Safety net.
     if not tier1_spell then
-
         add_to_chat(
             123,
             'Abort: Could not find a spell named "'..
             tier1_name..
             '".'
         )
-
         return
-
     end
-
     local tier2_id =
         tier2_spell and tier2_spell.id
-
     local tier1_id =
         tier1_spell.id
-
     if tier2_id
         and silent_can_use(tier2_id)
         and spell_recasts[tier2_id] < spell_latency then
-
         windower.chat.input(
             '/ma "'..tier2_name..'" <me>'
         )
-
     elseif spell_recasts[tier1_id] < spell_latency then
-
         windower.chat.input(
             '/ma "'..tier1_name..'" <me>'
         )
-
     else
-
         add_to_chat(
             123,
             'Abort: Enspell tiers on cooldown.'
         )
-
     end
 end
-
-
--------------------------------------------------------------------------------------------------------------------
 -- Phalanx shortcut.
--------------------------------------------------------------------------------------------------------------------
-
 function handle_phalanx(cmdParams)
-
     local target =
         cmdParams[2]
         and table.concat(cmdParams, ' ', 2)
         or '<me>'
-
     phalanx_fallback_target =
         target
-
     windower.chat.input(
         '/ma "Phalanx" '..target
     )
-
 end
-
-
--------------------------------------------------------------------------------------------------------------------
 -- Elemental handling.
--------------------------------------------------------------------------------------------------------------------
-
 function handle_elemental(cmdParams)
-
     if not cmdParams[2] then
-
         add_to_chat(
             123,
             'Error: No elemental command given.'
         )
-
         return
-
     end
-
     local command =
         cmdParams[2]:lower()
-
     if command == 'spikes' then
-
         windower.chat.input(
             '/ma "'..
             data.elements.spikes_of[state.ElementalMode.value]..
             ' Spikes" <me>'
         )
-
         return
-
     elseif command == 'enspell' then
-
         if player.sub_job == 'NIN'
             or player.sub_job == 'DNC' then
-
             windower.chat.input(
                 '/ma "En'..
                 data.elements.enspell_of[state.ElementalMode.value]..
                 '" <me>'
             )
-
         else
-
             windower.chat.input(
                 '/ma "En'..
                 data.elements.enspell_of[state.ElementalMode.value]..
                 ' II" <me>'
             )
-
         end
-
         return
-
     elseif command == 'weather' then
-
         if player.sub_job ~= 'SCH' then
-
             windower.chat.input(
                 '/ma "'..
                 data.elements.storm_of[state.ElementalMode.value]..
                 '"'
             )
-
         else
-
             local spell_recasts =
                 windower.ffxi.get_spell_recasts()
-
             if (
                 player.target.type == 'SELF'
                 or not player.target.in_party
@@ -1183,139 +804,99 @@ function handle_elemental(cmdParams)
                 ]
                 and not buffactive['Klimaform']
                 and spell_recasts[287] < spell_latency then
-
                 windower.chat.input(
                     '/ma "Klimaform" <me>'
                 )
-
             else
-
                 windower.chat.input(
                     '/ma "'..
                     data.elements.storm_of[state.ElementalMode.value]..
                     '"'
                 )
-
             end
         end
-
         return
     end
-
     local target = '<t>'
-
     if cmdParams[3] then
-
         if tonumber(cmdParams[3]) then
-
             target =
                 tonumber(cmdParams[3])
-
         else
-
             target =
                 table.concat(cmdParams, ' ', 3)
-
             target =
                 get_closest_mob_id_by_name(target)
                 or '<t>'
-
         end
     end
-
     if command == 'nuke' then
-
         local spell_recasts =
             windower.ffxi.get_spell_recasts()
-
         if state.ElementalMode.value == 'Light' then
-
             if spell_recasts[29] < spell_latency
                 and actual_cost(
                     get_spell_table_by_name('Banish II')
                 ) < player.mp then
-
                 windower.chat.input(
                     '/ma "Banish II" '..target..''
                 )
-
             elseif spell_recasts[28] < spell_latency
                 and actual_cost(
                     get_spell_table_by_name('Banish')
                 ) < player.mp then
-
                 windower.chat.input(
                     '/ma "Banish" '..target..''
                 )
-
             else
-
                 add_to_chat(
                     123,
                     'Abort: Banishes on cooldown or not enough MP.'
                 )
-
             end
-
         elseif state.ElementalMode.value == 'Dark' then
-
             if spell_recasts[219] < spell_latency
                 and actual_cost(
                     get_spell_table_by_name('Comet')
                 ) < player.mp then
-
                 windower.chat.input(
                     '/ma "Comet" '..target..''
                 )
-
             else
-
                 add_to_chat(
                     123,
                     'Abort: Comet on cooldown or not enough MP.'
                 )
-
             end
-
         else
-
             local element_name =
                 data.elements.nuke_of[state.ElementalMode.value]
-
             local tier5 =
                 get_spell_table_by_name(element_name..' V')
-
             if player.job_points[
                 (res.jobs[player.main_job_id].ens):lower()
             ].jp_spent > 99
                 and tier5
                 and spell_recasts[tier5.id] < spell_latency
                 and actual_cost(tier5) < player.mp then
-
                 windower.chat.input(
                     '/ma "'..element_name..' V" '..target..''
                 )
-
             else
-
                 local tiers = {
                     ' IV',
                     ' III',
                     ' II',
                     ''
                 }
-
                 for k in ipairs(tiers) do
-
                     local spell =
                         get_spell_table_by_name(
                             element_name..tiers[k]
                         )
-
                     if spell
                         and spell_recasts[spell.id] < spell_latency
                         and actual_cost(spell) < player.mp then
-
                         windower.chat.input(
                             '/ma "'..
                             element_name..
@@ -1324,24 +905,18 @@ function handle_elemental(cmdParams)
                             target..
                             ''
                         )
-
                         return
-
                     end
                 end
-
                 add_to_chat(
                     123,
                     'Abort: All '..
                     element_name..
                     ' nukes on cooldown or not enough MP.'
                 )
-
             end
         end
-
     elseif command == 'ninjutsu' then
-
         windower.chat.input(
             '/ma "'..
             data.elements.ninjutsu_nuke_of[state.ElementalMode.value]..
@@ -1349,31 +924,23 @@ function handle_elemental(cmdParams)
             target..
             ''
         )
-
     elseif command == 'smallnuke' then
-
         local spell_recasts =
             windower.ffxi.get_spell_recasts()
-
         local element_name =
             data.elements.nuke_of[state.ElementalMode.value]
-
         local tiers = {
             ' II',
             ''
         }
-
         for k in ipairs(tiers) do
-
             local spell =
                 get_spell_table_by_name(
                     element_name..tiers[k]
                 )
-
             if spell
                 and spell_recasts[spell.id] < spell_latency
                 and actual_cost(spell) < player.mp then
-
                 windower.chat.input(
                     '/ma "'..
                     element_name..
@@ -1382,24 +949,18 @@ function handle_elemental(cmdParams)
                     target..
                     ''
                 )
-
                 return
-
             end
         end
-
         add_to_chat(
             123,
             'Abort: All '..
             element_name..
             ' nukes on cooldown or not enough MP.'
         )
-
     elseif command:contains('tier') then
-
         local spell_recasts =
             windower.ffxi.get_spell_recasts()
-
         local tierlist = {
             ['tier1']='',
             ['tier2']=' II',
@@ -1408,7 +969,6 @@ function handle_elemental(cmdParams)
             ['tier5']=' V',
             ['tier6']=' VI'
         }
-
         local tiernum = {
             ['tier1']=1,
             ['tier2']=2,
@@ -1417,21 +977,16 @@ function handle_elemental(cmdParams)
             ['tier5']=5,
             ['tier6']=6
         }
-
         local requested =
             tiernum[command]
-
         if not requested then
-
             add_to_chat(
                 123,
                 'Abort: Unrecognized tier command "'..
                 command..
                 '".'
             )
-
         elseif requested > MaxNukeTier then
-
             add_to_chat(
                 123,
                 'Abort: RDM is capped at Tier '..
@@ -1440,9 +995,7 @@ function handle_elemental(cmdParams)
                 requested..
                 ' is not available.'
             )
-
         else
-
             windower.chat.input(
                 '/ma "'..
                 data.elements.nuke_of[state.ElementalMode.value]..
@@ -1451,11 +1004,8 @@ function handle_elemental(cmdParams)
                 target..
                 ''
             )
-
         end
-
     elseif command == 'ara' then
-
         windower.chat.input(
             '/ma "'..
             data.elements.nukera_of[state.ElementalMode.value]..
@@ -1463,44 +1013,34 @@ function handle_elemental(cmdParams)
             target..
             ''
         )
-
     elseif command == 'aga' then
-
         local spell_recasts =
             windower.ffxi.get_spell_recasts()
-
         if state.ElementalMode.value == 'Wind'
             and spell_recasts[185] < spell_latency
             and actual_cost(
                 get_spell_table_by_name('Aero II')
             ) < player.mp then
-
             windower.chat.input(
                 '/ma "Aeroga II" '..target..''
             )
-
         elseif state.ElementalMode.value == 'Earth'
             and spell_recasts[190] < spell_latency
             and actual_cost(
                 get_spell_table_by_name('Stonega II')
             ) < player.mp then
-
             windower.chat.input(
                 '/ma "Stonega II" '..target..''
             )
-
         elseif state.ElementalMode.value == 'Water'
             and spell_recasts[200] < spell_latency
             and actual_cost(
                 get_spell_table_by_name('Waterga II')
             ) < player.mp then
-
             windower.chat.input(
                 '/ma "Waterga II" '..target..''
             )
-
         else
-
             windower.chat.input(
                 '/ma "'..
                 data.elements.nukega_of[state.ElementalMode.value]..
@@ -1508,11 +1048,8 @@ function handle_elemental(cmdParams)
                 target..
                 ''
             )
-
         end
-
     elseif command == 'helix' then
-
         windower.chat.input(
             '/ma "'..
             data.elements.helix_of[state.ElementalMode.value]..
@@ -1520,9 +1057,7 @@ function handle_elemental(cmdParams)
             target..
             ''
         )
-
     elseif command == 'enfeeble' then
-
         windower.chat.input(
             '/ma "'..
             data.elements.elemental_enfeeble_of[state.ElementalMode.value]..
@@ -1530,9 +1065,7 @@ function handle_elemental(cmdParams)
             target..
             ''
         )
-
     elseif command == 'bardsong' then
-
         windower.chat.input(
             '/ma "'..
             data.elements.threnody_of[state.ElementalMode.value]..
@@ -1540,130 +1073,78 @@ function handle_elemental(cmdParams)
             target..
             ''
         )
-
     else
-
         add_to_chat(
             123,
             'Unrecognized elemental command.'
         )
-
     end
 end
-
-
--------------------------------------------------------------------------------------------------------------------
 -- Job tick / automation.
--------------------------------------------------------------------------------------------------------------------
-
 function job_tick()
-
     if check_low_mp() then
         return true
     end
-
     if check_arts() then
         return true
     end
-
     if check_buff() then
         return true
     end
-
     if check_buffup() then
         return true
     end
-
     return false
-
 end
-
-
--------------------------------------------------------------------------------------------------------------------
 -- Convert + Cure IV chain.
--------------------------------------------------------------------------------------------------------------------
-
 function handle_convert(cmdParams)
-
     if player.hpp < 75 then
-
         windower.chat.input(
             '/echo HP too low to safely convert'
         )
-
         return false
-
     end
-
     local abil_recasts =
         windower.ffxi.get_ability_recasts()
-
     -- Convert ability recast ID 49.
     if abil_recasts[49]
         and abil_recasts[49] < latency
         and not buffactive['amnesia'] then
-
         windower.chat.input(
             '/ja "Convert" <me>'
         )
-
         windower.chat.input:schedule(
             2,
             '/ma "Cure IV" <me>'
         )
-
         return true
-
     else
-
         add_to_chat(
             123,
             'Abort: Convert is on cooldown.'
         )
-
         return false
-
     end
 end
-
-
--------------------------------------------------------------------------------------------------------------------
 -- Low MP auto-convert.
--------------------------------------------------------------------------------------------------------------------
-
 function check_low_mp()
-
     if player.mp >= 200 then
         return false
     end
-
     if os.clock() <= low_mp_reminded_at then
         return false
     end
-
     low_mp_reminded_at =
         os.clock() + 30
-
     if handle_convert() then
-
         tickdelay =
             os.clock() + 2.5
-
         return true
-
     end
-
     return false
-
 end
-
-
--------------------------------------------------------------------------------------------------------------------
 -- Arts handling.
--------------------------------------------------------------------------------------------------------------------
-
 function check_arts()
-
     if buffup ~= ''
         or (
             not data.areas.cities:contains(world.area)
@@ -1675,72 +1156,47 @@ function check_arts()
                 or state.AutoBuffMode.value ~= 'Off'
             )
         ) then
-
         local abil_recasts =
             windower.ffxi.get_ability_recasts()
-
         if not buffactive.Composure then
-
             local abil_recasts =
                 windower.ffxi.get_ability_recasts()
-
             if abil_recasts[50] < latency then
-
                 tickdelay =
                     os.clock() + 1.1
-
                 windower.chat.input(
                     '/ja "Composure" <me>'
                 )
-
                 return true
-
             end
         end
-
         if player.sub_job == 'SCH'
             and not arts_active()
             and abil_recasts[228] < latency then
-
             send_command(
                 '@input /ja "Light Arts" <me>'
             )
-
             tickdelay =
                 os.clock() + 1.1
-
             return true
-
         end
     end
-
     return false
-
 end
-
-
--------------------------------------------------------------------------------------------------------------------
 -- Automatic buffs.
--------------------------------------------------------------------------------------------------------------------
-
 function check_buff()
-
     if state.AutoBuffMode.value ~= 'Off'
         and not data.areas.cities:contains(world.area) then
-
         local spell_recasts =
             windower.ffxi.get_spell_recasts()
-
         for i in pairs(
             buff_spell_lists[state.AutoBuffMode.value]
         ) do
-
             if not buffactive[
                 buff_spell_lists[state.AutoBuffMode.value][i].Buff
             ]
                 and (
                     buff_spell_lists[state.AutoBuffMode.value][i].When == 'Always'
-
                     or (
                         buff_spell_lists[state.AutoBuffMode.value][i].When == 'Combat'
                         and (
@@ -1748,17 +1204,14 @@ function check_buff()
                             or being_attacked
                         )
                     )
-
                     or (
                         buff_spell_lists[state.AutoBuffMode.value][i].When == 'Engaged'
                         and player.status == 'Engaged'
                     )
-
                     or (
                         buff_spell_lists[state.AutoBuffMode.value][i].When == 'Idle'
                         and player.status == 'Idle'
                     )
-
                     or (
                         buff_spell_lists[state.AutoBuffMode.value][i].When == 'OutOfCombat'
                         and not (
@@ -1773,73 +1226,46 @@ function check_buff()
                 and silent_can_use(
                     buff_spell_lists[state.AutoBuffMode.value][i].SpellID
                 ) then
-
                 windower.chat.input(
                     '/ma "'..
                     buff_spell_lists[state.AutoBuffMode.value][i].Name..
                     '" <me>'
                 )
-
                 tickdelay =
                     os.clock() + 2
-
                 return true
-
             end
         end
-
     else
-
         return false
-
     end
-
 end
-
-
--------------------------------------------------------------------------------------------------------------------
 -- Buff-up handling.
--------------------------------------------------------------------------------------------------------------------
-
 function check_buffup()
-
     if buffup ~= '' then
-
         local needsbuff = false
-
         for i in pairs(buff_spell_lists[buffup]) do
-
             if not buffactive[
                 buff_spell_lists[buffup][i].Buff
             ]
                 and silent_can_use(
                     buff_spell_lists[buffup][i].SpellID
                 ) then
-
                 needsbuff = true
                 break
-
             end
         end
-
         if not needsbuff then
-
             add_to_chat(
                 217,
                 'All '..buffup..' buffs are up!'
             )
-
             buffup = ''
-
             return false
-
         end
-
         local spell_recasts =
             windower.ffxi.get_spell_recasts()
-
         for i in pairs(buff_spell_lists[buffup]) do
-
             if not buffactive[
                 buff_spell_lists[buffup][i].Buff
             ]
@@ -1849,271 +1275,175 @@ function check_buffup()
                 and spell_recasts[
                     buff_spell_lists[buffup][i].SpellID
                 ] < spell_latency then
-
                 windower.chat.input(
                     '/ma "'..
                     buff_spell_lists[buffup][i].Name..
                     '" <me>'
                 )
-
                 tickdelay =
                     os.clock() + 2
-
                 return true
-
             end
         end
-
         return false
-
     else
-
         return false
-
     end
 end
-
-
--------------------------------------------------------------------------------------------------------------------
 -- Smart Cure.
--------------------------------------------------------------------------------------------------------------------
-
 function handle_smartcure(cmdParams)
-
     if cmdParams[2] then
-
         if tonumber(cmdParams[2]) then
-
             cureTarget =
                 windower.ffxi.get_mob_by_id(
                     tonumber(cmdParams[2])
                 )
-
         else
-
             cureTarget =
                 table.concat(cmdParams, ' ', 2)
-
             cureTarget =
                 get_closest_mob_by_name(cureTarget)
-
             if not cureTarget.name then
                 cureTarget = player.target
             end
-
             if not cureTarget.name then
                 cureTarget = player
             end
-
         end
-
     elseif player.target.type == "SELF"
         or player.target.type == 'MONSTER'
         or player.target.type == 'NONE' then
-
         cureTarget = player
-
     else
-
         cureTarget = player.target
-
     end
-
     if cureTarget.status == 2
         or cureTarget.status == 3 then
-
         windower.chat.input(
             '/ma "Raise II" '..cureTarget.id..''
         )
-
         return
-
     end
-
     local missingHP
-
     local spell_recasts =
         windower.ffxi.get_spell_recasts()
-
     if cureTarget.type == 'MONSTER' then
-
         handle_elemental({
             'elemental',
             'nuke',
             tostring(cureTarget.id)
         })
-
         return
-
     elseif cureTarget.in_alliance then
-
         cureTarget.hp =
             find_player_in_alliance(cureTarget.name).hp
-
         local est_max_hp =
             cureTarget.hp /
             (cureTarget.hpp / 100)
-
         missingHP =
             math.floor(
                 est_max_hp - cureTarget.hp
             )
-
     else
-
         local est_current_hp =
             1800 * (cureTarget.hpp / 100)
-
         missingHP =
             math.floor(
                 1800 - est_current_hp
             )
-
     end
-
     check_aurorastorm_for_cure(
         missingHP,
         cureTarget
     )
-
     if missingHP < 250 then
-
         if spell_recasts[1] < spell_latency then
-
             windower.chat.input(
                 '/ma "Cure" '..cureTarget.id..''
             )
-
         elseif spell_recasts[2] < spell_latency then
-
             windower.chat.input(
                 '/ma "Cure II" '..cureTarget.id..''
             )
-
         else
-
             add_to_chat(
                 123,
                 'Abort: Appropriate cures are on cooldown.'
             )
-
         end
-
     elseif missingHP < 400 then
-
         if spell_recasts[2] < spell_latency then
-
             windower.chat.input(
                 '/ma "Cure II" '..cureTarget.id..''
             )
-
         elseif spell_recasts[3] < spell_latency then
-
             windower.chat.input(
                 '/ma "Cure III" '..cureTarget.id..''
             )
-
         elseif spell_recasts[1] < spell_latency then
-
             windower.chat.input(
                 '/ma "Cure" '..cureTarget.id..''
             )
-
         else
-
             add_to_chat(
                 123,
                 'Abort: Appropriate cures are on cooldown.'
             )
-
         end
-
     elseif missingHP < 900 then
-
         if spell_recasts[3] < spell_latency then
-
             windower.chat.input(
                 '/ma "Cure III" '..cureTarget.id..''
             )
-
         elseif spell_recasts[4] < spell_latency then
-
             windower.chat.input(
                 '/ma "Cure IV" '..cureTarget.id..''
             )
-
         else
-
             add_to_chat(
                 123,
                 'Abort: Appropriate cures are on cooldown.'
             )
-
         end
-
     else
-
         if spell_recasts[4] < spell_latency then
-
             windower.chat.input(
                 '/ma "Cure IV" '..cureTarget.id..''
             )
-
         elseif spell_recasts[3] < spell_latency then
-
             windower.chat.input(
                 '/ma "Cure III" '..cureTarget.id..''
             )
-
         else
-
             add_to_chat(
                 123,
                 'Abort: Appropriate cures are on cooldown.'
             )
-
         end
     end
 end
-
-
--------------------------------------------------------------------------------------------------------------------
 -- Melee groups.
--------------------------------------------------------------------------------------------------------------------
-
 function update_melee_groups()
-
     classes.CustomMeleeGroups:clear()
-
     if enspell ~= '' then
-
         if enspell:endswith('II') then
-
             classes.CustomMeleeGroups:append(
                 'Enspell2'
             )
-
         else
-
             classes.CustomMeleeGroups:append(
                 'Enspell'
             )
-
         end
     end
-
     if player.equipment.main
         and player.equipment.main == "Murgleis"
         and state.Buff['Aftermath: Lv.3'] then
-
         classes.CustomMeleeGroups:append(
             'AM'
         )
-
     end
 end
-
-
 --autobuffs, move out!
 buff_spell_lists = {
 	Auto = {--Options for When are: Always, Engaged, Idle, OutOfCombat, Combat

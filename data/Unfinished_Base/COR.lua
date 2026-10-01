@@ -41,9 +41,9 @@ function job_setup()
 end
 
 
--------------------------------------------------------------------------------------------------------------------
+  
 -- Job-specific hooks for standard casting events.
--------------------------------------------------------------------------------------------------------------------
+  
 -- Set eventArgs.handled to true if we don't want any automatic gear equipping to be done.
 -- Set eventArgs.useMidcastGear to true if we want midcast gear equipped on precast.
 
@@ -143,9 +143,9 @@ function job_aftercast(spell, spellMap, eventArgs)
 	end
 end
 
--------------------------------------------------------------------------------------------------------------------
+  
 -- User code that supplements standard library decisions.
--------------------------------------------------------------------------------------------------------------------
+  
 
 function job_buff_change(buff, gain)
 	if player.equipment.Ranged and buff:contains('Aftermath') then
@@ -231,9 +231,9 @@ function job_post_precast(spell, spellMap, eventArgs)
 	end
 end
 
--------------------------------------------------------------------------------------------------------------------
+  
 -- Utility functions specific to this job.
--------------------------------------------------------------------------------------------------------------------
+  
 
 function define_roll_values()
     rolls = {

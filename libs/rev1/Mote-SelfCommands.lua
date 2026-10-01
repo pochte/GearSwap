@@ -1,8 +1,8 @@
--------------------------------------------------------------------------------------------------------------------
+  
 -- General functions for manipulating state values via self-commands.
 -- Only handles certain specific states that we've defined, though it
 -- allows the user to hook into the cycle command.
--------------------------------------------------------------------------------------------------------------------
+  
 
 -- Routing function for general known self_commands.
 -- Handles splitting the provided command line up into discrete words, for the other functions to use.
@@ -685,9 +685,9 @@ function display_current_state()
 	end
 end
 
--------------------------------------------------------------------------------------------------------------------
+  
 -- Test functions.
--------------------------------------------------------------------------------------------------------------------
+  
 
 -- A function for testing lua code.  Called via "gs c test".
 function handle_test(cmdParams)
@@ -698,9 +698,9 @@ end
 
 
 
--------------------------------------------------------------------------------------------------------------------
+  
 -- The below table maps text commands to the above handler functions.
--------------------------------------------------------------------------------------------------------------------
+  
 
 selfCommandMaps = {
 	['toggle']   = handle_toggle,

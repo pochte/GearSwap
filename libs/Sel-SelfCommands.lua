@@ -1,9 +1,6 @@
---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -- General functions for manipulating state values via self-commands.
 -- Only handles certain specific states that we've defined, though it
 -- allows the user to hook into the cycle command.
--------------------------------------------------------------------------------------------------------------------
-
 -- Routing function for general known self_commands.  Mappings are at the bottom of the file.
 -- Handles splitting the provided command line up into discrete words, for the other functions to use.
 function self_command(commandArgs)
@@ -14,49 +11,37 @@ function self_command(commandArgs)
             return
         end
     end
-	
 	if commandArgs[#commandArgs]:startswith('<st') then
 		local st_variable = (table.remove(commandArgs, #commandArgs)):lower()
 		st_command = table.concat(commandArgs, ' ')
 		windower.chat.input('/dance motion '..st_variable..'')
 		return
 	end
-
     -- init a new eventArgs
     local eventArgs = {handled = false}
-
     -- Allow users to override this code
     if user_job_self_command then
         user_job_self_command(commandArgs, eventArgs)
     end
-
     -- Allow jobs to override this code
     if not eventArgs.handled and job_self_command then
 		job_self_command(commandArgs, eventArgs)
     end
-	
     -- Allow jobs to override this code
     if not eventArgs.handled and user_self_command then
         user_self_command(commandArgs, eventArgs)
     end
-
     if not eventArgs.handled then
         -- Of the original command message passed in, remove the first word from
         -- the list (it will be used to determine which function to call), and
         -- send the remaining words as parameters for the function.
         local handleCmd = (table.remove(commandArgs, 1)):lower()
-
         if selfCommandMaps[handleCmd] then
             selfCommandMaps[handleCmd](commandArgs)
         end
     end
 end
-
-
--------------------------------------------------------------------------------------------------------------------
 -- Functions for manipulating state vars.
--------------------------------------------------------------------------------------------------------------------
-
 -- Function to set various states to specific values directly.
 -- User command format: gs c set [field] [value]
 -- If a boolean [field] is used, but not given a [value], it will be set to true.
@@ -65,45 +50,36 @@ function handle_set(cmdParams)
         add_to_chat(123,'Sel-Libs: Set parameter failure: field not specified.')
         return
     end
-    
 	local toggleset
 	if cmdParams[1]:lower() == 'toggle' then
 		toggleset = true
 		table.remove(cmdParams, 1)
 	end
-	
     local state_var = get_state(cmdParams[1])
-    
     if state_var then
         local oldVal = state_var.value
         state_var:set(cmdParams[2])
         local newVal = state_var.value
-		
 		if toggleset and newVal == oldVal and newVal ~= 'Single' then
 			handle_reset(cmdParams)
 			return
 		end
-		
         local descrip = state_var.description or cmdParams[1]
         if state_change then
             state_change(descrip, newVal, oldVal)
         end
-
         local msg = descrip..' is now '..state_var.current
         if state_var == state.DefenseMode and newVal ~= 'None' then
             msg = msg .. ' (' .. state[newVal .. 'DefenseMode'].current .. ')'
         end
         msg = msg .. '.'
-        
         add_to_chat(122, msg)
         handle_update({'auto'})
     else
         add_to_chat(123,'Sel-Libs: Set: Unknown field ['..cmdParams[1]..']')
     end
-
     -- handle string states: CombatForm, CombatWeapon, etc
 end
-
 -- Function to reset values to their defaults.
 -- User command format: gs c reset [field]
 -- Or: gs c reset all
@@ -112,23 +88,18 @@ function handle_reset(cmdParams)
         if _global.debug_mode then add_to_chat(123,'handle_reset: parameter failure: reset type not specified') end
         return
     end
-    
     local state_var = get_state(cmdParams[1])
-
     local oldVal
     local newVal
     local descrip
-    
     if state_var then
         oldVal = state_var.value
         state_var:reset()
         newVal = state_var.value
-        
         local descrip = state_var.description or cmdParams[1]
         if state_change then
             state_change(descrip, newVal, oldVal)
         end
-
         add_to_chat(122,descrip..' is now '..state_var.current..'.')
         handle_update({'auto'})
     elseif cmdParams[1]:lower() == 'all' then
@@ -137,22 +108,18 @@ function handle_reset(cmdParams)
                 oldVal = v.value
                 v:reset()
                 newVal = v.value
-                
                 descrip = state_var.description
                 if descrip and state_change then
                     state_change(descrip, newVal, oldVal)
                 end
             end
         end
-
         if job_reset_state then
             job_reset_state('all')
         end
-
         if state_change then
             state_change('Reset All')
         end
-
         add_to_chat(122,"All state vars have been reset.")
         handle_update({'auto'})
     elseif job_reset_state then
@@ -161,8 +128,6 @@ function handle_reset(cmdParams)
         add_to_chat(123,'Sel-Libs: Reset: Unknown field ['..cmdParams[1]..']')
     end
 end
-
-
 -- Handle cycling through the options list of a state var.
 -- User command format: gs c cycle [field]
 function handle_cycle(cmdParams)
@@ -170,9 +135,7 @@ function handle_cycle(cmdParams)
         add_to_chat(123,'Sel-Libs: Cycle parameter failure: field not specified.')
         return
     end
-    
     local state_var = get_state(cmdParams[1])
-    
     if state_var then
         local oldVal = state_var.value
         if cmdParams[2] and S{'reverse', 'backwards', 'r'}:contains(cmdParams[2]:lower()) then
@@ -181,28 +144,22 @@ function handle_cycle(cmdParams)
             state_var:cycle()
         end
         local newVal = state_var.value
-        
         local descrip = state_var.description or cmdParams[1]
         if state_change then
             state_change(descrip, newVal, oldVal)
         end
-
         add_to_chat(122,descrip..' is now '..state_var.current..'.')
         handle_update({'auto'})
     else
         add_to_chat(123,'Sel-Libs: Cycle: Unknown field ['..cmdParams[1]..']')
     end
 end
-
-
 -- Handle cycling backwards through the options list of a state var.
 -- User command format: gs c cycleback [field]
 function handle_cycleback(cmdParams)
     cmdParams[2] = 'reverse'
     handle_cycle(cmdParams)
 end
-
-
 -- Handle toggling of boolean mode vars.
 -- User command format: gs c toggle [field]
 function handle_toggle(cmdParams)
@@ -210,27 +167,21 @@ function handle_toggle(cmdParams)
         add_to_chat(123,'Sel-Libs: Toggle parameter failure: field not specified.')
         return
     end
-    
     local state_var = get_state(cmdParams[1])
-    
     if state_var then
         local oldVal = state_var.value
         state_var:toggle()
         local newVal = state_var.value
-        
         local descrip = state_var.description or cmdParams[1]
         if state_change then
             state_change(descrip, newVal, oldVal)
         end
-
         add_to_chat(122,descrip..' is now '..state_var.current..'.')
         handle_update({'auto'})
     else
         add_to_chat(123,'Sel-Libs: Toggle: Unknown field ['..cmdParams[1]..']')
     end
 end
-
-
 -- Function to force a boolean field to false.
 -- User command format: gs c unset [field]
 function handle_unset(cmdParams)
@@ -238,71 +189,54 @@ function handle_unset(cmdParams)
         add_to_chat(123,'Sel-Libs: Unset parameter failure: field not specified.')
         return
     end
-    
     local state_var = get_state(cmdParams[1])
-    
     if state_var then
         local oldVal = state_var.value
         state_var:unset()
         local newVal = state_var.value
-        
         local descrip = state_var.description or cmdParams[1]
         if state_change then
             state_change(descrip, newVal, oldVal)
         end
-
         add_to_chat(122,descrip..' is now '..state_var.current..'.')
         handle_update({'auto'})
     else
         add_to_chat(123,'Sel-Libs: Toggle: Unknown field ['..cmdParams[1]..']')
     end
 end
-
--------------------------------------------------------------------------------------------------------------------
-
 -- User command format: gs c update [option]
 -- Where [option] can be 'user' to display current state.
 -- Otherwise, generally refreshes current gear used.
 function handle_update(cmdParams)
     -- init a new eventArgs
     local eventArgs = {handled = false}
-
     reset_buff_states()
-
     -- Allow jobs to override this code
     if job_update then
         job_update(cmdParams, eventArgs)
     end
-
 	if state.AutoSambaMode.value ~= 'Off' and not (player.main_job == 'DNC' or player.sub_job == 'DNC') then
 		state.AutoSambaMode:set("Off")
 	end
-	
     if state.DefenseMode.value ~= 'None' or (not eventArgs.handled and not midaction() and not (pet_midaction() or ((petWillAct + 2) > os.clock()))) then
         if handle_equipping_gear then
             handle_equipping_gear(player.status)
         end
     end
-
     if cmdParams[1] == 'user' then
         display_current_state()
     end
-	
 	update_job_states()
 	update_combat_form()
 end
-
-
 -- showtp: equip the current TP set for examination.
 function handle_showtp(cmdParams)
 	update_combat_form()
-
     local msg = 'Showing current TP set: ['.. state.OffenseMode.value
     if state.HybridMode.value ~= 'Normal' then
         msg = msg .. '/' .. state.HybridMode.value
     end
     msg = msg .. ']'
-
     if #classes.CustomMeleeGroups > 0 then
         msg = msg .. ' ['
         for i = 1,#classes.CustomMeleeGroups do
@@ -313,12 +247,9 @@ function handle_showtp(cmdParams)
         end
         msg = msg .. ']'
     end
-
     add_to_chat(122, msg)
     equip(get_melee_set())
 end
-
-
 -- Minor variation on the GearSwap "gs equip naked" command, that ensures that
 -- all slots are enabled before removing gear.
 -- Command: "gs c naked"
@@ -326,7 +257,6 @@ function handle_naked(cmdParams)
     enable('main','sub','range','ammo','head','neck','lear','rear','body','hands','lring','rring','back','waist','legs','feet')
     equip(sets.naked)
 end
-
 function handle_weapons(cmdParams)
 	local weaponSet
 	if type(cmdParams) == 'string' then
@@ -370,10 +300,8 @@ function handle_weapons(cmdParams)
 		end
 		add_to_chat(123,"Error: A weapons set for ["..weaponSet.."] does not exist.")
 	end
-	
 	if state.DisplayMode.value then update_job_states()	end
 end
-
 function equip_weaponset(cmdParams)
 	enable('main','sub','range','ammo')
 	if sets.weapons[cmdParams] then
@@ -391,23 +319,18 @@ function equip_weaponset(cmdParams)
 		end
 	end
 end
-
 function handle_showset(cmdParams)
     enable('main','sub','range','ammo','head','neck','lear','rear','body','hands','lring','rring','back','waist','legs','feet')
-	
 	equip_weaponset(state.Weapons.value)
-
 	if cmdParams[1] ~= nil then
 		local key_list = parse_set_to_keys(cmdParams)
 		local set = get_set_from_keys(key_list)
-	
 		equip(set)
 		disable('main','sub','range','ammo','head','neck','lear','rear','body','hands','lring','rring','back','waist','legs','feet')
 	else
 		handle_update({'auto'})
 	end
 end
-
 function handle_useitem(cmdParams)
 	if cmdParams[1] ~= nil then
 		local equipslot = (table.remove(cmdParams, 1)):lower()
@@ -422,7 +345,6 @@ function handle_useitem(cmdParams)
 		add_to_chat(122,'Syntax error with UseItem command - Use: gs c UseItem equipslot Item Name (Use item for non-equippable items).')
 	end
 end
-
 function handle_forceequip(cmdParams)
 	if cmdParams[1] ~= nil then
 		local equipslot = (table.remove(cmdParams, 1)):lower()
@@ -444,13 +366,11 @@ function handle_forceequip(cmdParams)
 		handle_equipping_gear(player.status)
 	end
 end
-
 function handle_delayedcast()
 	if delayed_cast ~= '' and delayed_target ~= '' then
 		windower.send_command(''..delayed_cast..' '..delayed_target..'')
 	end
 end
-
 function handle_autonuke(cmdParams)
 	if #cmdParams == 0 then
 		add_to_chat(122,'You must specify a spell to autonuke with.')
@@ -460,7 +380,6 @@ function handle_autonuke(cmdParams)
 		if state.DisplayMode.value then update_job_states()	end
 	end
 end
-
 function handle_buffup(cmdParams)
 	if #cmdParams == 0 then
 		buffup = 'Default'
@@ -470,7 +389,6 @@ function handle_buffup(cmdParams)
 	else
 		buffup = cmdParams[1]
 	end
-	
 	for i in pairs(buff_spell_lists[buffup]) do
 		if buff_spell_lists[buffup][i].Reapply then
 			windower.send_command('cancel '..buff_spell_lists[buffup][i].Buff..'')
@@ -478,10 +396,8 @@ function handle_buffup(cmdParams)
 		end
 	end
 end
-
 function handle_smartws(cmdParams)
 	local target
-	
 	if cmdParams[1] then
 		if cmdParams[1] == 'ws' then
 			if cmdParams[2] then
@@ -504,7 +420,6 @@ function handle_smartws(cmdParams)
 	elseif player.target.type == "SELF" or player.target.type == 'NONE' then
 		target = player
 	end
-
 	if math.sqrt(target.distance) < 4 or (data.weaponskills.ranged:contains(autows) and math.sqrt(target.distance) < 21) then
 		local self_vector = windower.ffxi.get_mob_by_id(player.id)
 		local angle = (math.atan2((target.y - self_vector.y), (target.x - self_vector.x))*180/math.pi)*-1
@@ -516,10 +431,8 @@ function handle_smartws(cmdParams)
 		end
 	end
 end
-
 function handle_facemob(cmdParams)
 	local target
-	
 	if cmdParams[1] then
 		if tonumber(cmdParams[1]) then
 			target = windower.ffxi.get_mob_by_id(tonumber(cmdParams[1]))
@@ -534,12 +447,10 @@ function handle_facemob(cmdParams)
 	elseif player.target.type == "SELF" or player.target.type == 'NONE' then
 		target = player
 	end
-
 	local self_vector = windower.ffxi.get_mob_by_id(player.id)
 	local angle = (math.atan2((target.y - self_vector.y), (target.x - self_vector.x))*180/math.pi)*-1
 	windower.ffxi.turn((angle):radian())
 end
-
 function handle_killstatue()
 	local statue_name = ''
 	if world.area:startswith('Dynamis') and world.area:endswith('[D]') then
@@ -552,9 +463,7 @@ function handle_killstatue()
 		elseif world.area:contains("Jeuno") then
 			statue_name = 'Impish Statue'
 		end
-		
 		local mobs = windower.ffxi.get_mob_array()
-
 		for i, mob in pairs(mobs) do
 			if statue_name == mob.name and mob.valid_target and mob.status == 1 and (math.sqrt(mob.distance) < 21) then
 				if data.weaponskills.statue_ws[player.main_job] and (data.weaponskills.ranged:contains(data.weaponskills.statue_ws[player.main_job]) or (math.sqrt(mob.distance) < 4)) then
@@ -571,11 +480,9 @@ function handle_killstatue()
 		end
 	end
 end
-
 function handle_runeelement()
 	windower.chat.input('/ja "'..state.RuneElement.value..'" <me>')
 end
-
 function handle_shadows()
 	local spell_recasts = windower.ffxi.get_spell_recasts()
 	local currentshadows = has_shadows()
@@ -613,7 +520,6 @@ function handle_shadows()
 		end
 	end
 end
-
 function handle_autows(cmdParams)
 	if #cmdParams == 0 then
 		add_to_chat(122,'You must specify a ws to auto-weaponskill with.')
@@ -637,7 +543,6 @@ function handle_autows(cmdParams)
 		if state.DisplayMode.value then update_job_states()	end
 	end
 end
-
 function handle_autofood(cmdParams)
 	if #cmdParams == 0 then
 		add_to_chat(122,'You must specify a food to automatically eat.')
@@ -647,12 +552,9 @@ function handle_autofood(cmdParams)
 		if state.DisplayMode.value then update_job_states()	end
 	end
 end
-
 function handle_displayrune()
-	
 	local RuneResist = ''
 	local RuneDamage = ''
-
 	if state.RuneElement.value == 'Ignis' then
                 RuneResist = "<Ice> (Bind, Paralyze)"
                 RuneDamage = '<Fire> (Strong vs Ice, Weak vs Water)'
@@ -678,12 +580,9 @@ function handle_displayrune()
                 RuneResist = "<Light> (Charm, Repose)"
                 RuneDamage = '<Darkness> (Strong vs Light)'
 	end
-
 	add_to_chat(8,''..state.RuneElement.value..' Resists: '.. RuneResist ..', Deals: '.. RuneDamage ..'')
 end
-
 function handle_displayelement()
-	
 	if state.ElementalMode.value == 'Fire' then
 		add_to_chat(8,'<Fire> (Strong vs Ice, Weak vs Water)')
 	elseif state.ElementalMode.value == 'Wind' then
@@ -701,9 +600,7 @@ function handle_displayelement()
 	elseif state.ElementalMode.value == 'Dark' then
 		add_to_chat(8,'<Darkness> (Strong vs Light)')
 	end
-
 end
-
 function handle_displayshot()
 	if state.ElementalMode.value == 'Fire' then
 		add_to_chat(8,'<Fire> (Strong vs Ice, Weak vs Water)')
@@ -732,9 +629,7 @@ function handle_displayshot()
 		add_to_chat(8,'Shot Enhances: Bio, Blind, Kurayami.')
 		add_to_chat(8,'Shot Effect: Dispel.')
 	end
-
 end
-
 function handle_curecheat(cmdParams)
     if sets.HPDown then
         curecheat = true
@@ -760,7 +655,6 @@ function handle_curecheat(cmdParams)
         add_to_chat(123,"You don't have a sets.HPDown nor a sets.HPCure to cheat with.")
     end
 end
-
 function handle_smartcure(cmdParams)
 	if cmdParams[1] then
 		if tonumber(cmdParams[1]) then
@@ -776,15 +670,12 @@ function handle_smartcure(cmdParams)
 	else
 		cureTarget = player.target
 	end
-
 	if cureTarget.status == 2 or cureTarget.status == 3 then
 		windower.chat.input('/ma "Raise III" '..cureTarget..'')
 		return
 	end
-	
 	local missingHP
 	local spell_recasts = windower.ffxi.get_spell_recasts()
-
 	if cureTarget.type == 'MONSTER' then
 		if silent_can_use(4) and spell_recasts[4] < spell_latency then
 			windower.chat.input('/ma "Cure IV" '..cureTarget.id..'')
@@ -803,7 +694,6 @@ function handle_smartcure(cmdParams)
 		local est_current_hp = 1800 * (cureTarget.hpp/100)
 		missingHP = math.floor(1800 - est_current_hp)
 	end
-	
 	if missingHP < 170 then
 		if spell_recasts[1] < spell_latency then
 			windower.chat.input('/ma "Cure" '..cureTarget.id..'')
@@ -844,7 +734,6 @@ function handle_smartcure(cmdParams)
 		end
 	end
 end
-
 function handle_mount(cmdParams)
 	if player.status == 'Mount' then
 		windower.chat.input('/dismount')
@@ -858,9 +747,6 @@ function handle_mount(cmdParams)
 		end
 	end
 end
-
-------------------------------------------------------------------------------------------------------------------
-
 -- Get the state var that matches the requested name.
 -- Only returns mode vars.
 function get_state(name)
@@ -875,8 +761,6 @@ function get_state(name)
         end
     end
 end
-
-
 -- Function to reset state.Buff values (called from update).
 function reset_buff_states()
     if state.Buff then
@@ -887,8 +771,6 @@ function reset_buff_states()
         end
     end
 end
-
-
 -- Function to display the current relevant user state when doing an update.
 -- Uses display_current_job_state instead if that is defined in the job lua.
 function display_current_state()
@@ -896,84 +778,60 @@ function display_current_state()
     if display_current_job_state then
         display_current_job_state(eventArgs)
     end
-
     if not eventArgs.handled then
         local msg = 'Melee'
-        
         if state.CombatForm.has_value then
             msg = msg .. ' (' .. state.CombatForm.value .. ')'
         end
-        
         msg = msg .. ': '
-        
         msg = msg .. state.OffenseMode.value
         if state.HybridMode.value ~= 'Normal' then
             msg = msg .. '/' .. state.HybridMode.value
         end
         msg = msg .. ', WS: ' .. state.WeaponskillMode.value
-        
         if state.DefenseMode.value ~= 'None' then
             msg = msg .. ', Defense: ' .. state.DefenseMode.value .. ' (' .. state[state.DefenseMode.value .. 'DefenseMode'].value .. ')'
         end
-        
         if state.Kiting.value == true then
             msg = msg .. ', Kiting'
         end
-
         if state.PCTargetMode.value ~= 'default' then
             msg = msg .. ', Target PC: '..state.PCTargetMode.value
         end
-
         if state.SelectNPCTargets.value == true then
             msg = msg .. ', Target NPCs'
         end
-
         add_to_chat(122, msg)
     end
-
     if state.EquipStop.value ~= 'off' then
         add_to_chat(122,'Gear equips are blocked after ['..state.EquipStop.value..'].  Use "//gs c reset equipstop" to turn it off.')
     end
 end
-
 -- Generic version of this for casters
 function display_current_caster_state()
     local msg = ''
-    
     if state.OffenseMode.value ~= 'None' then
         msg = msg .. 'Melee'
-
         if state.CombatForm.has_value then
             msg = msg .. ' (' .. state.CombatForm.value .. ')'
         end
-        
         msg = msg .. ', '
     end
-    
     msg = msg .. 'Casting ['..state.CastingMode.value..'], Idle ['..state.IdleMode.value..']'
-    
     if state.DefenseMode.value ~= 'None' then
         msg = msg .. ', ' .. 'Defense: ' .. state.DefenseMode.value .. ' (' .. state[state.DefenseMode.value .. 'DefenseMode'].value .. ')'
     end
-    
     if state.Kiting.value == true then
         msg = msg .. ', Kiting'
     end
-
     if state.PCTargetMode.value ~= 'default' then
         msg = msg .. ', Target PC: '..state.PCTargetMode.value
     end
-
     if state.SelectNPCTargets.value == true then
         msg = msg .. ', Target NPCs'
     end
-
     add_to_chat(122, msg)
 end
-
-
--------------------------------------------------------------------------------------------------------------------
-
 -- Function to show what commands are available, and their syntax.
 -- Syntax: gs c help
 -- Or: gs c
@@ -1003,8 +861,6 @@ function handle_help(cmdParams)
         print('State vars:       gs c help field')
     end
 end
-
-
 -- A function for testing lua code.  Called via "gs c test".
 function handle_test(cmdParams)
     if user_test then
@@ -1013,11 +869,7 @@ function handle_test(cmdParams)
         job_test(cmdParams)
     end
 end
-
--------------------------------------------------------------------------------------------------------------------
 -- The below table maps text commands to the above handler functions.
--------------------------------------------------------------------------------------------------------------------
-
 selfCommandMaps = {
     ['toggle']   		= handle_toggle,
     ['cycle']    		= handle_cycle,

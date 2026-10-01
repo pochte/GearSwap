@@ -1,4 +1,3 @@
--- =============================================================================
 -- Ullona_Rdm_Gear.lua — Changelog
 -- 2026-09-27: [NEW] gs c castws logic moved out of RDM.lua into a standalone, job-agnostic
 --             smart-ws.lua (libs folder). This file now just supplies the weapon->weaponskill
@@ -15,8 +14,6 @@
 --             referenced a sets.midcast.Cure that never existed and crashed outright; here
 --             nothing referenced it directly so it just silently equipped nothing instead).
 --             Fixed the same way Curaga already was: an explicit copy of Healing Magic.
--- =============================================================================
-
 -- gs c castws (see smart-ws.lua): fires the WS matching whichever key here matches
 -- state.MainWeapon's current value; anything not listed falls back to the default.
 ws_by_main_weapon = {
@@ -24,10 +21,7 @@ ws_by_main_weapon = {
     KajaRod = 'Black Halo',
 }
 ws_by_main_weapon_default = 'Savage Blade'
-
 include('smart-ws.lua')
-
-
 function user_job_setup()
     -- Options: Override default values
     state.OffenseMode:options('Normal','Acc','FullAcc')
@@ -43,16 +37,10 @@ function user_job_setup()
     -- before init_job_states() runs there) -- just setting their option lists here.
     state.MainWeapon:options('None','Naegling','KajaRod','Tauret')
     state.OffWeapon:options('None','DemersalDegen','Machaera','GletisKnife','Daybreak','Culminus','SacroBulwark')
-
-    -- =========================================================================
     -- Macro Book
-    -- =========================================================================
     set_macro_page(1, 3) -- Page 1, Macro Book 3
-
-    -- =========================================================================
     -- Additional local binds — every keybind noted below for quick reference.
     -- Modifier key: ^ = Ctrl, ! = Alt, @ = Win, ~ = Shift
-    -- =========================================================================
     send_command('bind ^@!` input /ja "Accession" <me>')           -- Ctrl+Win+Alt + ` : Accession
     send_command('bind ^backspace input /ja "Saboteur" <me>')      -- Ctrl + Backspace  : Saboteur
     send_command('bind !backspace input /ja "Spontaneity" <t>')    -- Alt + Backspace   : Spontaneity
@@ -65,16 +53,11 @@ function user_job_setup()
     send_command('bind @delete input /ja "Manifestation" <me>')    -- Win + Delete       : Manifestation
     send_command('bind @f10 gs c smartna')                         -- Win + F10          : SmartNa
 end
-
 function user_job_lockstyle()
     send_command('input /lockstyleset 3')
 end
-
-
 function init_gear_sets()
-	--------------------------------------
 	-- Start defining the sets
-	--------------------------------------
 	-- Weapons: main/off-hand are locked independently via state.MainWeapon / state.OffWeapon,
 	-- forced every pass in RDM.lua's job_customize_idle_set/melee_set. No sets.weapons.* table
 	-- needed anymore -- that only worked for a fixed, named list of combos; with two
@@ -82,26 +65,17 @@ function init_gear_sets()
 	-- maintain. sets.engaged.DW is picked up automatically by the library whenever OffWeapon
 	-- is an actual weapon (dagger/sword) rather than a shield -- no named alias needed for that
 	-- either.
-
 	-- Weapon-mode -> weaponskill command: see handle_autows() in smart-ws.lua, and the
 	-- ws_by_main_weapon table near the top of this file (gs c castws).
 	-- Tauret=Exenterator, Kaja Rod=Black Halo, Naegling=Savage Blade. WS gear overrides
 	-- for Exenterator/Black Halo are set up below (empty for now, combined onto sets.precast.WS).
-
-
-	
 	-- Precast Sets
 	sets.precast.JA['Chainspell'] = {body="Vitiation Tabard +4"}
-	
-
 	-- Waltz set (chr and vit)
 	sets.precast.Waltz = {}
-		
 	-- Don't need any special gear for Healing Waltz.
 	sets.precast.Waltz['Healing Waltz'] = {}
-
 	-- Fast cast sets for spells
-	
 	sets.precast.FC =  {  
 		main="Marin Staff +1",
         sub="Daduchos Grip",
@@ -117,20 +91,17 @@ function init_gear_sets()
         waist ="Cornelia's Belt",
         neck = "Voltsurge Torque"
     }
-	
 	sets.precast.FC.Enfeebling = set_combine(sets.precast.FC, {head="Lethargy Chappel +3"})
     sets.precast.Stoneskin     = set_combine(sets.precast.FC, {waist="Siegel Sash", legs="Querkening Brais"})
     sets.precast.FC.Impact     = set_combine(sets.precast.FC, {head=empty, body="Twilight Cloak", ring1 ="Archon Ring"})
     sets.precast.FC.Utsusemi   = set_combine(sets.precast.FC, {neck="Magoraga Beads"})
     sets.precast.FC.Dispelga   = set_combine(sets.precast.FC, {main="Daybreak", sub="Culminus"})
-
 	sets.precast['Healing Magic'] = set_combine(sets.precast.FC, {
         main  ="Daybreak",
         sub="Sors Sheild",
         legs="Doyen Pants",
         body="Vanya Robe"
     })
-       
 	-- Weaponskill sets
 	-- Default set for any weaponskill that isn't any more specifically defined
 	sets.precast.WS = {
@@ -148,24 +119,16 @@ function init_gear_sets()
 	ring1="Cornelia's Ring",  
         ammo="Oshasha's Treatise",
         range=empty
-
     }
-		
 	sets.precast.WS.Proc = 	sets.precast.WS
-
 	-- Per-weaponskill overrides, empty for now -- fill in slot changes later.
 	sets.precast.WS['Savage Blade'] = set_combine(sets.precast.WS, {ear1="Moonshade Earring"})
 	sets.precast.WS['Exenterator']  = set_combine(sets.precast.WS, {})
 	sets.precast.WS['Black Halo']   = set_combine(sets.precast.WS, {ear1="Moonshade Earring"})
-
 	-- Midcast Sets
-
-	
 	-- Gear that converts elemental damage done to recover MP.	
 	sets.RecoverMP = {}
-
 sets.midcast.FastRecast = sets.precast.FC
-
     sets.midcast['Healing Magic'] = { 
         main  = "Bunzi Rod",
         sub="Sacro Bulwark",
@@ -181,7 +144,6 @@ sets.midcast.FastRecast = sets.precast.FC
         legs  ="Atrophy Tights +3",
         feet  ="Vanya Clogs",
     }
-
 	sets.precast.Cure = set_combine(sets.precast['Healing Magic'], {legs="Doyen Pants", body="Vanya Robe", main="Daybreak",
         sub="Sors Sheild", back="Pahtli Cape"})
 	sets.midcast.Cure = set_combine(sets.midcast['Healing Magic'], {})
@@ -191,9 +153,7 @@ sets.midcast.FastRecast = sets.precast.FC
     sets.midcast.LightDayCure = set_combine(sets.midcast['Healing Magic'], {
         main  ="Chatoyant Staff",
         sub   ="Achaq Grip",})
-
 	sets.midcast.StatusRemoval = set_combine(sets.midcast.FastRecast, {})
-
 	-- [FIX 11]: was set_combine(sets.midcast.Cure, {...}) — sets.midcast.Cure doesn't exist
 	--           anywhere in this file (per FIX 2, it's sets.midcast['Healing Magic']).
 	--           Was combining against nil.
@@ -202,12 +162,10 @@ sets.midcast.FastRecast = sets.precast.FC
 		back="Tempered Cape +1  ",    
 		waist="Cornelia's Belt", feet="Vanya Clogs"
 	})
-
 	-- [FIX 12]: was a direct alias to sets.midcast.Cure (undefined) — same nil-reference
 	--           bug as Cursna, plus the direct-assignment aliasing risk from FIX 6/8.
 	--           Now a proper independent copy of the correct set.
 	sets.midcast.Curaga = set_combine(sets.midcast['Healing Magic'], {})
-
 	sets.Self_Healing = {}
 	sets.Cure_Received = {}
 	sets.Self_Refresh = {head="Amalric Coif +1"}
@@ -237,10 +195,8 @@ sets.precast['Enhancing Magic'] = set_combine(sets.precast.FC, {
         legs  ="Lethargy Fuseau +3",
         hands ="Lethargy Gantherots +3",
         feet  ="Lethargy Houseaux +3",}
-		
 	--Red Mage enhancing sets are handled in a different way from most, layered on due to the way Composure works
 	--Don't set combine a full set with these spells, they should layer on Enhancing Set > Composure (If Applicable) > Spell
-
 	sets.midcast.BoostStat = {hands="Vitiation Gloves +3"}
 	sets.Self_Refresh  = set_combine(sets.midcast['Enhancing Magic'],{feet="Inspirited Boots"})
     sets.midcast.Regen       = set_combine(sets.midcast['Enhancing Magic'], {main="Bolelabunga"})
@@ -259,8 +215,6 @@ sets.precast['Enhancing Magic'] = set_combine(sets.precast.FC, {
     sets.midcast.IceSpikes   = set_combine(sets.midcast.ShockSpikes, {})
     sets.midcast.Gain        = set_combine(sets.midcast['Enhancing Magic'], {hands="Vitiation Gloves +3"})
     sets.precast.JA.Chainspell = {body="Vitiation Tabard +4"}
-
-	
 	sets.midcast['Enfeebling Magic'] =  
     {
 		main  ="Mpaca's Staff",
@@ -280,7 +234,6 @@ sets.precast['Enhancing Magic'] = set_combine(sets.precast.FC, {
         range=empty,
         ammo="Regal Gem" -- [FIX] explicit alongside the deliberate Kaja Bow, so nothing combined on top of this set can leave a stray ammo piece fighting the bow
     }
-		
 	sets.midcast['Enfeebling Magic'].Resistant = set_combine(sets.midcast['Enfeebling Magic'], {
         back ="Null Shawl",
         main ="Chatoyant Staff",
@@ -306,7 +259,6 @@ sets.precast['Enhancing Magic'] = set_combine(sets.precast.FC, {
 	sets.midcast['Frazzle III'].Resistant  = sets.midcast['Enfeebling Magic'].Resistant
 	sets.midcast['Distract III']           = set_combine(sets.midcast.SkillBasedEnfeebling, {})
 	sets.midcast['Distract III'].Resistant = sets.midcast['Enfeebling Magic'].Resistant
-
     sets.midcast['Elemental Magic'] = {
         main  ="Marin Staff +1",
         sub="Daduchos Grip",
@@ -325,7 +277,6 @@ sets.precast['Enhancing Magic'] = set_combine(sets.precast.FC, {
         waist ="Hachirin-no-obi",
         range=empty -- [FIX] explicit alongside ammo="Ghastly Tathlum" above, so nothing built on this set can inherit a lingering Kaja Bow
     }
-		
 	sets.midcast['Elemental Magic'].Resistant = set_combine(sets.midcast['Elemental Magic'], {
 		main = "Mpaca's Staff",
 		neck = "Incanter's Torque",
@@ -334,14 +285,12 @@ sets.precast['Enhancing Magic'] = set_combine(sets.precast.FC, {
 		back = "Null Shawl",
         ammo="Regal Gem" -- [FIX] Kaja Bow retired: swaps in Regal Gem for the Magic Accuracy boost instead; no range override needed since the base set already carries range=empty
 	})
-		
     sets.midcast['Elemental Magic'].Fodder = set_combine(sets.midcast['Elemental Magic'], {})
     sets.midcast['Elemental Magic'].Proc   = set_combine(sets.midcast['Elemental Magic'], {})
     sets.midcast['Elemental Magic'].HighTierNuke           = set_combine(sets.midcast['Elemental Magic'], {})
     sets.midcast['Elemental Magic'].HighTierNuke.Resistant = set_combine(sets.midcast['Elemental Magic'].Resistant, {})
     sets.midcast['Elemental Magic'].HighTierNuke.Fodder    = set_combine(sets.midcast['Elemental Magic'].Fodder, {})
     sets.midcast.Impact = set_combine(sets.midcast['Elemental Magic'], {head=empty, body="Twilight Cloak"})
-
 	-- Gear for Magic Burst mode. (combines against the now fully-defined Elemental Magic set)
     sets.MagicBurst = set_combine(sets.midcast['Elemental Magic'], {
         main="Bunzi's Rod", 
@@ -354,23 +303,19 @@ sets.precast['Enhancing Magic'] = set_combine(sets.precast.FC, {
         neck  ="Mizukage-no-Kubikazari",
         ring2="Freke Ring",
         ring1 ="Locus Ring",
-
     })
     sets.ResistantMagicBurst = set_combine(sets.MagicBurst, {})
 	sets.midcast['Divine Magic'] = set_combine(sets.midcast['Elemental Magic'], {
         feet="Medium's Sabots",
         body="Vanya Robe",
     })
-
 	sets.midcast.Dia = sets.midcast['Enfeebling Magic']
 	sets.midcast.Diaga = sets.midcast['Enfeebling Magic']
 	sets.midcast['Dia II'] = sets.midcast['Enfeebling Magic']
 	sets.midcast['Dia III'] = sets.midcast['Enfeebling Magic']
-	
 	sets.midcast.Bio = sets.midcast['Enfeebling Magic']
 	sets.midcast['Bio II'] = sets.midcast['Enfeebling Magic']
 	sets.midcast['Bio III'] = set_combine(sets.midcast['Enfeebling Magic'], {head="Vitiation Chapeau +4"})
-
 	 sets.midcast['Dark Magic'] = {
         head  ="Jhakri Coronal +2",
         body  ="Jhakri Robe +2",
@@ -389,15 +334,11 @@ sets.precast['Enhancing Magic'] = set_combine(sets.precast.FC, {
         main="Marin Staff +1",
         sub="Daduchos Grip"-- [FIX] explicit alongside ammo, so nothing built on this set can inherit a lingering Kaja Bow
     }
-
     sets.midcast.Drain          = set_combine(sets.midcast['Dark Magic'], {neck="Erra Pendant"})
     sets.midcast.Aspir          = set_combine(sets.midcast.Drain, {waist="Fucho-no-obi", feet="Merlinic Crackows"})
     sets.midcast.Stun           = set_combine(sets.midcast['Dark Magic'], {})
     sets.midcast.Stun.Resistant = set_combine(sets.midcast['Dark Magic'], {})
-
-
 	-- Sets for special buff conditions on spells.
-		
   sets.buff.Saboteur      = {hands="Lethargy Gantherots +3"}
     sets.buff.Sublimation   = {waist="Embla Sash"}
     sets.buff.DTSublimation = {waist="Embla Sash"}
@@ -405,13 +346,12 @@ sets.precast['Enhancing Magic'] = set_combine(sets.precast.FC, {
     sets.HPCure             = {}
     sets.buff.Doom          = {}
 	-- Sets to return to when not performing an action.
-	
 	-- Resting sets
 	sets.resting = {main="Chatoyant Staff",sub="Oneiros Grip",}
 	-- Idle sets
 	sets.idle = { 
         main="Daybreak",
-        sub="Sacro Bulwark",
+        sub="Archduke's Sheild",
         ammo  ="Crepuscular Pebble",
         head  ="Vitiation Chapeau +4",
         body  ="Lethargy Sayon +3",
@@ -426,36 +366,27 @@ sets.precast['Enhancing Magic'] = set_combine(sets.precast.FC, {
         back  ="Archon Cape",
         waist ="Null Belt",
         range=empty}
-		
 	sets.idle.PDT     = set_combine(sets.idle, 
 	{        main="Emissary",
         sub="Sacro Bulwark"})
     sets.idle.MDT     = set_combine(sets.idle, {})
     sets.idle.Weak    = set_combine(sets.idle, {})
     sets.idle.DTHippo = set_combine(sets.idle, {})
-	
 	sets.idle.DTHippo = set_combine(sets.idle.PDT, {
 	back="Archon Cape",
 	legs="Carmine Cuisses +1",
 	--feet="Hippo. Socks +1"
 	})
-	
 	-- Defense sets
 	sets.defense.PDT = {}
-
 	sets.defense.NukeLock = sets.midcast['Elemental Magic']
-		
 	sets.defense.MDT =  set_combine(sets.idle.MDT,{})
-		
     sets.defense.MEVA = set_combine(sets.defense.MDT,{})
-		
 	sets.Kiting = {legs="Carmine Cuisses +1", main="Daybreak", sub="Sacro Bulwark", ammo="Crepuscular Pebble"}
 	sets.latent_refresh = {waist="Fucho-no-obi"}
 	sets.latent_refresh_grip = {main= "Mpaca's Staff", sub="Oneiros Grip"}
- 
 	sets.DayIdle = {}
 	sets.NightIdle = {}
-	
 	-- Elemental bonus overlay sets. 
 	sets.element = {
 		Fire = {},
@@ -479,12 +410,10 @@ sets.precast['Enhancing Magic'] = set_combine(sets.precast.FC, {
 	}
     sets.buff.Sublimation = {waist="Embla Sash"}
     sets.buff.DTSublimation = {waist="Embla Sash"}
-
 	--Situational sets: Gear that is equipped on certain targets
 	sets.Self_Healing = {ring1="Kunaji Ring" }
 	sets.Cure_Received = {}
 	sets.Self_Refresh = {}
-
 sets.engaged = {  
         neck  ="Lissome Necklace",
         ear1  ="Sherida Earring",
@@ -499,8 +428,6 @@ sets.engaged = {
         feet  ="Malignance Boots",
         ammo="Crepuscular Pebble",
         range=empty} 
-        
-
 sets.engaged.Acc = set_combine(sets.engaged, {ammo="Ginsen", waist="Null Loop", ring1="Mars's Ring"})
 sets.engaged.FullAcc = set_combine(sets.engaged.Acc, {back="Null Shawl", neck="Null Loop",})
 sets.engaged.DT = set_combine(sets.engaged, {})

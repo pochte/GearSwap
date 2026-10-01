@@ -23,9 +23,9 @@ function user_job_setup()
 end
 
 function init_gear_sets()
-	--------------------------------------
+  
 	-- Start defining the sets
-	--------------------------------------
+  
 	
 	-- Precast Sets
 	

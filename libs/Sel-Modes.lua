@@ -1,4 +1,4 @@
----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	
+  -	
 -- 99.99% Motetenten's Original code, just changed to Sel-Modes to prevent Windower from overwriting Modes
 -- Due to a couple small changes.
 -- This include library allows use of specially-designed tables for tracking
@@ -84,7 +84,7 @@
 -- UseLuzafRing = M(false)	
 -- UseLuzafRing:toggle()	
 -- equip(sets.precast['Phantom Roll'], sets.LuzafRing[UseLuzafRing.value])	
--------------------------------------------------------------------------------------------------------------------	
+  	
 
 
  _meta = _meta or {}	

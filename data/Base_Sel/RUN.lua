@@ -1,8 +1,8 @@
---------------------------------------------------------------------------------------------------------------------------------------------
+  
 
--------------------------------------------------------------------------------------------------------------------
+  
 -- Setup functions for this job.  Generally should not be modified.
--------------------------------------------------------------------------------------------------------------------
+  
 
 -- Initialization function for this job file.
 function get_sets()
@@ -30,9 +30,9 @@ function job_setup()
 	init_job_states({"Capacity","AutoRuneMode","AutoTrustMode","AutoTankMode","AutoWSMode","AutoShadowMode","AutoFoodMode","AutoNukeMode","AutoStunMode","AutoDefenseMode",},{"AutoBuffMode","AutoSambaMode","Weapons","OffenseMode","WeaponskillMode","Stance","IdleMode","Passive","RuneElement","PhysicalDefenseMode","MagicalDefenseMode","ResistDefenseMode","TreasureMode",})
 end
 
--------------------------------------------------------------------------------------------------------------------
+  
 -- Job-specific hooks for standard casting events.
--------------------------------------------------------------------------------------------------------------------
+  
 -- Set eventArgs.handled to true if we don't want any automatic gear equipping to be done.
 -- Set eventArgs.useMidcastGear to true if we want midcast gear equipped on precast.
 
@@ -121,9 +121,9 @@ function job_buff_change(buff, gain)
 	update_melee_groups()
 end
 
--------------------------------------------------------------------------------------------------------------------
+  
 -- Customization hooks for idle and melee sets, after they've been automatically constructed.
--------------------------------------------------------------------------------------------------------------------
+  
 
 -- Modify the default melee set after it was constructed.
 function job_customize_melee_set(meleeSet)
@@ -175,9 +175,9 @@ function job_update(cmdParams, eventArgs)
 	end
 end
 
--------------------------------------------------------------------------------------------------------------------
+  
 -- General hooks for other events.
--------------------------------------------------------------------------------------------------------------------
+  
 
 -- Handle notifications of general user state change.
 function job_state_change(stateField, newValue, oldValue)
@@ -187,9 +187,9 @@ function job_state_change(stateField, newValue, oldValue)
     classes.CustomMeleeGroups:append(state.ExtraDefenseMode.current)
 end
 
--------------------------------------------------------------------------------------------------------------------
+  
 -- User code that supplements self-commands.
--------------------------------------------------------------------------------------------------------------------
+  
 
 function job_self_command(commandArgs, eventArgs)
 	if commandArgs[1]:lower() == 'subjobenmity' then
@@ -288,9 +288,9 @@ function job_self_command(commandArgs, eventArgs)
 
 end
 
--------------------------------------------------------------------------------------------------------------------
+  
 -- Utility functions specific to this job.
--------------------------------------------------------------------------------------------------------------------
+  
 
 function weather_rune_match()
     weather_rune = buffactive[data.elements.rune_of[world.weather_element] or '']

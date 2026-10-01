@@ -1,6 +1,6 @@
---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  
 -- Setup functions for this job.  Generally should not be modified.
--------------------------------------------------------------------------------------------------------------------
+  
 
 -- Initialization function for this job file.
 function get_sets()
@@ -32,9 +32,9 @@ function job_setup()
 	init_job_states({"Capacity","AutoRuneMode","AutoTrustMode","AutoWSMode","AutoShadowMode","AutoFoodMode","AutoNukeMode","AutoStunMode","AutoDefenseMode","ElementalWheel",},{"AutoBuffMode","AutoSambaMode","Weapons","OffenseMode","WeaponskillMode","Stance","IdleMode","Passive","RuneElement","ElementalMode","CastingMode","TreasureMode",})
 end
 
--------------------------------------------------------------------------------------------------------------------
+  
 -- Job-specific hooks for standard casting events.
--------------------------------------------------------------------------------------------------------------------
+  
 -- Set eventArgs.handled to true if we don't want any automatic gear equipping to be done.
 -- Set eventArgs.useMidcastGear to true if we want midcast gear equipped on precast.
 
@@ -138,9 +138,9 @@ function job_aftercast(spell, spellMap, eventArgs)
     end
 end
 
--------------------------------------------------------------------------------------------------------------------
+  
 -- Job-specific hooks for non-casting events.
--------------------------------------------------------------------------------------------------------------------
+  
 
 -- Called when a player gains or loses a buff.
 -- buff == buff gained or lost
@@ -154,9 +154,9 @@ function job_status_change(new_status, old_status)
 end
 
 
--------------------------------------------------------------------------------------------------------------------
+  
 -- User code that supplements standard library decisions.
--------------------------------------------------------------------------------------------------------------------
+  
 
 -- Get custom spell maps
 function job_get_spell_map(spell, default_spell_map)
@@ -215,9 +215,9 @@ function job_update(cmdParams, eventArgs)
 	update_melee_groups()
 end
 
--------------------------------------------------------------------------------------------------------------------
+  
 -- Utility functions specific to this job.
--------------------------------------------------------------------------------------------------------------------
+  
 
 --[[function determine_haste_group()
     -- We have three groups of DW in gear: Hachiya body/legs, Iga head + Patentia Sash, and DW earrings

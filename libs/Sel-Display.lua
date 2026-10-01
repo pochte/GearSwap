@@ -1,6 +1,6 @@
------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  ---------------------
 -- Job State Display -- Originally written by Talym, modified by Selindrile.
-----------------------------------------------------------------------------------------------------
+  -----------------
 -- Creates a customizable visual job state display for states managed by Modes.lua
 --
 -- Include in get_sets(), user_setup(), etc, or custom include file
@@ -11,9 +11,9 @@
 --
 -- Additional modal states can be supported by defining a label mapping in update_job_states()
 -- Boolean states require no modifications
-----------------------------------------------------------------------------------------------------
+  -----------------
 
-----------------------------------------------------------------------------------------------------
+  -----------------
 -- Initialize display
 -- Call after defining job states in get_sets(), user_setup(), etc.
 --
@@ -27,7 +27,7 @@
 --      state.IdleMode:options('Normal', 'Death')
 --      init_job_states({"MagicBurst"},{"CastingMode","IdleMode"})
 -- end
-----------------------------------------------------------------------------------------------------
+  -----------------
 function init_job_states(job_bools,job_modes)
 
     stateList = job_modes
@@ -68,10 +68,10 @@ function init_job_states(job_bools,job_modes)
 
 end
 
-----------------------------------------------------------------------------------------------------
+  -----------------
 -- Update display
 -- Call from state_change(), job_state_change(), etc.
-----------------------------------------------------------------------------------------------------
+  -----------------
 function update_job_states()
 
 	if not state.DisplayMode.value then
@@ -344,10 +344,10 @@ function update_job_states()
 
 end
 
-----------------------------------------------------------------------------------------------------
+  -----------------
 -- Clean up display objects
 -- Call from file_unload(), user_unload(), etc.
-----------------------------------------------------------------------------------------------------
+  -----------------
 function clear_job_states()
     if stateBox then stateBox:destroy() end
 end

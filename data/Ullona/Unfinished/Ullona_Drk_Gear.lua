@@ -22,9 +22,9 @@ end
 
 -- Define sets and vars used by this job file.
 function init_gear_sets()
-	--------------------------------------
+  
 	-- Start defining the sets
-	--------------------------------------
+  
 	-- Precast Sets
 	-- Precast sets to enhance JAs
 	sets.precast.JA['Diabolic Eye'] = {}

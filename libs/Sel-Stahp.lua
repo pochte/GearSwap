@@ -1,51 +1,28 @@
---------------------------------------------------------------------------------------------------------------------------------------------
+  
 --Requires Gearswap and Motenten includes.
 being_attacked = false
 engaging = os.clock()
-
 include('Sel-MonsterAbilities.lua')
-
 state.AutoDefenseMode = M(false, 'Auto Defense Mode')
 state.TankAutoDefense = M(false, 'Maintain Tanking Defense')
 state.AutoEngageMode = M(false, 'Auto Engage Mode')
 state.AutoStunMode = M(false, 'Auto Stun Mode')
 state.BlockWarp = M(false, 'BlockWarp')
-
-CureAbility = S{"Cure","Cure II","Cure III","Cure IV","Cure V","Cure VI","Magic Fruit","Wild Carrot","Plenilune Embrace","Curaga","Curaga II",
-				"Curaga III","Curaga IV","Curaga V",
-				 }
-				 
-CuragaAbility = S{"Curaga","Curaga II","Curaga III","Curaga IV","Curaga V","Cura","Cura III","Cura III","White Wind",
-				 }
-				 
-ProshellAbility = S{"Protect","Protect II","Protect III","Protect IV","Protect V",
-					"Shell","Shell II","Shell III","Shell IV","Shell V",
-				 }
-				 
-ProshellraAbility = S{"Protectra","Protectra II","Protectra III","Protectra IV","Protectra V",
-					"Shellra","Shellra II","Shellra III","Shellra IV","Shellra V",
-				 }
-				 
-RefreshAbility = S{"Refresh","Refresh II", "Refresh III"
-				 }
-				 
-PhalanxAbility = S{"Phalanx II"
-				 }
-				 
-EnhancingAbility = S{"Haste","Haste II","Flurry","Flurry II","Adloquium","Erratic Flutter","Animating Wail",
-				 }
-
+CureAbility       = S{"Cure","Cure II","Cure III","Cure IV","Cure V","Cure VI","Magic Fruit","Wild Carrot","Plenilune Embrace","Curaga","Curaga II","Curaga III","Curaga IV","Curaga V"}
+CuragaAbility     = S{"Curaga","Curaga II","Curaga III","Curaga IV","Curaga V","Cura","Cura III","White Wind"}
+ProshellAbility   = S{"Protect","Protect II","Protect III","Protect IV","Protect V","Shell","Shell II","Shell III","Shell IV","Shell V"}
+ProshellraAbility = S{"Protectra","Protectra II","Protectra III","Protectra IV","Protectra V","Shellra","Shellra II","Shellra III","Shellra IV","Shellra V"}
+RefreshAbility    = S{"Refresh","Refresh II","Refresh III"}
+PhalanxAbility    = S{"Phalanx II","Phalanx"}
+EnhancingAbility  = S{"Haste","Haste II","Flurry","Flurry II","Adloquium","Erratic Flutter","Animating Wail"}
 function check_reaction(act)
-
 	--Gather Info
     local curact = T(act)
     local actor = T{}
 	local otherTarget = T{}
-
     actor.id = curact.actor_id
 	-- Make sure it's something we actually care about reacting to.
 	if curact.category == 1 and not ((state.AutoEngageMode.value and player.status == 'Idle')) and being_attacked then return end
-
 	if not ((curact.category == 1 or curact.category == 3 or curact.category == 4 or curact.category == 7 or curact.category == 8 or curact.category == 11 or curact.category == 13)) then return end
 	-- Make sure it's a mob that's doing something.
     if windower.ffxi.get_mob_by_id(actor.id) then
@@ -53,14 +30,12 @@ function check_reaction(act)
     else
         return
     end
-
 	-- Check if we're targetting it.
     if player and player.target and player.target.id and actor.id == player.target.id then
         isTarget = true
     else
 		isTarget = false
     end
-
 	if curact.targets[1].id == nil then
 		targetsMe = false
 		targetsSelf = false
@@ -96,18 +71,15 @@ function check_reaction(act)
 		targetsMe = false
 		targetsDistance = math.sqrt(otherTarget.distance)
 	end
-	
 	if curact.category == 1 then
 		if targetsMe then
 			if state.AutoEngageMode.value and actor.race == 0 and math.sqrt(actor.distance) < (3.2 + actor.model_size) and player.status == 'Idle' and not (moving or engaging > os.clock() or actor.name:contains("'s ")) then
 				engaging = os.clock() + 2
-				
 				packets.inject(packets.new('outgoing', 0x1a, {
 					['Target'] = actor.id,
 					['Target Index'] = actor.index,
 					['Category']     = 0x02,
 				}))
-				
 			elseif player.status == 'Idle' and not (being_attacked or midaction() or pet_midaction() or (petWillAct + 2) > os.clock()) then
 				windower.send_command('gs c forceequip')
 			end
@@ -115,7 +87,6 @@ function check_reaction(act)
 		end
 		return
 	end
-
 	-- Track buffs locally
 	if curact.category == 4 then
 		act_info = res.spells[curact.param]
@@ -148,7 +119,6 @@ function check_reaction(act)
 			lasthaste = 1
 		end
 	end
-	
 	-- Turn off Defense if needed for things we're targetting.
 	if (curact.category == 3 or curact.category == 4 or curact.category == 11 or curact.category == 13) then
 		if isTarget and player.target.type == "MONSTER" and state.AutoDefenseMode.value and state.DefenseMode.value ~= 'None' then
@@ -169,21 +139,17 @@ function check_reaction(act)
 		end
 		return
 	end
-	
 	-- Make sure it's not US from this point on!
 	if actor.id == player.id then return end
     -- Make sure it's a WS or MA precast before reacting to it.		
     if not (curact.category == 7 or curact.category == 8) then return end
-	
     -- Get the name of the action.
     if curact.category == 7 then act_info = res.monster_abilities[curact.targets[1].actions[1].param] end
     if curact.category == 8 then act_info = res.spells[curact.targets[1].actions[1].param] end
 	if act_info == nil then return end
-
 	-- Reactions begin.
 	if state.BlockWarp.value and ((targetsMe and (act_info.name == 'Warp II' or act_info.name == 'Retrace')) or (actor.in_party and (act_info.name:contains('Teleport') or act_info.name:contains('Recall')))) then
 		local party = windower.ffxi.get_party()
-	
 		if party.party1_leader == player.id then
 			windower.chat.input('/pcmd kick '..actor.name..'')
 		else
@@ -191,7 +157,6 @@ function check_reaction(act)
 		end
 		return
 	elseif midaction() or curact.category ~= 8 or state.DefenseMode.value ~= 'None' or ((petWillAct + 2) > os.clock()) then
-			
 	elseif targetsMe then
 		if CureAbility:contains(act_info.name) and player.hpp < 75 then
 			if sets.Cure_Received then
@@ -218,7 +183,6 @@ function check_reaction(act)
 			if sets.Sheltered then do_equip('sets.Sheltered') return end
 		end
 	elseif actor.in_party and otherTarget.in_party and targetsDistance < 10 then
-
 		if CuragaAbility:contains(act_info.name) and player.hpp < 75 then
 			if sets.Cure_Received then
 				do_equip('sets.Cure_Received')
@@ -230,7 +194,6 @@ function check_reaction(act)
 			do_equip('sets.Sheltered') return
 		end
 	end
-	
 	-- Make sure this is our target. 	send_command('input /echo Actor:'..actor.id..' Target:'..player.target.id..'')
 	if curact.param == 24931 then --24931 is initiation paramater for action category 7 and 8
 		if isTarget and state.AutoStunMode.value and player.target.type == "MONSTER" and not moving then
@@ -238,7 +201,6 @@ function check_reaction(act)
 				gearswap.refresh_globals(false)				
 				if not (buffactive.silence or  buffactive.mute or buffactive.Omerta) then
 					local spell_recasts = windower.ffxi.get_spell_recasts()
-				
 					if player.main_job == 'BLM' or player.sub_job == 'BLM' or player.main_job == 'DRK' or player.sub_job == 'DRK' and spell_recasts[252] < spell_latency then
 						windower.chat.input('/ma "Stun" <t>') return
 					elseif player.main_job == 'BLU' and spell_recasts[692] < spell_latency then
@@ -247,11 +209,8 @@ function check_reaction(act)
 						windower.chat.input('/ma "Head Butt" <t>') return
 					end
 				end
-
 				local abil_recasts = windower.ffxi.get_ability_recasts()
-				
 				if not (buffactive.amnesia or buffactive.impairment) then
-				
 					if (player.main_job == 'PLD' or player.sub_job == 'PLD') and abil_recasts[73] < latency then
 						windower.chat.input('/ja "Shield Bash" <t>') return
 					elseif (player.main_job == 'DRK' or player.sub_job == 'DRK') and abil_recasts[88] < latency then
@@ -261,11 +220,9 @@ function check_reaction(act)
 					elseif (player.main_job == 'SAM') and player.merits.blade_bash and abil_recasts[137] < latency then
 						windower.chat.input('/ja "Blade Bash" <t>') return
 					elseif not player.status == 'Engaged' then
-					
 					elseif (player.main_job == 'DNC' or player.sub_job == 'DNC') and abil_recasts[221] < latency then
 						windower.chat.input('/ja "Violent Flourish" <t>') return
 					end
-				
 					local available_ws = S(windower.ffxi.get_abilities().weapon_skills)
 					if player.tp > 700 then
 						if available_ws:contains(35) then
@@ -304,7 +261,6 @@ function check_reaction(act)
 						defensive_action = true
 					end
 				end
-
 				if not defensive_action then
 					if ability_type and state.DefenseMode.value ~= ability_type then
 						state.DefenseMode:set(ability_type)
@@ -317,7 +273,6 @@ function check_reaction(act)
 			end
 		end
 	end
-	
 	if targetsMe and actor.race == 0 and not being_attacked then
 		being_attacked = true
 		if not (midaction() or pet_midaction()) then
@@ -325,9 +280,7 @@ function check_reaction(act)
 		end
 	end
 end
-
 windower.raw_register_event('action', check_reaction)
-
 windower.raw_register_event('incoming chunk', function(id, data)
     if id == 0xF9 and state.AutoAcceptRaiseMode.value and data:byte(11) == 1 then
         local player = windower.ffxi.get_mob_by_target('me')

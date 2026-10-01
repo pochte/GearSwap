@@ -44,9 +44,9 @@ end
 
 function init_gear_sets()
 
-	--------------------------------------
+  
 	-- Start defining the sets
-	--------------------------------------
+  
 
 	sets.buff['Burst Affinity'] = {feet="Hashi. Basmak +1"}
 	sets.buff['Chain Affinity'] = {feet="Assim. Charuqs +2"}

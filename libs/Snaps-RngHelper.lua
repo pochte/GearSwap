@@ -1,4 +1,4 @@
---------------------------------------------------------------------------------------------------------------------------------------------
+  
 local config = include('Snaps-Rnghelper_Config.lua')
 local self = windower.ffxi.get_player().id
 local target = nil

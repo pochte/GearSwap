@@ -1,4 +1,3 @@
---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -- SCH.lua — Changelog
 -- 2026-07-26: Wired in Smart-Caster.lua (SCH gets the full set here: Auto-Arts, Aurorastorm
 --             prep, Accession/Celerity/Manifestation/Klimaform, Elemental Storm-prep, and
@@ -6,16 +5,11 @@
 --             tracked Sublimation's buff state via update_sublimation() for gear purposes --
 --             that's untouched; try_sublimation() from Smart-Caster.lua is what actually
 --             re-casts it automatically, which is new.
--------------------------------------------------------------------------------------------------------------------
-
 --[[
         Custom commands:
-
         Shorthand versions for each strategem type that uses the version appropriate for
         the current Arts.
-
                                         Light Arts              Dark Arts
-
         gs c scholar light              Light Arts/Addendum
         gs c scholar dark                                       Dark Arts/Addendum
         gs c scholar cost               Penury                  Parsimony
@@ -28,9 +22,6 @@
         gs c scholar skillchain                                 Immanence
         gs c scholar addendum           Addendum: White         Addendum: Black
 --]]
-
-
-
 -- Initialization function for this job file.
 function get_sets()
     -- Load and initialize the include file.
@@ -38,59 +29,40 @@ function get_sets()
   include('Ullona-shortcuts')
   include('Smart-Caster.lua')
 end
-
 -- Setup vars that are user-independent.  state.Buff vars initialized here will automatically be tracked.
 function job_setup()
-	
     LowTierNukes = S{'Stone', 'Water', 'Aero', 'Fire', 'Blizzard', 'Thunder',
         'Stone II', 'Water II', 'Aero II', 'Fire II', 'Blizzard II', 'Thunder II',
         'Stonega', 'Waterga', 'Aeroga', 'Firaga', 'Blizzaga', 'Thundaga'}
-
     info.addendumNukes = S{"Stone IV", "Water IV", "Aero IV", "Fire IV", "Blizzard IV", "Thunder IV",
         "Stone V", "Water V", "Aero V", "Fire V", "Blizzard V", "Thunder V"}
-
     -- [ADDED 2026-08-14] Hard cap on nuke tier this job can cast, used by handle_elemental's
     -- explicit 'tierN' command (gs c elemental tier6, etc.) to refuse anything above what the
     -- job has access to instead of firing a nonexistent spell. SCH tops out at Tier V. See
     -- BLM.lua (Tier VI) and RDM.lua/GEO.lua (also Tier V) for the same guard.
     MaxNukeTier = 5
-
     -- [ADDED 2026-08-30] SCH never explicitly declared its own CastingMode option list --
     -- it was riding Sel-Include's default set (Normal/Resistant/Fodder/Proc/OccultAcumen,
     -- inferred from what SCH.lua's own logic already checks for). Made explicit here so 'MB'
     -- and 'MB Resistant' can be added on top -- Sel's default list has no way to know about
     -- those. Matches the same base list BLM.lua declares explicitly.
     state.CastingMode:options('Normal','Resistant','Fodder','Proc','OccultAcumen','MB','MB Resistant')
-
     state.Buff['Sublimation: Activated'] = buffactive['Sublimation: Activated'] or false
 	state.Buff['Enlightenment'] = buffactive['Enlightenment'] or false
-	
     update_active_strategems()
-	
 	state.RecoverMode = M('35%', '60%', 'Always', 'Never')
-	
 	autows = 'Realmrazer'
 	autofood = 'Pear Crepe'
-	
 	init_job_states({"Capacity","AutoRuneMode","AutoTrustMode","AutoNukeMode","AutoWSMode","AutoShadowMode","AutoFoodMode","AutoStunMode","AutoDefenseMode",},{"AutoBuffMode","Weapons","OffenseMode","WeaponskillMode","IdleMode","Passive","RuneElement","RecoverMode","ElementalMode","CastingMode","TreasureMode",})
 end
-
--------------------------------------------------------------------------------------------------------------------
 -- Job-specific hooks for standard casting events.
--------------------------------------------------------------------------------------------------------------------
 -- Set eventArgs.handled to true if we don't want any automatic gear equipping to be done.
 -- Set eventArgs.useMidcastGear to true if we want midcast gear equipped on precast.
-
 function job_filtered_action(spell, eventArgs)
-
 end
-
 function job_pretarget(spell, spellMap, eventArgs)
-
 end
-
 function job_precast(spell, spellMap, eventArgs)
-
 	if spell.action_type == 'Magic' then
 		if spellMap == 'Cure' or spellMap == 'Curaga' then
 			gear.default.obi_back = gear.obi_cure_back
@@ -104,22 +76,18 @@ function job_precast(spell, spellMap, eventArgs)
 				gear.default.obi_waist = gear.obi_high_nuke_waist
 			end
 		end
-		
         if state.CastingMode.value == 'Proc' then
             classes.CustomClass = 'Proc'
         elseif state.CastingMode.value == 'OccultAcumen' then
             classes.CustomClass = 'OccultAcumen'
         end
-
 		-- [NEW] Wires in Smart-Caster.lua's full SCH suite -- Auto-Arts, Aurorastorm prep,
 		-- Accession/Celerity/Manifestation/Klimaform, Elemental Storm-prep. Placed last, after
 		-- SCH's own tailored precast logic above, so anything SCH already handles explicitly
 		-- keeps priority.
 		smart_caster_precast(spell, spellMap, eventArgs)
     end
-
 end
-
 function job_post_precast(spell, spellMap, eventArgs)
 	if spell.action_type == 'Magic' then
 		if arts_active() and sets.precast.FC.Arts then
@@ -127,7 +95,6 @@ function job_post_precast(spell, spellMap, eventArgs)
 		end
 	elseif spell.type == 'WeaponSkill' then
 		local WSset = standardize_set(get_precast_set(spell, spellMap))
-		
 		if (WSset.ear1 == "Moonshade Earring" or WSset.ear2 == "Moonshade Earring") then
 			-- Replace Moonshade Earring if we're at cap TP
 			if sets.MaxTP and get_effective_player_tp(spell, WSset) > 3200 then
@@ -136,14 +103,11 @@ function job_post_precast(spell, spellMap, eventArgs)
 		end
 	end
 end
-
 -- Run after the general midcast() is done.
 function job_post_midcast(spell, spellMap, eventArgs)
-
     if spell.action_type == 'Magic' then
         apply_grimoire_bonuses(spell, action, spellMap, eventArgs)
     end
-	
 	if spell.skill == 'Enfeebling Magic' then
 		if (state.Buff['Light Arts'] or state.Buff['Addendum: White']) and sets.buff['Light Arts'] then
 			equip(sets.buff['Light Arts'])
@@ -177,11 +141,9 @@ function job_post_midcast(spell, spellMap, eventArgs)
 				equip(sets.buff['Ebullience'])
 			end
 		end
-		
         if state.Buff.Immanence then
             equip(sets.buff['Immanence'])
         end
-		
 		if state.RecoverMode.value ~= 'Never' and (state.RecoverMode.value == 'Always' or tonumber(state.RecoverMode.value:sub(1, -2)) > player.mpp) then
 			if is_magic_bursting() then
 				if state.CastingMode.value:contains('Resistant') and sets.ResistantRecoverBurst then
@@ -196,14 +158,11 @@ function job_post_midcast(spell, spellMap, eventArgs)
 			end
 		end
     end
-	
 end
-
 function job_aftercast(spell, spellMap, eventArgs)
 	-- [NEW] Auto-reactivates Sublimation whenever it drops. SCH already tracked the buff's
 	-- state for gear via update_sublimation() -- this is what actually re-casts it.
 	try_sublimation()
-
     if not spell.interrupted then
 		if spell.type == 'Scholar' then
 			windower.send_command:schedule(1,'gs c showcharge')
@@ -220,11 +179,7 @@ function job_aftercast(spell, spellMap, eventArgs)
 		end
     end
 end
-
--------------------------------------------------------------------------------------------------------------------
 -- Job-specific hooks for non-casting events.
--------------------------------------------------------------------------------------------------------------------
-
 -- Called when a player gains or loses a buff.
 -- buff == buff gained or lost
 -- gain == true if the buff was gained, false if it was lost.
@@ -233,11 +188,7 @@ function job_buff_change(buff, gain)
 	-- SCH never had a job_buff_change function at all before this.
 	smart_caster_buff_change(buff, gain)
 end
-
--------------------------------------------------------------------------------------------------------------------
 -- User code that supplements standard library decisions.
--------------------------------------------------------------------------------------------------------------------
-
 -- Custom spell mapping.
 function job_get_spell_map(spell, default_spell_map)
     if spell.action_type == 'Magic' then
@@ -264,7 +215,6 @@ function job_get_spell_map(spell, default_spell_map)
         end
     end
 end
-
 function job_customize_idle_set(idleSet)
     if state.Buff['Sublimation: Activated'] then
         if (state.IdleMode.value == 'Normal' or state.IdleMode.value:contains('Sphere')) and sets.buff.Sublimation then
@@ -273,47 +223,36 @@ function job_customize_idle_set(idleSet)
             idleSet = set_combine(idleSet, sets.buff.DTSublimation)
         end
     end
-
     if state.IdleMode.value == 'Normal' or state.IdleMode.value:contains('Sphere') then
 		if player.mpp < 51 then
 			if sets.latent_refresh then
 				idleSet = set_combine(idleSet, sets.latent_refresh)
 			end
-			
 			if (state.Weapons.value == 'None' or state.UnlockWeapons.value) and idleSet.main then
 				local main_table = get_item_table(idleSet.main)
-
 				if  main_table and main_table.skill == 12 and sets.latent_refresh_grip then
 					idleSet = set_combine(idleSet, sets.latent_refresh_grip)
 				end
-				
 				if player.tp > 10 and sets.TPEat then
 					idleSet = set_combine(idleSet, sets.TPEat)
 				end
 			end
 		end
    end
-
     return idleSet
 end
-
 -- Called by the 'update' self-command.
 function job_update(cmdParams, eventArgs)
     update_active_strategems()
     update_sublimation()
 end
-
 -- Function to display the current relevant user state when doing an update.
 -- Return true if display was handled, and you don't want the default info shown.
 function display_current_job_state(eventArgs)
     display_current_caster_state()
     eventArgs.handled = true
 end
-
--------------------------------------------------------------------------------------------------------------------
 -- User code that supplements self-commands.
--------------------------------------------------------------------------------------------------------------------
-
 -- Called for direct player commands.
 function job_self_command(commandArgs, eventArgs)
     if commandArgs[1]:lower() == 'scholar' then
@@ -329,11 +268,7 @@ function job_self_command(commandArgs, eventArgs)
 		eventArgs.handled = true
 	end
 end
-
--------------------------------------------------------------------------------------------------------------------
 -- Utility functions specific to this job.
--------------------------------------------------------------------------------------------------------------------
-
 -- Reset the state vars tracking strategems.
 function update_active_strategems()
 	state.Buff['Accession'] = buffactive['Accession'] or false
@@ -346,14 +281,11 @@ function update_active_strategems()
     state.Buff['Celerity'] = buffactive['Celerity'] or false
     state.Buff['Alacrity'] = buffactive['Alacrity'] or false
 	state.Buff['Manifestation'] = buffactive['Manifestation'] or false
-
     state.Buff['Klimaform'] = buffactive['Klimaform'] or false
 end
-
 function update_sublimation()
     state.Buff['Sublimation: Activated'] = buffactive['Sublimation: Activated'] or false
 end
-
 -- Equip sets appropriate to the active buffs, relative to the spell being cast.
 function apply_grimoire_bonuses(spell, action, spellMap)
     if state.Buff.Perpetuance and spell.type =='WhiteMagic' and spell.skill == 'Enhancing Magic' then
@@ -362,13 +294,11 @@ function apply_grimoire_bonuses(spell, action, spellMap)
     if state.Buff.Rapture and (spellMap == 'Cure' or spellMap == 'Curaga') then
         equip(sets.buff['Rapture'])
     end
-
     if state.Buff.Penury then
 		equip(sets.buff['Penury'])
     elseif state.Buff.Parsimony then
 		equip(sets.buff['Parsimony'])
 	end
-	
 	if spell.element == world.weather_element then
 		if state.Buff.Celerity then
 			equip(sets.buff['Celerity'])
@@ -377,26 +307,20 @@ function apply_grimoire_bonuses(spell, action, spellMap)
 		end
 	end
 end
-
 -- Handling Elemental spells within Gearswap.
 -- Format: gs c elemental <nuke, helix, skillchain1, skillchain2, weather>
 function handle_elemental(cmdParams)
     -- cmdParams[1] == 'elemental'
     -- cmdParams[2] == ability to use
-
     if not cmdParams[2] then
         add_to_chat(123,'Error: No elemental command given.')
         return
     end
     local command = cmdParams[2]:lower()
-
-		
 	local immactive = 0
-		
 	if state.Buff['Immanence'] then
 		immactive = 1
 	end
-	
 	if command == 'spikes' then
 		windower.chat.input('/ma "'..data.elements.spikes_of[state.ElementalMode.value]..' Spikes" <me>')
 		return
@@ -406,7 +330,6 @@ function handle_elemental(cmdParams)
 	--Leave out target, let shortcuts auto-determine it.
 	elseif command == 'weather' then
 		local spell_recasts = windower.ffxi.get_spell_recasts()
-		
 		if (player.target.type == 'SELF' or not player.target.in_party) and buffactive[data.elements.storm_of[state.ElementalMode.value]] and not state.Buff.Klimaform and spell_recasts[287] < spell_latency then
 			windower.chat.input('/ma "Klimaform" <me>')
 		elseif player.job_points[(res.jobs[player.main_job_id].ens):lower()].jp_spent > 99 then
@@ -416,7 +339,6 @@ function handle_elemental(cmdParams)
 		end
 		return
 	end
-	
 	local target = '<t>'
 	if cmdParams[3] then
 		if tonumber(cmdParams[3]) then
@@ -426,10 +348,8 @@ function handle_elemental(cmdParams)
 			target = get_closest_mob_id_by_name(target) or '<t>'
 		end
 	end
-	
     if command == 'nuke' then
 		local spell_recasts = windower.ffxi.get_spell_recasts()
-		
 		if state.ElementalMode.value == 'Light' then
 			if spell_recasts[29] < spell_latency and actual_cost(get_spell_table_by_name('Banish II')) < player.mp then
 				windower.chat.input('/ma "Banish II" '..target..'')
@@ -438,7 +358,6 @@ function handle_elemental(cmdParams)
 			else
 				add_to_chat(123,'Abort: Banishes on cooldown or not enough MP.')
 			end
-
 		else
 			local tiers = {' V',' IV',' III',' II',''}
 			for k in ipairs(tiers) do
@@ -449,13 +368,10 @@ function handle_elemental(cmdParams)
 			end
 			add_to_chat(123,'Abort: All '..data.elements.nuke_of[state.ElementalMode.value]..' nukes on cooldown or or not enough MP.')
 		end
-		
 	elseif command == 'ninjutsu' then
 		windower.chat.input('/ma "'..data.elements.ninjutsu_nuke_of[state.ElementalMode.value]..': Ni" '..target..'')
-			
 	elseif command == 'smallnuke' then
 		local spell_recasts = windower.ffxi.get_spell_recasts()
-	
 		local tiers = {' II',''}
 		for k in ipairs(tiers) do
 			if spell_recasts[get_spell_table_by_name(data.elements.nuke_of[state.ElementalMode.value]..''..tiers[k]..'').id] < spell_latency and actual_cost(get_spell_table_by_name(data.elements.nuke_of[state.ElementalMode.value]..''..tiers[k]..'')) < player.mp then
@@ -464,11 +380,9 @@ function handle_elemental(cmdParams)
 			end
 		end
 		add_to_chat(123,'Abort: All '..data.elements.nuke_of[state.ElementalMode.value]..' nukes on cooldown or or not enough MP.')
-		
 	elseif command:contains('tier') then
 		local tierlist = {['tier1']='',['tier2']=' II',['tier3']=' III',['tier4']=' IV',['tier5']=' V',['tier6']=' VI'}
 		local tiernum  = {['tier1']=1,['tier2']=2,['tier3']=3,['tier4']=4,['tier5']=5,['tier6']=6}
-
 		-- [ADDED 2026-08-14] Job-tier-cap guard, see MaxNukeTier in job_setup().
 		local requested = tiernum[command]
 		if not requested then
@@ -478,26 +392,20 @@ function handle_elemental(cmdParams)
 		else
 			windower.chat.input('/ma "'..data.elements.nuke_of[state.ElementalMode.value]..tierlist[command]..'" '..target..'')
 		end
-		
 	elseif command == 'ara' then
 		windower.chat.input('/ma "'..data.elements.nukera_of[state.ElementalMode.value]..'ra" '..target..'')
-		
 	elseif command == 'aga' then
 		windower.chat.input('/ma "'..data.elements.nukega_of[state.ElementalMode.value]..'ga" '..target..'')
-		
 	elseif command == 'helix' then
 		if player.job_points[(res.jobs[player.main_job_id].ens):lower()].jp_spent > 1199 then
 			windower.chat.input('/ma "'..data.elements.helix_of[state.ElementalMode.value]..'helix II" '..target..'')
 		else
 			windower.chat.input('/ma "'..data.elements.helix_of[state.ElementalMode.value]..'helix" '..target..'')
 		end
-		
 	elseif command == 'enfeeble' then
 		windower.chat.input('/ma "'..data.elements.elemental_enfeeble_of[state.ElementalMode.value]..'" '..target..'')
-	
 	elseif command == 'bardsong' then
 		windower.chat.input('/ma "'..data.elements.threnody_of[state.ElementalMode.value]..' Threnody" '..target..'')
-		
 	elseif command == 'skillchain1' then
 		if player.target.type ~= "MONSTER" then
 			add_to_chat(123,'Abort: You are not targeting a monster.')
@@ -510,7 +418,6 @@ function handle_elemental(cmdParams)
 			windower.chat.input('/ja "Dark Arts" <me>')
 		elseif state.ElementalMode.value ~= nil then
 			if not state.Buff['Immanence'] then windower.chat.input('/ja "Immanence" <me>') end
-			
 			if state.ElementalMode.value == 'Fire' then
 				windower.chat.input('/p '..auto_translate('Liquefaction')..' -<t>- MB: '..auto_translate('Fire')..' <scall21> OPEN!')
 				windower.chat.input:schedule(1.3,'/ma "Stone" <t>')
@@ -596,7 +503,6 @@ function handle_elemental(cmdParams)
 				add_to_chat(123,'Abort: '..state.ElementalMode.value..' is not an Elemental Mode with a skillchain1 command!')
 			end
 		end
-	
 	elseif command == 'skillchain2' then
 		if player.target.type ~= "MONSTER" then
 			add_to_chat(123,'Abort: You are not targeting a monster.')
@@ -607,11 +513,8 @@ function handle_elemental(cmdParams)
 		elseif not (state.Buff['Dark Arts']  or state.Buff['Addendum: Black']) then
 			add_to_chat(123,'Can\'t use elemental skillchain commands without Dark Arts - Activating.')
 			windower.chat.input('/ja "Dark Arts" <me>')
-			
-			
 		elseif state.ElementalMode.value ~= nil then
 			if not state.Buff['Immanence'] then windower.chat.input('/ja "Immanence" <me>') end
-			
 			if state.ElementalMode.value == 'Fire' or state.ElementalMode.value == 'Light' then
 				windower.chat.input('/p '..auto_translate('Fusion')..' -<t>- MB: '..auto_translate('Fire')..' '..auto_translate('Light')..' <scall21> OPEN!')
 				windower.chat.input:schedule(1.3,'/ma "Fire" <t>')
@@ -659,10 +562,7 @@ function handle_elemental(cmdParams)
 			else
 				add_to_chat(123,'Abort: '..state.ElementalMode.value..' is not an Elemental Mode with a skillchain1 command!')
 			end
-			
-
 		end
-		
 	elseif command == 'skillchain3' then
 		if player.target.type ~= "MONSTER" then
 			add_to_chat(123,'Abort: You are not targeting a monster.')
@@ -690,7 +590,6 @@ function handle_elemental(cmdParams)
 		else
 			add_to_chat(123,'Abort: Fire is the only element with a consecutive 3-step skillchain.')
 		end
-	
 	elseif command == 'skillchain4' then
 		if player.target.type ~= "MONSTER" then
 			add_to_chat(123,'Abort: You are not targeting a monster.')
@@ -714,7 +613,6 @@ function handle_elemental(cmdParams)
 			windower.chat.input:schedule(17.8,'/ja "Immanence" <me>')
 			windower.chat.input:schedule(19.1,'/ma "Thunder" <t>')
 		end
-		
 	elseif command == 'skillchain6' then
 		if player.target.type ~= "MONSTER" then
 			add_to_chat(123,'Abort: You are not targeting a monster.')
@@ -744,7 +642,6 @@ function handle_elemental(cmdParams)
 			windower.chat.input:schedule(26.7,'/ja "Immanence" <me>')
 			windower.chat.input:schedule(28,'/ma "Thunder" <t>')
 		end
-	
 	elseif command == 'wsskillchain' then
 		if player.target.type ~= "MONSTER" then
 			add_to_chat(123,'Abort: You are not targeting a monster.')
@@ -822,7 +719,6 @@ function handle_elemental(cmdParams)
 				windower.chat.input:schedule(6,'/ma "Noctohelix" <t>')
 			end
 		end
-		
 	elseif command == 'endskillchain' then
 		if player.target.type ~= "MONSTER" then
 			add_to_chat(123,'Abort: You are not targeting a monster.')
@@ -864,24 +760,20 @@ function handle_elemental(cmdParams)
 			windower.chat.input:schedule(1.3,'/p '..auto_translate('Skillchain')..' -<t>- MB: '..auto_translate('Darkness')..' <scall21> CLOSE!')
 			windower.chat.input:schedule(1.3,'/ma "Noctohelix" <t>')
 		end
-	
     else
         add_to_chat(123,'Unrecognized elemental command.')
     end
 end
-
 -- General handling of strategems in an Arts-agnostic way.
 -- Format: gs c scholar <strategem>
 function handle_strategems(cmdParams)
     -- cmdParams[1] == 'scholar'
     -- cmdParams[2] == strategem to use
-
     if not cmdParams[2] then
         add_to_chat(123,'Error: No strategem command given.')
         return
     end
     local strategem = cmdParams[2]:lower()
-
     if strategem == 'light' then
         if state.Buff['Light Arts'] then
             windower.chat.input('/ja "Addendum: White" <me>')
@@ -946,14 +838,11 @@ function handle_strategems(cmdParams)
         add_to_chat(123,'No arts has been activated yet.')
     end
 end
-
--- =============================================================================
 -- Smart cure command: NEW for SCH (didn't exist before). Same missingHP-estimate pattern
 -- used across every other job (RDM/WHM/BLM/GEO/SMN). SCH has some innate Healing Magic
 -- access of its own (unlike GEO/SMN, which rely purely on subjob) plus whatever a /WHM or
 -- /RDM sub adds on top -- silent_can_use gracefully no-ops any tier you don't actually have
 -- access to either way, so the tier ladder below is safe regardless of source.
--- =============================================================================
 function handle_smartcure(cmdParams)
 	local cureTarget
 	if cmdParams[2] then
@@ -972,14 +861,11 @@ function handle_smartcure(cmdParams)
 	else
 		cureTarget = player
 	end
-
 	if cureTarget.status == 2 or cureTarget.status == 3 then
 		windower.chat.input('/ma "Arise" '..cureTarget.id..'')
 		return
 	end
-
 	local spell_recasts = windower.ffxi.get_spell_recasts()
-
 	if cureTarget.type == 'MONSTER' then
 		if silent_can_use(4) and spell_recasts[4] < spell_latency then
 			windower.chat.input('/ma "Cure IV" '..cureTarget.id..'')
@@ -992,7 +878,6 @@ function handle_smartcure(cmdParams)
 		end
 		return
 	end
-
 	local missingHP
 	if cureTarget.in_alliance then
 		cureTarget.hp = find_player_in_alliance(cureTarget.name).hp
@@ -1002,9 +887,7 @@ function handle_smartcure(cmdParams)
 		local est_current_hp = 1800 * (cureTarget.hpp/100)
 		missingHP = math.floor(1800 - est_current_hp)
 	end
-
 	check_aurorastorm_for_cure(missingHP, cureTarget)
-
 	if missingHP < 250 then
 		if spell_recasts[1] < spell_latency then
 			windower.chat.input('/ma "Cure" '..cureTarget.id..'')
@@ -1045,7 +928,6 @@ function handle_smartcure(cmdParams)
 		end
 	end
 end
-
 -- Gets the current number of available strategems based on the recast remaining
 -- and the level of the sch.
 function job_tick()
@@ -1054,23 +936,17 @@ function job_tick()
 	if check_buffup() then return true end
 	return false
 end
-
 function check_arts()
 	if not arts_active() and (buffup ~= '' or (not data.areas.cities:contains(world.area) and ((state.AutoArts.value and player.in_combat) or state.AutoBuffMode.value ~= 'Off'))) then
-	
 		local abil_recasts = windower.ffxi.get_ability_recasts()
-
 		if abil_recasts[232] < latency then
 			windower.chat.input('/ja "Dark Arts" <me>')
 			tickdelay = os.clock() + 1.1
 			return true
 		end
-
 	end
-	
 	return false
 end
-
 function check_buff()
 	if state.AutoBuffMode.value ~= 'Off' and not data.areas.cities:contains(world.area) then
 		local spell_recasts = windower.ffxi.get_spell_recasts()
@@ -1085,7 +961,6 @@ function check_buff()
 		return false
 	end
 end
-
 function check_buffup()
 	if buffup ~= '' then
 		local needsbuff = false
@@ -1095,15 +970,12 @@ function check_buffup()
 				break
 			end
 		end
-	
 		if not needsbuff then
 			add_to_chat(217, 'All '..buffup..' buffs are up!')
 			buffup = ''
 			return false
 		end
-		
 		local spell_recasts = windower.ffxi.get_spell_recasts()
-		
 		for i in pairs(buff_spell_lists[buffup]) do
 			if not buffactive[buff_spell_lists[buffup][i].Buff] and silent_can_use(buff_spell_lists[buffup][i].SpellID) and spell_recasts[buff_spell_lists[buffup][i].SpellID] < spell_latency then
 				windower.chat.input('/ma "'..buff_spell_lists[buffup][i].Name..'" <me>')
@@ -1111,20 +983,17 @@ function check_buffup()
 				return true
 			end
 		end
-		
 		return false
 	else
 		return false
 	end
 end
-
 buff_spell_lists = {
 	Auto = {--Options for When are: Always, Engaged, Idle, OutOfCombat, Combat
 		{Name='Haste',		Buff='Haste',		SpellID=57,		When='Always'},
 		{Name='Stoneskin',	Buff='Stoneskin',	SpellID=54,		When='Always'},
 		{Name='Klimaform',	Buff='Klimaform',	SpellID=287,	When='Combat'},
 	},
-	
 	Default = {
 		{Name='Reraise',	Buff='Reraise',		SpellID=113,	Reapply=false},
 		{Name='Haste',		Buff='Haste',		SpellID=57,		Reapply=false},

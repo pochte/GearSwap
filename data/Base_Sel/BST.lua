@@ -1,11 +1,11 @@
---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  
 -- Much credit goes to Falkirk of Quetzalcoatl for providing a lot of the concepts and
 -- code in this file, as well as, always, Motenten/Kinematics.
--------------------------------------------------------------------------------------------------------------------
+  
 
--------------------------------------------------------------------------------------------------------------------
+  
 -- Initialization function that defines sets and variables to be used.
--------------------------------------------------------------------------------------------------------------------
+  
 
 -- IMPORTANT: Make sure to also get the Mote-Include.lua file (and its supplementary files) to go with this.
 
@@ -199,9 +199,9 @@ function job_setup()
 	init_job_states({"Capacity","AutoRuneMode","AutoTrustMode","AutoWSMode","AutoShadowMode","AutoFoodMode","AutoStunMode","AutoDefenseMode","AutoReadyMode",},{"AutoBuffMode","AutoSambaMode","Weapons","OffenseMode","WeaponskillMode","PetMode","IdleMode","Passive","RuneElement","JugMode","RewardMode","TreasureMode",})
 end
 
--------------------------------------------------------------------------------------------------------------------
+  
 -- Job-specific hooks for standard casting events.
--------------------------------------------------------------------------------------------------------------------
+  
 -- Set eventArgs.handled to true if we don't want any automatic gear equipping to be done.
 -- Set eventArgs.useMidcastGear to true if we want midcast gear equipped on precast.
 
@@ -392,9 +392,9 @@ function job_aftercast(spell, spellMap, eventArgs)
 	end
 end
 
--------------------------------------------------------------------------------------------------------------------
+  
 -- Customization hook for idle sets.
--------------------------------------------------------------------------------------------------------------------
+  
 
 function job_customize_idle_set(idleSet)
 	if pet.isvalid and pet.status == 'Engaged' and can_dual_wield and sets.idle.Pet.Engaged.DW then
@@ -431,9 +431,9 @@ function job_customize_melee_set(meleeSet)
     return meleeSet
 end
 
--------------------------------------------------------------------------------------------------------------------
+  
 -- Hooks for Reward, Correlation, Treasure Hunter, and Pet Mode handling.
--------------------------------------------------------------------------------------------------------------------
+  
 
 function job_buff_change(buff, gain)
 	update_melee_groups()
@@ -458,9 +458,9 @@ function get_custom_wsmode(spell, spellMap, default_wsmode)
         end
 end
 
--------------------------------------------------------------------------------------------------------------------
+  
 -- User code that supplements self-commands.
--------------------------------------------------------------------------------------------------------------------
+  
 
 -- Called by the 'update' self-command, for common needs.
 -- Set eventArgs.handled to true if we don't want automatic equipping of gear.
@@ -504,9 +504,9 @@ function display_current_job_state(eventArgs)
     eventArgs.handled = true
 end
 
--------------------------------------------------------------------------------------------------------------------
+  
 -- Utility functions specific to this job.
--------------------------------------------------------------------------------------------------------------------
+  
 function update_melee_groups()
 	if player.equipment.main then
 		classes.CustomMeleeGroups:clear()

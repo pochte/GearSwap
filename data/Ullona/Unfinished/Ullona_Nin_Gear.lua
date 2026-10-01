@@ -29,9 +29,9 @@ end
 
 -- Define sets and vars used by this job file.
 function init_gear_sets()
-    --------------------------------------
+  
     -- Precast sets
-    --------------------------------------
+  
 
     sets.Enmity = {ammo="Paeapua",
         head="Dampening Tam",neck="Unmoving Collar +1",ear1="Hecate's Earring",ear2="Trux Earring",
@@ -130,9 +130,9 @@ function init_gear_sets()
 	sets.DayWSEars = {ear1="Moonshade Earring",ear2="Brutal Earring",}
 
 
-    --------------------------------------
+  
     -- Midcast sets
-    --------------------------------------
+  
 
     sets.midcast.FastRecast = {
         head=gear.herculean_fc_head,neck="Voltsurge Torque",ear1="Enchntr. Earring +1",ear2="Loquac. Earring",
@@ -169,9 +169,9 @@ function init_gear_sets()
         body="Malignance Tabard",hands="Malignance Gloves",ring1="Apate Ring",ring2="Regal Ring",
         back=gear.da_jse_back,waist="Chaac Belt",legs="Malignance Tights",feet="Malignance Boots"}
 
-    --------------------------------------
+  
     -- Idle/resting/defense/etc sets
-    --------------------------------------
+  
 
     -- Resting sets
     sets.resting = {}
@@ -207,9 +207,9 @@ function init_gear_sets()
 	sets.NightIdle = {}
 
 
-    --------------------------------------
+  
     -- Engaged sets
-    --------------------------------------
+  
 
     -- Variations for TP weapon and (optional) offense/defense modes.  Code will fall back on previous
     -- sets if more refined versions aren't defined.
@@ -272,9 +272,9 @@ function init_gear_sets()
         body="Malignance Tabard",hands="Malignance Gloves",ring1="Defending Ring",ring2="Epona's Ring",
         back=gear.da_jse_back,waist="Windbuffet Belt +1",legs="Malignance Tights",feet="Malignance Boots"}
 
-    --------------------------------------
+  
     -- Custom buff sets
-    --------------------------------------
+  
 
     sets.buff.Migawari = {} --body="Hattori Ningi +1"
     sets.buff.Doom = set_combine(sets.buff.Doom, {})

@@ -40,9 +40,9 @@ end
 
 function init_gear_sets()
 	
-	--------------------------------------
+  
 	-- Precast sets
-	--------------------------------------
+  
 	
     sets.Enmity = {main="Mafic Cudgel",ammo="Paeapua",
         head="Loess Barbuta +1",neck="Unmoving Collar +1",ear1="Hecate's Earring",ear2="Trux Earring",
@@ -195,9 +195,9 @@ function init_gear_sets()
 	sets.AccMaxTP = {ear1="Mache Earring +1",ear2="Telos Earring"}
 
 
-	--------------------------------------
+  
 	-- Midcast sets
-	--------------------------------------
+  
 
     sets.midcast.FastRecast = {main="Vampirism",ammo="Paeapua",
         head="Chev. Armet +1",neck="Voltsurge Torque",ear1="Enchntr. Earring +1",ear2="Loquac. Earring",
@@ -274,9 +274,9 @@ function init_gear_sets()
 	sets.midcast.Phalanx.SIRD = set_combine(sets.midcast['Enhancing Magic'].SIRD, {main="Deacon Sword",hands="Souv. Handsch. +1",back="Weard Mantle",feet="Souveran Schuhs +1"})
 	sets.midcast.Phalanx.DT = set_combine(sets.midcast.Phalanx.SIRD, {})	
 
-	--------------------------------------
+  
 	-- Idle/resting/defense/etc sets
-	--------------------------------------
+  
 
     sets.resting = {ammo="Homiliary",
 		head="Jumalik Helm",neck="Coatl Gorget +1",ear1="Malignance Earring",ear2="Ethereal Earring",
@@ -332,9 +332,9 @@ function init_gear_sets()
 	sets.DayIdle = {}
 	sets.NightIdle = {}
 
-	--------------------------------------
+  
     -- Defense sets
-    --------------------------------------
+  
     
     -- Extra defense sets.  Apply these on top of melee or defense sets.
 	sets.Knockback = {}
@@ -427,9 +427,9 @@ function init_gear_sets()
 		body="Tartarus Platemail",hands="Souv. Handsch. +1",ring1="Defending Ring",ring2="Shadow Ring",
 		back=gear.fastcast_jse_back,waist="Asklepian Belt",legs="Sulev. Cuisses +2",feet="Amm Greaves"}		
 
-	--------------------------------------
+  
 	-- Engaged sets
-	--------------------------------------
+  
     
 	sets.engaged = {main="Mafic Cudgel",sub="Ochain",ammo="Aurgelmir Orb +1",
 		head="Flam. Zucchetto +2",neck="Asperity Necklace",ear1="Cessance Earring",ear2="Brutal Earring",
@@ -484,9 +484,9 @@ function init_gear_sets()
     sets.engaged.Reraise = set_combine(sets.engaged.Tank, sets.Reraise)
     sets.engaged.Acc.Reraise = set_combine(sets.engaged.Acc.Tank, sets.Reraise)
 		
-	--------------------------------------
+  
 	-- Custom buff sets
-	--------------------------------------
+  
 	sets.buff.Doom = set_combine(sets.buff.Doom, {})
 	sets.buff.Sleep = {neck="Vim Torque +1"}
     sets.buff.Cover = {body="Cab. Surcoat +1"}

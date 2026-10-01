@@ -399,9 +399,9 @@ function init_gear_sets()
 	sets.weapons.DualWeapons = {main ="Izizoeksi",sub="Hunahpu"}
 
 
--------------------------------------------------------------------------------------------------------------------
+  
 -- Complete Lvl 76-99 Jug Pet Precast List +Funguar +Courier +Amigo
--------------------------------------------------------------------------------------------------------------------
+  
 
 	sets.precast.JA['Bestial Loyalty'].FunguarFamiliar = set_combine(sets.precast.JA['Bestial Loyalty'], {ammo="Seedbed Soil"})
 	sets.precast.JA['Bestial Loyalty'].CourierCarrie = set_combine(sets.precast.JA['Bestial Loyalty'], {ammo="Fish Oil Broth"})
@@ -426,9 +426,9 @@ function init_gear_sets()
 	sets.precast.JA['Bestial Loyalty'].GooeyGerard = set_combine(sets.precast.JA['Bestial Loyalty'], {ammo="Cl. Wheat Broth"})
 	sets.precast.JA['Bestial Loyalty'].CrudeRaphie = set_combine(sets.precast.JA['Bestial Loyalty'], {ammo="Shadowy Broth"})
 
-	-------------------------------------------------------------------------------------------------------------------
+	  
 	-- Complete iLvl Jug Pet Precast List
-	-------------------------------------------------------------------------------------------------------------------
+	  
 
 	sets.precast.JA['Bestial Loyalty'].DroopyDortwin = set_combine(sets.precast.JA['Bestial Loyalty'], {ammo="Swirling Broth"})
 	sets.precast.JA['Bestial Loyalty'].PonderingPeter = set_combine(sets.precast.JA['Bestial Loyalty'], {ammo="Vis. Broth"})

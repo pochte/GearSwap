@@ -1,4 +1,3 @@
---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -- Utility include for applying and tracking Treasure Hunter effects.
 --
 -- Include this if  you want a means of applying TH on the first contact
@@ -31,19 +30,12 @@
 --
 -- Create a macro or keybind to cycle the Treasure Mode value:
 -- gs c cycle TreasureMode
--------------------------------------------------------------------------------------------------------------------
-
-
--------------------------------------------------------------------------------------------------------------------
 -- Setup vars and events when first running the include.
--------------------------------------------------------------------------------------------------------------------
-
 -- Ensure base tables are defined
 options = options or {}
 state = state or {}
 info = info or {}
 state.TreasureMode = M{['description']='Treasure Mode'}
-
 -- TH mode handling
 if player.main_job == 'THF' then
     state.TreasureMode:options('None','Tag','SATA','Fulltime')
@@ -51,39 +43,25 @@ if player.main_job == 'THF' then
 else
     state.TreasureMode:options('None','Tag')
 end
-
 -- Tracking vars for TH.
 info.tagged_mobs = T{}
 info.last_player_target_index = 0
 state.th_gear_is_locked = false
-
 -- Required gear set.  Expand this in the job file when defining sets.
 sets.TreasureHunter = {}
-
 -- Event registration is done at the bottom of this file.
-
-
--------------------------------------------------------------------------------------------------------------------
 -- User-callable functions for TH handling utility.
--------------------------------------------------------------------------------------------------------------------
-
 -- Can call to force a status refresh.
 -- Also displays the current tagged mob table if in debug mode.
 function th_update(cmdParams, eventArgs)
     if (cmdParams and cmdParams[1] == 'user') or not cmdParams then
         TH_for_first_hit()
-    
         if _settings.debug_mode then
             print_set(info.tagged_mobs, 'Tagged mobs')
         end
     end
 end
-
-
--------------------------------------------------------------------------------------------------------------------
 -- Local functions to support TH handling.
--------------------------------------------------------------------------------------------------------------------
-
 -- Set locked TH flag to true, and disable relevant gear slots.
 function lock_TH()
     state.th_gear_is_locked = true
@@ -93,8 +71,6 @@ function lock_TH()
     end
     disable(slots)
 end
-
-
 -- Set locked TH flag to false, and enable relevant gear slots.
 function unlock_TH()
 	if state.th_gear_is_locked then
@@ -107,8 +83,6 @@ function unlock_TH()
 	state.th_gear_is_locked = false
     send_command('gs c update auto')
 end
-
-
 -- For any active TH mode, if we haven't already tagged this target, equip TH gear and lock slots until we manage to hit it.
 function TH_for_first_hit()
     if player.status == 'Engaged' and state.TreasureMode.value ~= 'None' and state.DefenseMode.value == 'None' then
@@ -126,16 +100,11 @@ function TH_for_first_hit()
         unlock_TH()
     end
 end
-
--------------------------------------------------------------------------------------------------------------------
 -- Event handlers to allow tracking TH application.
--------------------------------------------------------------------------------------------------------------------
-
 -- On engaging a mob, attempt to add TH gear.  For any other status change, unlock TH gear slots.
 function on_status_change_for_th(new_status_id, old_status_id)
 	if not (gearswap and gearswap.res and gearswap.res.statuses and new_status_id and old_status_id) then return end
     if gearswap.gearswap_disabled then return end
-	
 	-- 1 Is the status ID for Engaged.
 	if new_status_id == 1 then
 		if _settings.debug_mode then add_to_chat(123,'Engaging '..player.target.id..'.') end
@@ -147,8 +116,6 @@ function on_status_change_for_th(new_status_id, old_status_id)
 		unlock_TH()
 	end
 end
-
-
 -- On changing targets, attempt to add TH gear.
 function on_target_change_for_th(new_index, old_index)
     -- Only care about changing targets while we're engaged, either manually or via current target death.
@@ -163,8 +130,6 @@ function on_target_change_for_th(new_index, old_index)
         end
     end
 end
-
-
 -- On any action event, mark mobs that we tag with TH.  Also, update the last time tagged mobs were acted on.
 function on_action_for_th(action)
     --add_to_chat(123,'cat='..action.category..',param='..action.param)
@@ -184,7 +149,6 @@ function on_action_for_th(action)
                     end
                     info.tagged_mobs[target.id] = os.time()
                 end
-    
                 if state.th_gear_is_locked then
                     unlock_TH()
                 end
@@ -201,10 +165,8 @@ function on_action_for_th(action)
             end
         end
     end
-    
     cleanup_tagged_mobs()
 end
-
 -- Modifying this function for AoE TH Applying Actions, single targets now handled in aftercast.
 function th_action_check(category, param)
     if category == 2 or -- any ranged attack
@@ -215,7 +177,6 @@ function th_action_check(category, param)
         then return true
     end
 end
-
 -- For th_action_check():
 -- AoE MA IDs for actions that always have TH: Diaga
 info.th_ma_ids = S{33, 34}
@@ -225,16 +186,13 @@ info.th_ws_ids = S{20, 30}
 info.th_ja_ids = S{}
 -- Unblinkable JA IDs for actions that always have TH: Quick/Box/Stutter Step, Desperate/Violent Flourish (Should all be handled in aftercast, kept for notes: 201, 202, 203, 205, 207)
 info.th_u_ja_ids = S{}
-
 -- Need to use this event handler to listen for deaths in case Battlemod is loaded,
 -- because Battlemod blocks the 'action message' event.
-
 -- This function removes mobs from our tracking table when they die.
 function on_incoming_chunk_for_th(id, data, modified, injected, blocked)
     if id == 0x29 then
         local target_id = data:unpack('I',0x09)
         local message_id = data:unpack('H',0x19)%32768
-
         -- Remove mobs that die from our tagged mobs list.
         if message_id == 6 or message_id == 20 then
 			if being_attacked and not player.in_combat then
@@ -252,21 +210,15 @@ function on_incoming_chunk_for_th(id, data, modified, injected, blocked)
         end
     end
 end
-
-
 -- Clear out the entire tagged mobs table when zoning.
 function on_zone_change_for_th(new_zone, old_zone)
     if _settings.debug_mode then add_to_chat(123,'Zoning. Clearing tagged mobs table.') end
     info.tagged_mobs:clear()
 end
-
-
 -- Save the existing function, if it exists, and call it after our own handling.
 if job_state_change then
     job_state_change_via_th = job_state_change
 end
-
-
 -- Called if we change any user state fields.
 function job_state_change(stateField, newValue, oldValue)
     if stateField == 'Treasure Mode' then
@@ -283,16 +235,11 @@ function job_state_change(stateField, newValue, oldValue)
 			unlock_TH()
 		end
     end
-    
     if job_state_change_via_th then
         job_state_change_via_th(stateField, newValue, oldValue)
     end
 end
-
--------------------------------------------------------------------------------------------------------------------
 -- Extra utility functions.
--------------------------------------------------------------------------------------------------------------------
-
 -- Remove mobs that we've marked as tagged with TH if we haven't seen any activity from or on them
 -- for over 3 minutes.  This is to handle deagros, player deaths, or other random stuff where the
 -- mob is lost, but doesn't die.
@@ -314,13 +261,8 @@ function cleanup_tagged_mobs()
         info.tagged_mobs[mob_id] = nil
     end
 end
-
-
--------------------------------------------------------------------------------------------------------------------
 -- Event function registration calls.
 -- Can call these now that the above functions have been defined.
--------------------------------------------------------------------------------------------------------------------
-
 -- Register events to allow us to manage TH application.
 windower.register_event('status change', on_status_change_for_th)
 windower.register_event('target change', on_target_change_for_th)

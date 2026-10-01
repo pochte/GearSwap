@@ -1,11 +1,11 @@
--------------------------------------------------------------------------------------------------------------------
+  
 -- General utility functions that can be used by any job files.
 -- Outside the scope of what the main include file deals with.
--------------------------------------------------------------------------------------------------------------------
+  
 
--------------------------------------------------------------------------------------------------------------------
+  
 -- Buff utility functions.
--------------------------------------------------------------------------------------------------------------------
+  
 
 local cancel_spells_to_check = S{'Sneak', 'Stoneskin', 'Spectral Jig', 'Trance', 'Monomi: Ichi', 'Utsusemi: Ichi'}
 local cancel_types_to_check = S{'Waltz', 'Samba'}
@@ -142,9 +142,9 @@ function reset_buff_states()
 	end
 end
 
--------------------------------------------------------------------------------------------------------------------
+  
 -- Utility functions for changing spells and target types in an automatic manner.
--------------------------------------------------------------------------------------------------------------------
+  
 
 local waltz_tp_cost = {['Curing Waltz'] = 200, ['Curing Waltz II'] = 350, ['Curing Waltz III'] = 500, ['Curing Waltz IV'] = 650, ['Curing Waltz V'] = 800}
 
@@ -347,9 +347,9 @@ function auto_change_target(spell, spellMap)
 end
 
 
--------------------------------------------------------------------------------------------------------------------
+  
 -- Environment utility functions.
--------------------------------------------------------------------------------------------------------------------
+  
 
 -- Function to get the current weather intensity: 0 for none, 1 for single weather, 2 for double weather.
 function get_weather_intensity()
@@ -416,9 +416,9 @@ function is_encumbered(...)
 	return false
 end
 
--------------------------------------------------------------------------------------------------------------------
+  
 -- Elemental gear utility functions.
--------------------------------------------------------------------------------------------------------------------
+  
 
 -- General handler function to set all the elemental gear for an action.
 function set_elemental_gear(spell)
@@ -513,9 +513,9 @@ function get_elemental_item_name(item_type, valid_elements, restricted_to_elemen
 end
 
 
--------------------------------------------------------------------------------------------------------------------
+  
 -- Function to easily change to a given macro set or book.  Book value is optional.
--------------------------------------------------------------------------------------------------------------------
+  
 
 function set_macro_page(set,book)
 	if not tonumber(set) then
@@ -543,9 +543,9 @@ function set_macro_page(set,book)
 end
 
 
--------------------------------------------------------------------------------------------------------------------
+  
 -- Utility functions for including local user files.
--------------------------------------------------------------------------------------------------------------------
+  
 
 -- Attempt to load user gear files in place of default gear sets.
 -- Return true if one exists and was loaded.
@@ -579,9 +579,9 @@ function optional_include(filenames)
 	end
 end
 
--------------------------------------------------------------------------------------------------------------------
+  
 -- Utility functions for vars or other data manipulation.
--------------------------------------------------------------------------------------------------------------------
+  
 
 -- Attempt to locate a specified name within the current alliance.
 function find_player_in_alliance(name)
@@ -632,9 +632,9 @@ function get_expanded_set(baseSet, str)
 end
 
 
--------------------------------------------------------------------------------------------------------------------
+  
 -- Utility functions data and event tracking.
--------------------------------------------------------------------------------------------------------------------
+  
 
 -- This is a function that can be attached to a registered event for 'time change'.
 -- It will send a call to the update() function if the time period changes.

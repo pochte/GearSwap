@@ -59,9 +59,9 @@ end
 
 -- Set up all gear sets.
 function init_gear_sets()
-	--------------------------------------
+  
 	-- Precast sets
-	--------------------------------------
+  
 
 	
 	
@@ -140,9 +140,9 @@ function init_gear_sets()
 	-- Specific weaponskill sets.  Uses the base set if an appropriate WSMod version isn't found.
 
 
-	--------------------------------------
+  
 	-- Midcast sets
-	--------------------------------------
+  
 
 	-- Fast recast for spells
 	
@@ -181,9 +181,9 @@ function init_gear_sets()
 	
     sets.midcast.Utsusemi = sets.midcast.FastRecast
 	
-	--------------------------------------
+  
 	-- Idle/resting/defense/etc sets
-	--------------------------------------
+  
 
 	-- Sets to return to when not performing an action.
 
@@ -224,9 +224,9 @@ function init_gear_sets()
 	sets.weapons.DualMalevolence = {main="Malevolence",sub="Malevolence",range="Fomalhaut"}
 	sets.weapons.DualMagicWeapons = {main="Tauret",sub="Naegling",range="Fomalhaut"}
 
-	--------------------------------------
+  
 	-- Engaged sets
-	--------------------------------------
+  
 
     -- Normal melee group
     sets.engaged = {
@@ -264,9 +264,9 @@ function init_gear_sets()
 		body="Adhemar Jacket +1",hands="Floral Gauntlets",ring1="Ramuh Ring +1",ring2="Ramuh Ring +1",
 		back=gear.tp_ranger_jse_back,waist="Olseni Belt",legs="Meg. Chausses +2",feet="Malignance Boots"}
 
-	--------------------------------------
+  
 	-- Custom buff sets
-	--------------------------------------
+  
 	sets.buff.Doom = set_combine(sets.buff.Doom, {})
 end
 

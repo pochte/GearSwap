@@ -1,4 +1,4 @@
--------------------------------------------------------------------------------------------------------------------
+  
 -- Common variables and functions to be included in job scripts, for general default handling.
 --
 -- Include this file in the get_sets() function with the command:
@@ -16,14 +16,14 @@
 --
 -- Included variables and functions are considered to be at the same scope level as
 -- the job script itself, and can be used as such.
--------------------------------------------------------------------------------------------------------------------
+  
 
--------------------------------------------------------------------------------------------------------------------
+  
 -- Initialization function that defines variables to be used.
 -- These are accessible at the including job lua script's scope.
 --
 -- Auto-initialize after defining this function.
--------------------------------------------------------------------------------------------------------------------
+  
 
 current_mote_include_version = 2
 
@@ -202,12 +202,12 @@ if not file_unload then
 end
 
 
--------------------------------------------------------------------------------------------------------------------
+  
 -- Generalized functions for handling precast/midcast/aftercast for player-initiated actions.
 -- This depends on proper set naming.
 -- Global hooks can be written as user_xxx() to override functions at a global level.
 -- Each job can override any of these general functions using job_xxx() hooks.
--------------------------------------------------------------------------------------------------------------------
+  
 
 ------------------------------------------------------------------------
 -- Generic function to map a set processing order to all action events.
@@ -429,9 +429,9 @@ end
 
 
 
--------------------------------------------------------------------------------------------------------------------
+  
 -- High-level functions for selecting and equipping gear sets.
--------------------------------------------------------------------------------------------------------------------
+  
 
 -- Central point to call to equip gear based on status.
 -- Status - Player status that we're using to define what gear to equip.
@@ -470,9 +470,9 @@ function equip_gear_by_status(playerStatus, petStatus)
 end
 
 
--------------------------------------------------------------------------------------------------------------------
+  
 -- Functions for constructing default gear sets based on status.
--------------------------------------------------------------------------------------------------------------------
+  
 
 -- Returns the appropriate idle set based on current state values and location.
 -- Set construction order (all of which are optional):
@@ -620,9 +620,9 @@ function get_resting_set()
 end
 
 
--------------------------------------------------------------------------------------------------------------------
+  
 -- Functions for constructing default gear sets based on action.
--------------------------------------------------------------------------------------------------------------------
+  
 
 -- Get the default precast gear set.
 function get_precast_set(spell, spellMap)
@@ -865,9 +865,9 @@ function get_ranged_set(equipSet, spell, spellMap)
 end
 
 
--------------------------------------------------------------------------------------------------------------------
+  
 -- Functions for optional supplemental gear overriding the default sets defined above.
--------------------------------------------------------------------------------------------------------------------
+  
 
 -- Function to apply any active defense set on top of the supplied set
 -- @param baseSet : The set that any currently active defense set will be applied on top of. (gear set table)
@@ -905,9 +905,9 @@ function apply_kiting(baseSet)
 end
 
 
--------------------------------------------------------------------------------------------------------------------
+  
 -- Utility functions for constructing default gear sets.
--------------------------------------------------------------------------------------------------------------------
+  
 
 -- Get a spell mapping for the spell.
 function get_spell_map(spell)
@@ -973,9 +973,9 @@ function get_named_set(equipSet, spell, spellMap)
 end
 
 
--------------------------------------------------------------------------------------------------------------------
+  
 -- Hooks for other events.
--------------------------------------------------------------------------------------------------------------------
+  
 
 -- Called when the player's subjob changes.
 function sub_job_change(newSubjob, oldSubjob)
@@ -1076,9 +1076,9 @@ function pet_status_change(newStatus, oldStatus)
 end
 
 
--------------------------------------------------------------------------------------------------------------------
+  
 -- Debugging functions.
--------------------------------------------------------------------------------------------------------------------
+  
 
 -- This is a debugging function that will print the accumulated set selection
 -- breadcrumbs for the default selected set for any given action stage.

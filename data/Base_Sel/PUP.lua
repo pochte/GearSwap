@@ -1,6 +1,6 @@
---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  
 -- Setup functions for this job.  Generally should not be modified.
--------------------------------------------------------------------------------------------------------------------
+  
 
 -- Initialization function for this job file.
 function get_sets()
@@ -53,9 +53,9 @@ function job_setup()
 	init_job_states({"Capacity","AutoPuppetMode","PetWSGear","AutoRepairMode","AutoRuneMode","AutoTrustMode","AutoWSMode","AutoShadowMode","AutoFoodMode","AutoStunMode","AutoDefenseMode",},{"AutoBuffMode","AutoSambaMode","Weapons","OffenseMode","WeaponskillMode","IdleMode","Passive","RuneElement","TreasureMode",})
 end
 
--------------------------------------------------------------------------------------------------------------------
+  
 -- Job-specific hooks for standard casting events. 
--------------------------------------------------------------------------------------------------------------------
+  
 -- Set eventArgs.handled to true if we don't want any automatic gear equipping to be done.
 -- Set eventArgs.useMidcastGear to true if we want midcast gear equipped on precast.
 
@@ -153,9 +153,9 @@ function job_status_change(newStatus, oldStatus, eventArgs)
 ]]--
 end
 
--------------------------------------------------------------------------------------------------------------------
+  
 -- User code that supplements standard library decisions.
--------------------------------------------------------------------------------------------------------------------
+  
 
 -- Called by the 'update' self-command, for common needs.
 -- Set eventArgs.handled to true if we don't want automatic equipping of gear.
@@ -226,9 +226,9 @@ function job_customize_melee_set(meleeSet)
 	
     return meleeSet
 end
--------------------------------------------------------------------------------------------------------------------
+  
 -- User self-commands.
--------------------------------------------------------------------------------------------------------------------
+  
 
 -- Called for custom player commands.
 function job_self_command(commandArgs, eventArgs)
@@ -277,9 +277,9 @@ function job_tick()
 
 	return false
 end
--------------------------------------------------------------------------------------------------------------------
+  
 -- Utility functions specific to this job.
--------------------------------------------------------------------------------------------------------------------
+  
 
 -- Get the pet mode value based on the equipped frame of the automaton.
 -- Returns nil if pet is not valid.

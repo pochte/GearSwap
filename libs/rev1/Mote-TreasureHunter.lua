@@ -1,4 +1,4 @@
--------------------------------------------------------------------------------------------------------------------
+  
 -- Utility include for applying and tracking Treasure Hunter effects.
 --
 -- Include this if  you want a means of applying TH on the first contact
@@ -31,12 +31,12 @@
 --
 -- Create a macro or keybind to cycle the Treasure Mode value:
 -- gs c cycle TreasureMode
--------------------------------------------------------------------------------------------------------------------
+  
 
 
--------------------------------------------------------------------------------------------------------------------
+  
 -- Setup vars and events when first running the include.
--------------------------------------------------------------------------------------------------------------------
+  
 
 -- Ensure base tables are defined
 options = options or {}
@@ -63,9 +63,9 @@ sets.TreasureHunter = {}
 -- Event registration is done at the bottom of this file.
 
 
--------------------------------------------------------------------------------------------------------------------
+  
 -- User-callable functions for TH handling utility.
--------------------------------------------------------------------------------------------------------------------
+  
 
 -- Can call to force a status refresh.
 -- Also displays the current tagged mob table if in debug mode.
@@ -80,9 +80,9 @@ function th_update(cmdParams, eventArgs)
 end
 
 
--------------------------------------------------------------------------------------------------------------------
+  
 -- Local functions to support TH handling.
--------------------------------------------------------------------------------------------------------------------
+  
 
 -- Set locked TH flag to true, and disable relevant gear slots.
 function lock_TH()
@@ -126,9 +126,9 @@ function TH_for_first_hit()
 end
 
 
--------------------------------------------------------------------------------------------------------------------
+  
 -- Event handlers to allow tracking TH application.
--------------------------------------------------------------------------------------------------------------------
+  
 
 -- On engaging a mob, attempt to add TH gear.  For any other status change, unlock TH gear slots.
 function on_status_change_for_th(new_status_id, old_status_id)
@@ -256,9 +256,9 @@ function job_state_change(stateField, newValue, oldValue)
 	end
 end
 
--------------------------------------------------------------------------------------------------------------------
+  
 -- Extra utility functions.
--------------------------------------------------------------------------------------------------------------------
+  
 
 -- Remove mobs that we've marked as tagged with TH if we haven't seen any activity from or on them
 -- for over 3 minutes.  This is to handle deagros, player deaths, or other random stuff where the
@@ -283,10 +283,10 @@ function cleanup_tagged_mobs()
 end
 
 
--------------------------------------------------------------------------------------------------------------------
+  
 -- Event function registration calls.
 -- Can call these now that the above functions have been defined.
--------------------------------------------------------------------------------------------------------------------
+  
 
 -- Register events to allow us to manage TH application.
 windower.register_event('status change', on_status_change_for_th)

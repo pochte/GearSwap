@@ -1,4 +1,4 @@
---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  
 -- SCH.lua — Changelog
 -- 2026-07-26: Wired in Smart-Caster.lua (SCH gets the full set here: Auto-Arts, Aurorastorm
 --             prep, Accession/Celerity/Manifestation/Klimaform, Elemental Storm-prep, and
@@ -6,7 +6,7 @@
 --             tracked Sublimation's buff state via update_sublimation() for gear purposes --
 --             that's untouched; try_sublimation() from Smart-Caster.lua is what actually
 --             re-casts it automatically, which is new.
--------------------------------------------------------------------------------------------------------------------
+  
 
 --[[
         Custom commands:
@@ -68,9 +68,9 @@ function job_setup()
 	init_job_states({"Capacity","AutoRuneMode","AutoTrustMode","AutoNukeMode","AutoWSMode","AutoShadowMode","AutoFoodMode","AutoStunMode","AutoDefenseMode",},{"AutoBuffMode","Weapons","OffenseMode","WeaponskillMode","IdleMode","Passive","RuneElement","RecoverMode","ElementalMode","CastingMode","TreasureMode",})
 end
 
--------------------------------------------------------------------------------------------------------------------
+  
 -- Job-specific hooks for standard casting events.
--------------------------------------------------------------------------------------------------------------------
+  
 -- Set eventArgs.handled to true if we don't want any automatic gear equipping to be done.
 -- Set eventArgs.useMidcastGear to true if we want midcast gear equipped on precast.
 
@@ -217,9 +217,9 @@ function job_aftercast(spell, spellMap, eventArgs)
     end
 end
 
--------------------------------------------------------------------------------------------------------------------
+  
 -- Job-specific hooks for non-casting events.
--------------------------------------------------------------------------------------------------------------------
+  
 
 -- Called when a player gains or loses a buff.
 -- buff == buff gained or lost
@@ -230,9 +230,9 @@ function job_buff_change(buff, gain)
 	smart_caster_buff_change(buff, gain)
 end
 
--------------------------------------------------------------------------------------------------------------------
+  
 -- User code that supplements standard library decisions.
--------------------------------------------------------------------------------------------------------------------
+  
 
 -- Custom spell mapping.
 function job_get_spell_map(spell, default_spell_map)
@@ -306,9 +306,9 @@ function display_current_job_state(eventArgs)
     eventArgs.handled = true
 end
 
--------------------------------------------------------------------------------------------------------------------
+  
 -- User code that supplements self-commands.
--------------------------------------------------------------------------------------------------------------------
+  
 
 -- Called for direct player commands.
 function job_self_command(commandArgs, eventArgs)
@@ -326,9 +326,9 @@ function job_self_command(commandArgs, eventArgs)
 	end
 end
 
--------------------------------------------------------------------------------------------------------------------
+  
 -- Utility functions specific to this job.
--------------------------------------------------------------------------------------------------------------------
+  
 
 -- Reset the state vars tracking strategems.
 function update_active_strategems()
@@ -943,13 +943,13 @@ function handle_strategems(cmdParams)
     end
 end
 
--- =============================================================================
+  
 -- Smart cure command: NEW for SCH (didn't exist before). Same missingHP-estimate pattern
 -- used across every other job (RDM/WHM/BLM/GEO/SMN). SCH has some innate Healing Magic
 -- access of its own (unlike GEO/SMN, which rely purely on subjob) plus whatever a /WHM or
 -- /RDM sub adds on top -- silent_can_use gracefully no-ops any tier you don't actually have
 -- access to either way, so the tier ladder below is safe regardless of source.
--- =============================================================================
+  
 function handle_smartcure(cmdParams)
 	local cureTarget
 	if cmdParams[2] then

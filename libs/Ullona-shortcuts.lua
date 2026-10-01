@@ -1,5 +1,5 @@
 
--------------------------------------------------------------------------------------------------------------------
+  
 -- ULLONA'S ULTIMATE SHORTCUTS
 -- GearSwap / Windower
 --
@@ -11,13 +11,13 @@
 --   <t>      = current target
 --   <stnpc>  = selectable NPC/enemy target
 --   <me>     = yourself
--------------------------------------------------------------------------------------------------------------------
+  
 
 function setup_command_shortcuts()
 
-    -------------------------------------------------------------------------------------------------------------------
+  ----------------
     -- MODE SHORTCUTS
-    -------------------------------------------------------------------------------------------------------------------
+  ----------------
 
     send_command('alias melee gs c melee')
     send_command('alias ranged gs c ranged')
@@ -33,9 +33,9 @@ function setup_command_shortcuts()
     send_command('alias unlock gs c unlock')
 
 
-    -------------------------------------------------------------------------------------------------------------------
+  ----------------
     -- TELEPORT SHORTCUTS + TYPO VARIATIONS
-    -------------------------------------------------------------------------------------------------------------------
+  ----------------
 
     send_command('alias holla input /ma "Teleport-Holla" <me>')
     send_command('alias hola input /ma "Teleport-Holla" <me>')
@@ -66,9 +66,9 @@ function setup_command_shortcuts()
     send_command('alias hell input /ma "Teleport-Yhoat" <me>')
 
 
-    -------------------------------------------------------------------------------------------------------------------
+  ----------------
     -- RECALL SHORTCUTS + TYPO VARIATIONS
-    -------------------------------------------------------------------------------------------------------------------
+  ----------------
 
     send_command('alias pash input /ma "Recall-Pashh" <me>')
     send_command('alias pashh input /ma "Recall-Pashh" <me>')
@@ -83,9 +83,9 @@ function setup_command_shortcuts()
     send_command('alias jugn input /ma "Recall-Jugner" <me>')
 
 
-    -------------------------------------------------------------------------------------------------------------------
+  ----------------
     -- WARP SHORTCUTS
-    -------------------------------------------------------------------------------------------------------------------
+  ----------------
 
     send_command('alias warp gs c warp')
     send_command('alias return gs c warp')
@@ -103,9 +103,9 @@ function setup_command_shortcuts()
     send_command('alias asdf input /echo You found the easter egg!')
 
 
-    -------------------------------------------------------------------------------------------------------------------
+  ----------------
     -- BLIZZARD / ICE
-    -------------------------------------------------------------------------------------------------------------------
+  ----------------
 
     send_command('alias bliz input /ma "Blizzard" <t>')
     send_command('alias bliz2 input /ma "Blizzard II" <t>')
@@ -144,9 +144,9 @@ function setup_command_shortcuts()
     send_command('alias blizga5 input /ma "Blizzara II" <t>')
 
 
-    -------------------------------------------------------------------------------------------------------------------
+  ----------------
     -- AERO / WIND
-    -------------------------------------------------------------------------------------------------------------------
+  ----------------
 
     send_command('alias Airo input /ma "Aero" <t>')
     send_command('alias Airo2 input /ma "Aero II" <t>')
@@ -179,9 +179,9 @@ function setup_command_shortcuts()
     send_command('alias air5 input /ma "Aero V" <t>')
 
 
-    -------------------------------------------------------------------------------------------------------------------
+  ----------------
     -- AEROGA / AERORA
-    -------------------------------------------------------------------------------------------------------------------
+  ----------------
 
     send_command('alias Airoga input /ma "Aeroga" <t>')
     send_command('alias Airoga2 input /ma "Aeroga II" <t>')
@@ -202,9 +202,9 @@ function setup_command_shortcuts()
     send_command('alias areoga5 input /ma "Aerora II" <t>')
 
 
-    -------------------------------------------------------------------------------------------------------------------
+  ----------------
     -- FIRE
-    -------------------------------------------------------------------------------------------------------------------
+  ----------------
 
     send_command('alias fir input /ma "Fire" <t>')
     send_command('alias fir2 input /ma "Fire II" <t>')
@@ -216,9 +216,9 @@ function setup_command_shortcuts()
     send_command('alias frie2 input /ma "Fire II" <t>')
 
 
-    -------------------------------------------------------------------------------------------------------------------
+  ----------------
     -- STONE
-    -------------------------------------------------------------------------------------------------------------------
+  ----------------
 
     send_command('alias stne input /ma "Stone" <t>')
     send_command('alias stne2 input /ma "Stone II" <t>')
@@ -228,9 +228,9 @@ function setup_command_shortcuts()
     send_command('alias stn input /ma "Stone" <t>')
 
 
-    -------------------------------------------------------------------------------------------------------------------
+  ----------------
     -- THUNDER
-    -------------------------------------------------------------------------------------------------------------------
+  ----------------
 
     send_command('alias thnd input /ma "Thunder" <t>')
     send_command('alias thnd2 input /ma "Thunder II" <t>')
@@ -243,9 +243,9 @@ function setup_command_shortcuts()
     send_command('alias thun3 input /ma "Thunder III" <t>')
 
 
-    -------------------------------------------------------------------------------------------------------------------
+  ----------------
     -- WATER
-    -------------------------------------------------------------------------------------------------------------------
+  ----------------
 
     send_command('alias wtr input /ma "Water" <t>')
     send_command('alias wtr2 input /ma "Water II" <t>')
@@ -255,9 +255,9 @@ function setup_command_shortcuts()
     send_command('alias watr input /ma "Water" <t>')
 
 
-    -------------------------------------------------------------------------------------------------------------------
+  ----------------
     -- CURE
-    -------------------------------------------------------------------------------------------------------------------
+  ----------------
 
     send_command('alias c input /ma "Cure" <t>')
     send_command('alias c2 input /ma "Cure II" <t>')
@@ -279,9 +279,9 @@ function setup_command_shortcuts()
     send_command('alias cru4 input /ma "Cure IV" <t>')
 
 
-    -------------------------------------------------------------------------------------------------------------------
+  ----------------
     -- RAISE / RERAISE
-    -------------------------------------------------------------------------------------------------------------------
+  ----------------
 
     send_command('alias rr input /ma "Reraise" <me>')
     send_command('alias rr2 input /ma "Reraise II" <me>')
@@ -305,9 +305,9 @@ function setup_command_shortcuts()
     send_command('alias airs input /ma "Arise" <st>')
 
 
-    -------------------------------------------------------------------------------------------------------------------
+  ----------------
     -- CURAGA
-    -------------------------------------------------------------------------------------------------------------------
+  ----------------
 
     send_command('alias cga input /ma "Curaga" <t>')
     send_command('alias cga2 input /ma "Curaga II" <t>')
@@ -320,9 +320,9 @@ function setup_command_shortcuts()
     send_command('alias crga3 input /ma "Curaga III" <t>')
 
 
-    -------------------------------------------------------------------------------------------------------------------
+  ----------------
     -- SLEEP
-    -------------------------------------------------------------------------------------------------------------------
+  ----------------
 
     send_command('alias z input /ma "Sleep" <stnpc>')
     send_command('alias z2 input /ma "Sleep II" <stnpc>')
@@ -341,9 +341,9 @@ function setup_command_shortcuts()
     send_command('alias seelp input /ma "Sleep" <stnpc>')
 
 
-    -------------------------------------------------------------------------------------------------------------------
+  ----------------
     -- SLEEPGA
-    -------------------------------------------------------------------------------------------------------------------
+  ----------------
 
     send_command('alias zga input /ma "Sleepga" <t>')
     send_command('alias zga2 input /ma "Sleepga II" <t>')
@@ -369,9 +369,9 @@ function setup_command_shortcuts()
     send_command('alias slepga2 input /ma "Sleepga II" <t>')
 
 
-    -------------------------------------------------------------------------------------------------------------------
+  ----------------
     -- BREAK
-    -------------------------------------------------------------------------------------------------------------------
+  ----------------
 
     send_command('alias brk input /ma "Break" <stnpc>')
     send_command('alias brak input /ma "Break" <stnpc>')
@@ -380,17 +380,17 @@ function setup_command_shortcuts()
     send_command('alias brakga input /ma "Breakga" <t>')
 
 
-    -------------------------------------------------------------------------------------------------------------------
+  ----------------
     -- BIND
-    -------------------------------------------------------------------------------------------------------------------
+  ----------------
 
     send_command('alias bnd input /ma "Bind" <stnpc>')
     send_command('alias bin input /ma "Bind" <stnpc>')
 
 
-    -------------------------------------------------------------------------------------------------------------------
+  ----------------
     -- GRAVITY
-    -------------------------------------------------------------------------------------------------------------------
+  ----------------
 
     send_command('alias grav input /ma "Gravity" <stnpc>')
     send_command('alias grav2 input /ma "Gravity II" <stnpc>')
@@ -402,9 +402,9 @@ function setup_command_shortcuts()
     send_command('alias grv2 input /ma "Gravity II" <stnpc>')
 
 
-    -------------------------------------------------------------------------------------------------------------------
+  ----------------
     -- SLOW
-    -------------------------------------------------------------------------------------------------------------------
+  ----------------
 
     send_command('alias slow input /ma "Slow" <stnpc>')
     send_command('alias slow2 input /ma "Slow II" <stnpc>')
@@ -413,9 +413,9 @@ function setup_command_shortcuts()
     send_command('alias solw2 input /ma "Slow II" <stnpc>')
 
 
-    -------------------------------------------------------------------------------------------------------------------
+  ----------------
     -- PARALYZE
-    -------------------------------------------------------------------------------------------------------------------
+  ----------------
 
     send_command('alias para input /ma "Paralyze" <stnpc>')
     send_command('alias para2 input /ma "Paralyze II" <stnpc>')
@@ -424,27 +424,27 @@ function setup_command_shortcuts()
     send_command('alias prlz input /ma "Paralyze" <stnpc>')
 
 
-    -------------------------------------------------------------------------------------------------------------------
+  ----------------
     -- BLIND
-    -------------------------------------------------------------------------------------------------------------------
+  ----------------
 
     send_command('alias blind input /ma "Blind" <stnpc>')
     send_command('alias blind2 input /ma "Blind II" <stnpc>')
     send_command('alias bilnd input /ma "Blind" <stnpc>')
 
 
-    -------------------------------------------------------------------------------------------------------------------
+  ----------------
     -- DISPEL
-    -------------------------------------------------------------------------------------------------------------------
+  ----------------
 
     send_command('alias disp input /ma "Dispel" <stnpc>')
     send_command('alias dsippel input /ma "Dispel" <stnpc>')
     send_command('alias dsp input /ma "Dispel" <stnpc>')
 
 
-    -------------------------------------------------------------------------------------------------------------------
+  ----------------
     -- RDM / BUFFS
-    -------------------------------------------------------------------------------------------------------------------
+  ----------------
 
     -- Composure
     send_command('alias rdmbuff /ja "Composure" <me>')
@@ -484,9 +484,9 @@ function setup_command_shortcuts()
     send_command('alias stym /ja "Stymie" <me>')
 
 
-    -------------------------------------------------------------------------------------------------------------------
+  ----------------
     -- BAR SPELLS
-    -------------------------------------------------------------------------------------------------------------------
+  ----------------
 
     send_command('alias bpara input /ma "Barparalyzra" <me>')
     send_command('alias bprala input /ma "Barparalyzra" <me>')
@@ -499,9 +499,9 @@ function setup_command_shortcuts()
     send_command('alias bpet input /ma "Barpetra" <me>')
 
 
-    -------------------------------------------------------------------------------------------------------------------
+  ----------------
     -- SEALS
-    -------------------------------------------------------------------------------------------------------------------
+  ----------------
 
     send_command('alias es input /ja "Elemental Seal" <me>')
     send_command('alias eseal input /ja "Elemental Seal" <me>')
@@ -510,9 +510,9 @@ function setup_command_shortcuts()
     send_command('alias dseal input /ja "Divine Seal" <me>')
 
 
-    -------------------------------------------------------------------------------------------------------------------
+  ----------------
     -- SNEAK / INVISIBLE
-    -------------------------------------------------------------------------------------------------------------------
+  ----------------
 
     send_command('alias snk input /ma "Sneak" <t>')
     send_command('alias snek input /ma "Sneak" <t>')

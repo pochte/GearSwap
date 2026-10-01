@@ -1,6 +1,4 @@
--- =============================================================================
 -- Ullona_Thf_Gear.lua — Changelog
--- =============================================================================
 -- Setup vars that are user-dependent. Can override this function in a sidecar file.
 function user_job_setup()
     -- Options: Override default values
@@ -12,25 +10,17 @@ function user_job_setup()
     state.PhysicalDefenseMode:options('PDT')
     state.MagicalDefenseMode:options('MDT')
     state.ResistDefenseMode:options('MEVA')
-
     -- state.MainWeapon / state.OffWeapon / state.RangedWeapon are constructed in THF.lua's
     -- job_setup() (must exist before init_job_states() runs there) -- just setting their
     -- option lists here.
     state.MainWeapon:options('None','Naegling','Tauret')
     state.OffWeapon:options('None','GletisKnife','Tauret','Sandung')
     state.RangedWeapon:options('None','Wingcutter')
-
     state.ExtraMeleeMode = M{['description']='Extra Melee Mode','None','Suppa','DWMax','Parry'}
     state.AmbushMode = M(false, 'Ambush Mode')
-
-    -- =========================================================================
     -- Macro Book
-    -- =========================================================================
     set_macro_page(1, 6) -- Page 1, Macro Book 6
-
-    -- =========================================================================
     -- Additional local binds
-    -- =========================================================================
     send_command('bind ^` input /ja "Flee" <me>')                 -- Ctrl + `         : Flee
     send_command('bind !` input /ra <t>')                         -- Alt + `          : Ranged attack
     send_command('bind @` gs c cycle SkillchainMode')             -- Win + `          : Cycle SkillchainMode
@@ -42,27 +32,19 @@ function user_job_setup()
     send_command('bind ^\\\\ input /ja "Despoil" <t>')            -- Ctrl + \         : Despoil
     send_command('bind !\\\\ input /ja "Mug" <t>')                -- Alt + \          : Mug
 end
-
 function user_job_lockstyle()
     -- Delay is necessary for game to finish loading equipment model
     send_command('input /lockstyleset 5')
 end
-
 -- Define sets and vars used by this job file.
 function init_gear_sets()
-    --------------------------------------
     -- Special sets (required by rules)
-    --------------------------------------
-
 	sets.TreasureHunter = {hands="Plunderer's Armlets +1", feet="Skulker's Poulaines +3", waist="Chaac Belt", ammo="Perfect Lucky Egg"}
     sets.Kiting = {feet="Pillager's Poulaines +1"}
-
 	sets.buff.Doom = set_combine(sets.buff.Doom, {})
 	sets.buff.Sleep = {}
-	
     sets.buff['Sneak Attack'] = {hands="Skulker's Armlets +2", back="Toutatis's Cape"}
     sets.buff['Trick Attack'] = {back="Toutatis's Cape", hands="Pillager's Armlets +1"}
-
     -- Extra Melee sets.  Apply these on top of melee sets.
     sets.Knockback = {}
 	sets.Suppa = {}
@@ -70,7 +52,6 @@ function init_gear_sets()
 	sets.DWMax = {}
 	sets.Parry = {}
 	sets.Ambush = {}
-	
 	-- Weapons: Main/Off/Ranged are locked independently via state.MainWeapon / state.OffWeapon
 	-- / state.RangedWeapon, forced every pass in THF.lua's job_customize_idle_set/melee_set.
 	-- No sets.weapons.* table needed -- Evisceration/Waltz used to be identical combos under
@@ -96,16 +77,10 @@ function init_gear_sets()
                                             -- is the TH-tagging set (per the comment above)
                                             -- but never actually equipped the Egg
     }
-		
     sets.precast.JA['Violent Flourish'] = {}
 	sets.precast.JA['Animated Flourish'] = sets.TreasureHunter
 	sets.precast.JA.Provoke = sets.TreasureHunter
-
-    --------------------------------------
     -- Precast sets
-    --------------------------------------
-
-
     -- Precast sets to enhance JAs
     sets.precast.JA['Collabolua lotor'] = {head="Skulker's Bonnet +2"}
     sets.precast.JA['Accomplice'] = {head="Skulker's Bonnet +2"}
@@ -118,15 +93,12 @@ function init_gear_sets()
     sets.precast.JA['Perfect Dodge'] = {hands="Plunderer's Armlets +1"}
     sets.precast.JA['Feint'] = {legs="Plunderer's Culottes +1"}
     sets.precast.JA["Assassin's Charge"] = {}
-
     sets.precast.JA['Sneak Attack'] = sets.buff['Sneak Attack']
     sets.precast.JA['Trick Attack'] = sets.buff['Trick Attack']
-
     -- Waltz set (chr and vit)
     sets.precast.Waltz = {body= "Gleti's Cuirass", head="Mummu Bonnet +2", hands="Slither Gloves +1", ring1="Asklepian Ring", feet="Rawhide Boots", ammo="Yamarang"}
 	sets.Self_Waltz =   sets.precast.Waltz 
     sets.precast.Waltz['Healing Waltz'] =   sets.precast.Waltz 
-
     -- Fast cast sets for spells
     sets.precast.FC = {    
         head="Ejekamal Mask",           
@@ -140,18 +112,11 @@ function init_gear_sets()
         ring2="Murky Ring",
         neck = "Voltsurge Torque",
         ring1="Lebeche Ring",
-        
     }
-
     sets.precast.FC.Utsusemi = set_combine(sets.precast.FC, {neck="Magoraga Bead Necklace"})
-
     -- Ranged snapshot gear
     sets.precast.RA = {}
-
-    --------------------------------------
     -- Weaponskill sets
-    --------------------------------------
-
     -- Default set for any weaponskill that isn't more specifically defined
     sets.precast.WS = {    
         head="Sukeroku Hachimaki",          
@@ -168,7 +133,6 @@ function init_gear_sets()
         feet="Gleti's Boots",
         ammo="Oshasha's Treatise"
     }
-    
 sets.precast.WS.SomeAcc = set_combine(sets.precast.WS, {
     hands="Leyline Gloves",
     ring2="Meghanada Ring",
@@ -176,34 +140,19 @@ sets.precast.WS.SomeAcc = set_combine(sets.precast.WS, {
     legs="Malignance Tights",
     ear1="Crepuscular Earring",
 })
-
 sets.precast.WS.Acc = set_combine(sets.precast.WS.SomeAcc, {})
-
 sets.precast.WS.FullAcc = set_combine(sets.precast.WS.Acc, {})
-
-
-
 	-- Swap to these on Moonshade using WS if at 3000 TP
 	sets.MaxTP = {}
 	sets.AccMaxTP = {}
-
-    --------------------------------------
     -- Midcast sets
-    --------------------------------------
-
     sets.midcast.FastRecast = {}
-
     -- Specific spells
 	sets.midcast.Utsusemi = set_combine(sets.midcast.FastRecast, {neck="Magoraga Bead Necklace"})
-
     -- Ranged gear
     sets.midcast.RA = {}
     sets.midcast.RA.Acc = {}
-
-    --------------------------------------
     -- Melee sets — MUST be defined before sets.idle, which combines onto sets.engaged
-    --------------------------------------
-
     sets.engaged = {            
         head  = "Gleti's Mask",
         feet  ="Malignance Boots",
@@ -219,7 +168,6 @@ sets.precast.WS.FullAcc = set_combine(sets.precast.WS.Acc, {})
         legs="Malignance Tights",       
         ammo="Crepuscular Pebble"
     }
-		
     sets.engaged.SomeAcc = set_combine(sets.engaged, {waist=gear.default.waist, neck="Sanctity Necklace", ear2="Cessance Earring"})
 	sets.engaged.Acc = set_combine(sets.engaged.SomeAcc, {neck="Null Loop", ring1="Mars's Ring"})
     -- [FIX 2 cont.]: was set_combine(sets.Acc, ...) — sets.Acc never existed (typo for
@@ -227,20 +175,14 @@ sets.precast.WS.FullAcc = set_combine(sets.precast.WS.Acc, {})
     --          everything SomeAcc/Acc had contributed. Now correctly builds on Acc.
     sets.engaged.FullAcc = set_combine(sets.engaged.Acc, {ring1="Mars's Ring", ear2="Cessance Earring"})
     sets.engaged.Fodder = set_combine(sets.engaged, {back="Null Shawl"})
-
     sets.engaged.DT = set_combine(sets.engaged, {})
     sets.engaged.SomeAcc.DT = set_combine(sets.engaged.SomeAcc, {})
     sets.engaged.Acc.DT = set_combine(sets.engaged.Acc, {})
     sets.engaged.FullAcc.DT = set_combine(sets.engaged.FullAcc, {})
     sets.engaged.Fodder.DT = set_combine(sets.engaged.Fodder, {})
-
-    --------------------------------------
     -- Idle/resting/defense sets
-    --------------------------------------
-
     -- Resting sets
     sets.resting = {}
-
     -- Idle sets
     sets.idle = set_combine(sets.engaged, {
         head  = "Gleti's Mask",
@@ -249,17 +191,12 @@ sets.precast.WS.FullAcc = set_combine(sets.precast.WS.Acc, {})
         legs  = "Gleti's Breeches",
         feet  = "Gleti's Boots",
         waist="Null Belt",
-
     })
-		
     sets.idle.Sphere = set_combine(sets.idle, {waist="Null Belt"})
     sets.idle.Weak = set_combine(sets.idle, {})
-
 	sets.DayIdle = set_combine(sets.idle, {})
 	sets.NightIdle = set_combine(sets.idle, {})
 	sets.ExtraRegen = set_combine(sets.idle, {waist="Null Belt"})
-
-
     -- Defense sets
     sets.defense.PDT = {}
     sets.defense.MDT = {}

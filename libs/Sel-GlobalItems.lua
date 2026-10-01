@@ -1,4 +1,4 @@
---------------------------------------------------------------------------------------------------------------------------------------------
+  
 -- Universal items that are the same for all characters, and logic to determine if some specific items are owned and used.
 if not sets.Reive then
 	if item_owned("Adoulin's Refuge +1") then

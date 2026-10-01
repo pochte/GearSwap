@@ -1,6 +1,6 @@
---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  
 -- Setup functions for this job.  Generally should not be modified.
--------------------------------------------------------------------------------------------------------------------
+  
 
 -- Initialization function for this job file.
 function get_sets()
@@ -29,9 +29,9 @@ function job_setup()
 	init_job_states({"Capacity","AutoRuneMode","AutoTrustMode","AutoWSMode","AutoShadowMode","AutoFoodMode","AutoStunMode","AutoDefenseMode",},{"AutoBuffMode","AutoSambaMode","Weapons","OffenseMode","WeaponskillMode","Stance","IdleMode","Passive","RuneElement","TreasureMode",})
 end
 	
--------------------------------------------------------------------------------------------------------------------
+  
 -- Job-specific hooks for standard casting events.
--------------------------------------------------------------------------------------------------------------------
+  
 -- Set eventArgs.handled to true if we don't want any automatic gear equipping to be done.
 -- Set eventArgs.useMidcastGear to true if we want midcast gear equipped on precast.
 

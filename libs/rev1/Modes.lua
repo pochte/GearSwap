@@ -1,4 +1,4 @@
--------------------------------------------------------------------------------------------------------------------
+  
 -- This include library allows use of specially-designed tables for tracking
 -- certain types of modes and state.
 --
@@ -70,7 +70,7 @@
 -- UseLuzafRing = M(false)
 -- UseLuzafRing:toggle()
 -- equip(sets.precast['Phantom Roll'], sets.LuzafRing[UseLuzafRing.value])
--------------------------------------------------------------------------------------------------------------------
+  
 
 
 _meta = _meta or {}

@@ -1,6 +1,6 @@
---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  
 -- Setup functions for this job.  Generally should not be modified.
--------------------------------------------------------------------------------------------------------------------
+  
 
 -- Initialization function for this job file.
 function get_sets()
@@ -69,9 +69,9 @@ function job_setup()
 	init_job_states({"Capacity","AutoRuneMode","AutoTrustMode","AutoWSMode","AutoShadowMode","AutoFoodMode","RngHelper","AutoStunMode","AutoDefenseMode",},{"AutoBuffMode","AutoSambaMode","Weapons","OffenseMode","RangedMode","WeaponskillMode","IdleMode","Passive","RuneElement","TreasureMode",})
 end
 
--------------------------------------------------------------------------------------------------------------------
+  
 -- Job-specific hooks for standard casting events.
--------------------------------------------------------------------------------------------------------------------
+  
 -- Set eventArgs.handled to true if we don't want any automatic gear equipping to be done.
 -- Set eventArgs.useMidcastGear to true if we want midcast gear equipped on precast.
 
@@ -218,9 +218,9 @@ function job_post_midcast(spell, spellMap, eventArgs)
     end
 end
 
--------------------------------------------------------------------------------------------------------------------
+  
 -- Job-specific hooks for non-casting events.
--------------------------------------------------------------------------------------------------------------------
+  
 
 -- Called when a player gains or loses a buff.
 -- buff == buff gained or lost
@@ -249,18 +249,18 @@ function job_update(cmdParams, eventArgs)
     end
 end
 
--------------------------------------------------------------------------------------------------------------------
+  
 -- User code that supplements standard library decisions.
--------------------------------------------------------------------------------------------------------------------
+  
 
 -- Set eventArgs.handled to true if we don't want the automatic display to be run.
 function display_current_job_state(eventArgs)
 
 end
 
--------------------------------------------------------------------------------------------------------------------
+  
 -- Utility functions specific to this job.
--------------------------------------------------------------------------------------------------------------------
+  
 -- Check for proper ammo when shooting or weaponskilling
 function check_ammo_precast(spell, action, spellMap, eventArgs)
 	-- Filter ammo checks depending on Unlimited Shot

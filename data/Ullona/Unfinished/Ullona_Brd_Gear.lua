@@ -27,9 +27,9 @@ end
 
 function init_gear_sets()
 
-	--------------------------------------
+  
 	-- Start defining the sets
-	--------------------------------------
+  
 
 	-- Weapons sets
 	sets.weapons.Aeneas = {main="Aeneas",sub="Genmei Shield"}

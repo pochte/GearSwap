@@ -60,9 +60,9 @@ function init_gear_sets()
         body="Runeist's Coat +3",hands=gear.herculean_dt_hands,ring1="Gelatinous Ring +1",ring2="Moonlight Ring",
         back="Moonlight Cape",waist="Flume Belt +1",legs="Eri. Leg Guards +1",feet="Erilaz Greaves +1"}
 		
-	--------------------------------------
+  
 	-- Precast sets
-	--------------------------------------
+  
 
 	-- Item sets.
 
@@ -195,9 +195,9 @@ function init_gear_sets()
     sets.precast.WS['Herculean Slash'] = set_combine(sets.precast['Lunge'], {})
 	sets.precast.WS['Sanguine Blade'] = set_combine(sets.precast['Lunge'], {})
 
-	--------------------------------------
+  
 	-- Midcast sets
-	--------------------------------------
+  
 	
     sets.midcast.FastRecast = {ammo="Impatiens",
             head="Carmine Mask +1",neck="Voltsurge Torque",ear1="Enchntr. Earring +1",ear2="Loquac. Earring",
@@ -246,9 +246,9 @@ function init_gear_sets()
     sets.midcast.Protect = set_combine(sets.midcast['Enhancing Magic'], {ring2="Sheltered Ring"})
     sets.midcast.Shell = set_combine(sets.midcast['Enhancing Magic'], {ring2="Sheltered Ring"})
 
-	--------------------------------------
+  
 	-- Idle/resting/defense/etc sets
-	--------------------------------------
+  
 
 	sets.resting = {}
 
@@ -347,9 +347,9 @@ function init_gear_sets()
 	sets.MaxTP = {ear1="Brutal Earring"}
 	sets.AccMaxTP = {ear1="Telos Earring"}
 
-	--------------------------------------
+  
 	-- Engaged sets
-	--------------------------------------
+  
 
     sets.engaged = {main="Lionheart",sub="Utu Grip",ammo="Yamarang",
             head="Dampening Tam",neck="Anu Torque",ear1="Brutal Earring",ear2="Sherida Earring",
@@ -404,9 +404,9 @@ function init_gear_sets()
 	sets.engaged.HighAcc.Tank = sets.engaged.Tank
 	sets.engaged.FullAcc.Tank = sets.engaged.Tank
 	
-	--------------------------------------
+  
 	-- Custom buff sets
-	--------------------------------------
+  
 	sets.buff.Doom = set_combine(sets.buff.Doom, {})
 	sets.buff.Sleep = {head="Frenzy Sallet"}
 	sets.buff.Battuta = {hands="Turms Mittens +1"}

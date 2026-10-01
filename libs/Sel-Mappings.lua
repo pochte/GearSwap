@@ -1,10 +1,10 @@
---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  
 -- Mappings, lists and sets to describe game relationships that aren't easily determinable otherwise.
--------------------------------------------------------------------------------------------------------------------
+  
 
--------------------------------------------------------------------------------------------------------------------
+  
 -- Elemental mappings for element relationships and certain types of spells and gear.
--------------------------------------------------------------------------------------------------------------------
+  
 data = {} -- Precursor to all mapping lists.
 -- Basic elements
 data.elements = {}
@@ -69,9 +69,9 @@ data.elements.rune_of = {['Light']='Lux', ['Dark']='Tenebrae', ['Fire']='Ignis',
 cursna_exceptions = S{'Cursna','Accession','Divine Caress','Hallowed Water','Holy Water','Light Arts','Addendum: White'}
 TH_WS_exceptions = S{'Corporal Tombstone','Lithicthrower Image','Incarnation Icon','Impish Statue'}
 
--------------------------------------------------------------------------------------------------------------------
+  
 -- Mappings for weaponskills
--------------------------------------------------------------------------------------------------------------------
+  
 
 -- REM weapons and their corresponding weaponskills
 data.weaponskills = {}
@@ -158,9 +158,9 @@ data.skillchains.detonation = S{'Wind'}
 data.skillchains.scission = S{'Earth'}
 data.skillchains.impaction = S{'Lightning'}
 data.skillchains.reverberation = S{'Water'}
--------------------------------------------------------------------------------------------------------------------
+  
 -- Spell Related Lists and Mappings
--------------------------------------------------------------------------------------------------------------------
+  
 data.spells = {}
 
 spell_maps = {
@@ -258,9 +258,9 @@ data.spells.unbridled = S{'Thunderbolt','Harden Shell','Absolute Terror','Gates 
 	'Blistering Roar','Uproot','Crashing Thunder','Polar Roar','Mighty Guard','Cruel Joke','Cesspool',
 	'Tearing Gust'}
 
--------------------------------------------------------------------------------------------------------------------
+  
 -- Ability Related Lists and Mappings
--------------------------------------------------------------------------------------------------------------------
+  
 data.abilities = {}
 
 data.abilities.runes = S{'Lux', 'Tenebrae', 'Ignis', 'Gelus', 'Flabra', 'Tellus', 'Sulpor', 'Unda'}
@@ -273,9 +273,9 @@ data.abilities.white_to_black_stratagems = {['Penury']='Parsimony',['Celerity']=
 data.abilities.black_to_white_stratagems = {['Parsimony']='Penury',['Alacrity']='Celerity',['Manifestation']='Accession',['Ebullience']='Rapture',
 	['Focalization']='Altruism',['Equanimity']='Tranquility',['Immanence']='Perpetuance',['Addendum: Black']='Addendum: White'}
 
--------------------------------------------------------------------------------------------------------------------
+  
 -- Job Related Lists
--------------------------------------------------------------------------------------------------------------------
+  
 data.jobs = {}
 
 data.jobs.mage_jobs = S{'WHM','BLM','SCH','RDM','BRD','SMN','GEO'}
@@ -283,16 +283,16 @@ data.jobs.nuke_jobs = S{'BLM','SCH','RDM','GEO'}
 data.jobs.melee_jobs = S{'WAR','MNK','THF','PLD','DRK','SAM','NIN','BLU','DNC','RUN','COR','PUP','PLD','DRK','BST'}
 data.jobs.dual_wield_jobs = S{'THF','BLU','NIN','DNC'}
 
--------------------------------------------------------------------------------------------------------------------
+  
 -- Slot Related Lists
--------------------------------------------------------------------------------------------------------------------
+  
 data.slots = {}
 
 data.slots.slot_names = S{'main','sub','range','ranged','ammo','head','neck','ear1','lear','left_ear','ear2','rear','right_ear','ring1','lring','left_ring','ring2','rring','right_ring','back','waist','legs','feet'}
 	
--------------------------------------------------------------------------------------------------------------------
+  
 -- Equipment Related Lists and Mappings
--------------------------------------------------------------------------------------------------------------------
+  
 
 data.equipment = {}
 
@@ -338,9 +338,9 @@ data.equipment.rema_ranged_weapons_ammo_pouch = {
 data.equipment.cprings = L{"Endorsement Ring","Trizek Ring","Vocation Ring","Capacity Ring","Facility Ring"}
 data.equipment.xprings = L{"Echad Ring","Caliber Ring","Emperor Band","Empress Band","Resolution Ring"}
 
--------------------------------------------------------------------------------------------------------------------
+  
 -- Tool Maps/Lists
--------------------------------------------------------------------------------------------------------------------
+  
 data.tools = {}
 
 data.tools.tool_map = {
@@ -533,9 +533,9 @@ data.tools.universal_toolbag_map = {
 	['Yain: Ichi'] = res.items[5868],
     }
 
--------------------------------------------------------------------------------------------------------------------
+  
 -- Command related Maps/Lists
--------------------------------------------------------------------------------------------------------------------
+  
 data.command = {}
 
 data.command.outgoing_action_category_table = {['/ma']=3,['/ws']=7,['/ja']=9,['/ra']=16,['/ms']=25}
@@ -544,9 +544,9 @@ data.command.unify_prefix = {['/ma'] = '/ma', ['/magic']='/ma',['/jobability'] =
     ['/so']='/ma',['/ninjutsu']='/ma',['/weaponskill']='/ws',['/ws']='/ws',['/ra']='/ra',['/rangedattack']='/ra',['/nin']='/ma',
     ['/throw']='/ra',['/range']='/ra',['/shoot']='/ra',['/monsterskill']='/ms',['/ms']='/ms',['/pet']='/ja',['Monster']='Monster',['/bstpet']='/ja'}	
 
--------------------------------------------------------------------------------------------------------------------
+  
 -- Tables to specify area groupings. 
--------------------------------------------------------------------------------------------------------------------
+  
 
 data.areas = {}
 
@@ -636,9 +636,9 @@ data.areas.laggy = S{
 	"Outer Ra'Kaznar [U]",
 }
 
--------------------------------------------------------------------------------------------------------------------
+  
 -- NPC Lists
--------------------------------------------------------------------------------------------------------------------
+  
 
 data.npcs = {}
 
@@ -651,16 +651,16 @@ data.npcs.trusts = S{'ArkEV','ArkGK','ArkHM','ArkMR','ArkTT','Abenzio','Abquhbah
 	'Rongelouts','Rosulatia','Rughadjeen','Sakura',"Selh'teus",'SemihLafihna','Shantotto','ShikareeZ','StarSibyl','Sylvie','Teodor','Tenzen','Trion',
 	'UkaTotlihn','Ullegore','Ulmia','Valaineral','Volker','Yoran-Oran','Zazarg','Zeid'}
 	
--------------------------------------------------------------------------------------------------------------------
+  
 -- Skill related lists.
--------------------------------------------------------------------------------------------------------------------
+  
 data.skills = {}
 data.skills.one_handed_combat = S{2,3,5,9,11} --Combat skills for one-handed-weapons.
 --data.skills.two_handed_combat = S{4,6,7,8,10,12} --Combat skills for two-handed-weapons.
 
--------------------------------------------------------------------------------------------------------------------
+  
 -- Stepdown Tables.
--------------------------------------------------------------------------------------------------------------------
+  
 spell_stepdown = {
 	['Aspir III'] = 'Aspir II',
 	['Aspir II'] = 'Aspir',

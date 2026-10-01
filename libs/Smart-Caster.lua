@@ -1,55 +1,24 @@
--- =============================================================================
 -- Smart-Caster.lua — Changelog
-
--- =============================================================================
-
--------------------------------------------------------------------------------------------------------------------
 -- SMART CASTER
--- SCH Stratagems, Storm Prep, WHM Afflatus, Klimaform, Sublimation Auto
+-- SCH Stratagems, Storm Prep, WHM Afflatus, Klimaform, Auto Sublimation
 -- Author: Lady Ullona | Retail FFXI / Windower
 --
--- USAGE:
---   Place in your GearSwap/data/ folder.
---   In your job file's get_sets(), add:
---       include('Smart-Caster.lua')
+-- Usage: include('Smart-Caster.lua') in get_sets(), then call:
+--   smart_caster_precast(spell, spellMap, eventArgs) in job_precast()
+--   try_sublimation() in job_aftercast()
+--   smart_caster_buff_change(buff, gain) in job_buff_change()
 --
---   Then wire up the helpers in your job file's own hook functions:
---
---       function job_precast(spell, spellMap, eventArgs)
---           smart_caster_precast(spell, spellMap, eventArgs)
---           -- ... rest of your precast logic ...
---       end
---
---       function job_aftercast(spell, spellMap, eventArgs)
---           try_sublimation()
---           -- ... rest of your aftercast logic ...
---       end
---
---       function job_buff_change(buff, gain)
---           smart_caster_buff_change(buff, gain)
---           -- ... rest of your buff_change logic ...
---       end
---
--- NOTE: Do NOT define job_precast / job_aftercast / job_buff_change inside
---       this file — doing so would silently overwrite your job file's versions.
---       Call the helper functions from your job file instead (as shown above).
--------------------------------------------------------------------------------------------------------------------
-
+-- Do not define job_precast/job_aftercast/job_buff_change here;
+-- these helpers are intended to be called from the job file's hooks.
 local LATENCY             = 0.1   -- seconds; recast must be below this to fire
 local SUBLIMATION_INTERVAL = 5    -- seconds between sublimation re-checks
 local sublimation_last_check = 0
-
--------------------------------------------------------------------------------------------------------------------
 -- STRING HELPERS
--------------------------------------------------------------------------------------------------------------------
 -- Safe startswith that won't error on nil strings
 function string.startswith(str, prefix)
     return str and str:sub(1, #prefix) == prefix
 end
-
--------------------------------------------------------------------------------------------------------------------
 -- SCH HELPERS
--------------------------------------------------------------------------------------------------------------------
 -- Returns 'light', 'dark', or 'none' depending on active Arts buff
 function get_current_arts()
     if buffactive['Light Arts'] or buffactive['Addendum: White'] then
@@ -59,14 +28,10 @@ function get_current_arts()
     end
     return 'none'
 end
-
--------------------------------------------------------------------------------------------------------------------
 -- WEATHER CHECK
 -- Returns true if the given element's weather or self-cast storm is active
--------------------------------------------------------------------------------------------------------------------
 function has_weather(element)
     if world.weather_element == element then return true end
-
     local storms = {
         Fire      = 'Firestorm',
         Ice       = 'Hailstorm',
@@ -77,27 +42,18 @@ function has_weather(element)
         Light     = 'Aurorastorm',
         Dark      = 'Voidstorm',
     }
-
     return storms[element] and buffactive[storms[element]] or false
 end
-
--------------------------------------------------------------------------------------------------------------------
 -- SPELL AVAILABLE CHECK
 -- Looks up a spell by name in res.spells and checks its recast timer
--------------------------------------------------------------------------------------------------------------------
 function spell_available(name)
     local spell = res.spells:with('en', name)
     if not spell then return false end
-
     local recasts = windower.ffxi.get_spell_recasts()
     if not recasts then return false end
-
     return recasts[spell.recast_id] ~= nil and recasts[spell.recast_id] < LATENCY
 end
-
--------------------------------------------------------------------------------------------------------------------
 -- BLACK ENFEEBLING SPELLS (used to gate Manifestation)
--------------------------------------------------------------------------------------------------------------------
 local black_enfeebles = {
     Poison=true, ['Poison II']=true, Poisonga=true, ['Poisonga II']=true,
     Bio=true, ['Bio II']=true, ['Bio III']=true,
@@ -108,28 +64,21 @@ local black_enfeebles = {
     Bind=true, Break=true, Breakga=true,
     Sleep=true, ['Sleep II']=true, Sleepga=true, ['Sleepga II']=true,
 }
-
--------------------------------------------------------------------------------------------------------------------
 -- CROWD CONTROL SPELLS
 -- These must cast immediately — never prep weather first
--------------------------------------------------------------------------------------------------------------------
 local crowd_control_spells = {
     Sleep=true, ['Sleep II']=true, Sleepga=true, ['Sleepga II']=true,
     Repose=true, Break=true, Breakga=true,
     Bind=true, Gravity=true, ['Gravity II']=true,
 }
-
--------------------------------------------------------------------------------------------------------------------
 -- SMART CASTER PRECAST
 -- Call this at the top of your job file's job_precast().
 -- Handles automatic ability usage before magic spells:
 --   SCH: Auto-Arts, Aurorastorm, Celerity, Accession, Manifestation, Klimaform, Elemental Storms
 --   WHM: Afflatus Solace / Misery
 --   RDM: Composure
--------------------------------------------------------------------------------------------------------------------
 function smart_caster_precast(spell, spellMap, eventArgs)
     if not spell or spell.action_type ~= 'Magic' then return end
-
     local abil_recasts = windower.ffxi.get_ability_recasts() or {}
     local arts         = get_current_arts()
     local is_sch_main  = player.main_job == 'SCH'
@@ -137,27 +86,23 @@ function smart_caster_precast(spell, spellMap, eventArgs)
     local is_whm_main  = player.main_job == 'WHM'
     local is_rdm_main  = player.main_job == 'RDM'
     local target       = spell.target.raw or '<t>'
-
     -- Skip if a fast-cast stratagem is already running
     if buffactive['Alacrity'] or buffactive['Celerity'] then return end
-
-    -------------------------------------------------------------------------------------------------------------------
+  ----------------
     -- SCH: AUTO-ARTS
     -- Activates Light/Dark Arts if the wrong (or no) arts are up.
     -- FIX: Corrected ability recast IDs.
     --   Light Arts main=228, sub=230  |  Dark Arts main=229, sub=231
-    -------------------------------------------------------------------------------------------------------------------
+  ----------------
     if is_sch_main or is_sch_sub then
         local light_id = is_sch_main and 228 or 230  -- FIX: was 257
         local dark_id  = is_sch_main and 229 or 231  -- FIX: was 258
-
         if spell.skill == 'Black Magic' and arts ~= 'dark'
             and abil_recasts[dark_id] and abil_recasts[dark_id] < LATENCY then
             cancel_spell()
             send_command('input /ja "Dark Arts" <me>;wait 1.2;input /ma "'..spell.english..'" '..target)
             eventArgs.cancel = true
             return
-
         elseif spell.skill == 'White Magic' and arts ~= 'light'
             and abil_recasts[light_id] and abil_recasts[light_id] < LATENCY then
             cancel_spell()
@@ -166,55 +111,48 @@ function smart_caster_precast(spell, spellMap, eventArgs)
             return
         end
     end
-
-    -------------------------------------------------------------------------------------------------------------------
+  ----------------
     -- WHM: AFFLATUS SOLACE (single-target Cure spells)
     -- Ability recast ID 29 — unchanged, was already correct
-    -------------------------------------------------------------------------------------------------------------------
+  ----------------
     if is_whm_main
         and spell.skill == 'Healing Magic'
         and spell.english:startswith('Cure')
         and not spell.english:match('Curaga')
         and not buffactive['Afflatus Solace']
         and abil_recasts[29] and abil_recasts[29] < LATENCY then
-
         cancel_spell()
         send_command('input /ja "Afflatus Solace" <me>;wait 1.2;input /ma "'..spell.english..'" '..target)
         eventArgs.cancel = true
         return
     end
-
-    -------------------------------------------------------------------------------------------------------------------
+  ----------------
     -- WHM: AFFLATUS MISERY (Divine Magic and Esuna)
     -- Ability recast ID 30 — unchanged, was already correct
-    -------------------------------------------------------------------------------------------------------------------
+  ----------------
     if is_whm_main
         and (spell.skill == 'Divine Magic' or spell.english == 'Esuna')
         and not buffactive['Afflatus Misery']
         and abil_recasts[30] and abil_recasts[30] < LATENCY then
-
         cancel_spell()
         send_command('input /ja "Afflatus Misery" <me>;wait 1.2;input /ma "'..spell.english..'" '..target)
         eventArgs.cancel = true
         return
     end
-
-    -------------------------------------------------------------------------------------------------------------------
+  ----------------
     -- RDM: COMPOSURE (Enhancing Magic — keep it up)
     -- Ability recast ID 50 — unchanged, was already correct
-    -------------------------------------------------------------------------------------------------------------------
+  ----------------
     if is_rdm_main
         and spell.skill == 'Enhancing Magic'
         and not buffactive['Composure']
         and abil_recasts[50] and abil_recasts[50] < LATENCY then
-
         cancel_spell()
         send_command('input /ja "Composure" <me>;wait 1.2;input /ma "'..spell.english..'" '..target)
         eventArgs.cancel = true
         return
     end
-
-    -------------------------------------------------------------------------------------------------------------------
+  ----------------
     -- SCH: AURORASTORM REMINDER (Cure/Cure II in Light Arts)
     -- [FIX]: Used to cancel the cast, fire Aurorastorm, then reschedule the actual Cure/Cure II
     -- ~1.2s later -- fragile, since any interruption along that chain meant the real heal never
@@ -222,30 +160,27 @@ function smart_caster_precast(spell, spellMap, eventArgs)
     -- exceptions. This is now reminder-only, same treatment as the Curaga case below -- the
     -- Cure/Cure II cast is NEVER cancelled or delayed, no matter what. If Aurorastorm's down,
     -- you get a heads-up in chat and the heal goes out immediately regardless.
-    -------------------------------------------------------------------------------------------------------------------
+  ----------------
     if (is_sch_main or is_sch_sub)
         and (spell.english == 'Cure' or spell.english == 'Cure II')
         and arts == 'light'
         and not has_weather('Light') then
         add_to_chat(167, 'Aurorastorm is down')
     end
-
-    -------------------------------------------------------------------------------------------------------------------
+  ----------------
     -- SCH: ACCESSION (status removal spells in Light Arts — make them AoE)
     -- FIX: Corrected ability recast ID 216 (was 245)
-    -------------------------------------------------------------------------------------------------------------------
+  ----------------
     if (is_sch_main or is_sch_sub)
         and spell.skill == 'Healing Magic'
         and arts == 'light'
         and not buffactive['Accession']
         and abil_recasts[216] and abil_recasts[216] < LATENCY then  -- FIX: was 245
-
         local accession_spells = {
             Poisona=true, Paralyna=true, Blindna=true,
             Silena=true,  Cursna=true,  Viruna=true,
             Stona=true,   Erase=true,
         }
-
         if accession_spells[spell.english] then
             cancel_spell()
             send_command('input /ja "Accession" <me>;wait 1.2;input /ma "'..spell.english..'" '..target)
@@ -253,46 +188,41 @@ function smart_caster_precast(spell, spellMap, eventArgs)
             return
         end
     end
-
-    -------------------------------------------------------------------------------------------------------------------
+  ----------------
     -- SCH: CELERITY (Cure spells in Light Arts — fast cast)
     -- FIX: Corrected ability recast ID 214 (was 244)
-    -------------------------------------------------------------------------------------------------------------------
+  ----------------
     if (is_sch_main or is_sch_sub)
         and spell.skill == 'Healing Magic'
         and spell.english:startswith('Cure')
         and arts == 'light'
         and abil_recasts[214] and abil_recasts[214] < LATENCY then  -- FIX: was 244
-
         cancel_spell()
         send_command('input /ja "Celerity" <me>;wait 1.2;input /ma "'..spell.english..'" '..target)
         eventArgs.cancel = true
         return
     end
-
-    -------------------------------------------------------------------------------------------------------------------
+  ----------------
     -- SCH: MANIFESTATION (black enfeebling in Dark Arts — make them AoE)
     -- FIX: Corrected ability recast ID 217 (was 246)
-    -------------------------------------------------------------------------------------------------------------------
+  ----------------
     if (is_sch_main or is_sch_sub)
         and spell.skill == 'Enfeebling Magic'
         and arts == 'dark'
         and black_enfeebles[spell.english]
         and not buffactive['Manifestation']
         and abil_recasts[217] and abil_recasts[217] < LATENCY then  -- FIX: was 246
-
         cancel_spell()
         send_command('input /ja "Manifestation" <me>;wait 1.2;input /ma "'..spell.english..'" '..target)
         eventArgs.cancel = true
         return
     end
-
-    -------------------------------------------------------------------------------------------------------------------
+  ----------------
     -- SCH: KLIMAFORM (Elemental Magic in Dark Arts when weather already matches)
     -- FIX: Klimaform is a Job Ability (/ja), not a spell (/ma).
     --      Was incorrectly using spell_available() and /ma.
     --      Fixed to use abil_recasts[222] and /ja.
-    -------------------------------------------------------------------------------------------------------------------
+  ----------------
     if spell.skill == 'Elemental Magic'
         and spell.element
         and (is_sch_main or is_sch_sub)
@@ -300,26 +230,23 @@ function smart_caster_precast(spell, spellMap, eventArgs)
         and has_weather(spell.element)
         and not buffactive['Klimaform']
         and abil_recasts[222] and abil_recasts[222] < LATENCY then  -- FIX: was spell_available('Klimaform')
-
         cancel_spell()
         send_command('input /ja "Klimaform" <me>;wait 1.2;input /ma "'..spell.english..'" '..target)  -- FIX: was /ma
         eventArgs.cancel = true
         return
     end
-
-    -------------------------------------------------------------------------------------------------------------------
+  ----------------
     -- SCH: ELEMENTAL STORMS (Elemental Magic — prep matching weather before nuking)
     -- Skips crowd-control spells; they need to land immediately.
     -- Only fires when HP >= 75% (risky to delay when low).
     -- [NEW] Only fires when NOT actively magic bursting — interrupting a burst chain to
     -- cast weather would tank burst timing/DPS. If MagicBurstMode isn't defined on the
     -- current job at all, treats that the same as "off" (safe default, no nil error).
-    -------------------------------------------------------------------------------------------------------------------
+  ----------------
     -- [FIX 2026-08-30] Was checking state.MagicBurstMode directly -- that state is retired,
     -- folded into CastingMode itself. is_magic_bursting() (Ullona-Globals.lua) already
     -- handles the "not defined on this job" safe-default case internally.
     local not_bursting = not is_magic_bursting()
-
     if spell.skill == 'Elemental Magic'
         and spell.element
         and (is_sch_main or is_sch_sub)
@@ -328,9 +255,7 @@ function smart_caster_precast(spell, spellMap, eventArgs)
         and player.status ~= 'Engaged'
         and not has_weather(spell.element)
         and not crowd_control_spells[spell.english] then
-
         local storm = nil
-
         if is_sch_main then
             local storms = {
                 Fire      = {'Firestorm II',   'Firestorm'},
@@ -355,7 +280,6 @@ function smart_caster_precast(spell, spellMap, eventArgs)
             local s = storms[spell.element]
             if s and spell_available(s) then storm = s end
         end
-
         if storm then
             cancel_spell()
             send_command('input /ma "'..storm..'" <me>;wait 1.2;input /ma "'..spell.english..'" '..target)
@@ -364,8 +288,6 @@ function smart_caster_precast(spell, spellMap, eventArgs)
         end
     end
 end
-
--------------------------------------------------------------------------------------------------------------------
 -- SMART STATUS REMOVAL (SmartNa)
 -- Call via self-command: gs c smartna              -- prompts <st>, click who you mean
 --                         gs c smartna <name>       -- explicit name, skips the prompt
@@ -411,7 +333,6 @@ end
 -- your own state, not actual detection of the target -- that's a deliberate design choice
 -- per your instruction, not a limitation being papered over. This means when <t> resolves to
 -- an ally, you're still reading YOUR OWN buffs/hints to decide what to cast on them.
--------------------------------------------------------------------------------------------------------------------
 local self_status_cure_priority = {
     {buff = 'Petrification', spell = 'Stona'},
     {buff = 'Doom',          spell = 'Cursna'},
@@ -429,7 +350,6 @@ local self_status_cure_priority = {
     {buff = 'Poison II',     spell = 'Poisona'},
     {buff = 'Virus',         spell = 'Viruna'},
 }
-
 -- Bar-status/Bar-element hint table -- used ONLY for the targeted branch, step 2, after the
 -- mirror check above comes up empty. Barwatera included deliberately (poison-prep heuristic,
 -- not the real Bar-poison spell) per direct instruction -- not a mix-up.
@@ -448,7 +368,6 @@ local bar_status_hint_priority = {
     {buff = 'Barpetrify',   spell = 'Stona'},
     {buff = 'Barpetra',     spell = 'Stona'},
 }
-
 -- Tries a spell on a given target, falling back to Cursna if the first choice is
 -- unavailable (recast/unlocked). Returns true if something was cast, false if nothing was.
 local function try_na_cast(spellName, target)
@@ -461,17 +380,14 @@ local function try_na_cast(spellName, target)
     end
     return false
 end
-
 function handle_smart_curena(cmdParams)
     local is_whm_main        = player.main_job == 'WHM'
     local is_rdm_main        = player.main_job == 'RDM'
     local is_sch_main_or_sub = player.main_job == 'SCH' or player.sub_job == 'SCH'
-
     if not (is_whm_main or is_rdm_main or is_sch_main_or_sub) then
         add_to_chat(123, 'Abort: SmartNa needs WHM/RDM main or SCH main/sub for -na spell access.')
         return
     end
-
     -- [REVISED 2026-08-09] Simplified to always <st> per direct instruction -- both the
     -- self-shortcut and the <t> resolution are gone now.
     --
@@ -491,7 +407,6 @@ function handle_smart_curena(cmdParams)
     else
         target = '<st>'
     end
-
     -- Step 1: mirror -- assume the target has whatever YOU currently have.
     for _, entry in ipairs(self_status_cure_priority) do
         if buffactive[entry.buff] then
@@ -501,7 +416,6 @@ function handle_smart_curena(cmdParams)
             return
         end
     end
-
     -- Step 2: no mirrored debuff -- fall back to a Bar-spell hint if one's up.
     for _, entry in ipairs(bar_status_hint_priority) do
         if buffactive[entry.buff] then
@@ -511,7 +425,6 @@ function handle_smart_curena(cmdParams)
             return
         end
     end
-
     -- Step 3: no mirror, no hint -- Cursna, the broadest catch-all.
     if spell_available('Cursna') then
         windower.chat.input('/ma "Cursna" '..target)
@@ -519,8 +432,6 @@ function handle_smart_curena(cmdParams)
         add_to_chat(123, 'Abort: Cursna unavailable (recast/unlocked).')
     end
 end
-
--------------------------------------------------------------------------------------------------------------------
 -- SUBLIMATION AUTOMATION
 -- Automatically re-activates Sublimation when the buff drops.
 -- Call this from your job file's job_aftercast() and job_buff_change().
@@ -528,33 +439,24 @@ end
 -- Will not fire if: Sublimation is already active, Refresh III is up,
 --                   player is mid-action, or Amnesia is active.
 -- FIX: Corrected ability recast ID 96 (was 36, which is a completely different ability)
--------------------------------------------------------------------------------------------------------------------
 function try_sublimation()
     if player.main_job ~= 'SCH' and player.sub_job ~= 'SCH' then return end
-
     local now = os.time()
     if now < sublimation_last_check then return end
     sublimation_last_check = now + SUBLIMATION_INTERVAL
-
     -- Already active — nothing to do
     if buffactive['Sublimation: Activated'] or buffactive['Sublimation: Complete'] then return end
-
     -- Refresh III is better for MP recovery — don't waste the slot
     if buffactive['Refresh III'] then return end
-
     -- Don't interrupt casts or fire while silenced/amnesia'd
     if midaction() or buffactive['Amnesia'] or buffactive['Silence'] then return end
-
     local abil_recasts = windower.ffxi.get_ability_recasts()
     if not abil_recasts then return end
-
     -- FIX: Sublimation ability recast ID is 96, not 36
     if abil_recasts[96] and abil_recasts[96] < LATENCY then
         send_command('input /ja "Sublimation" <me>')
     end
 end
-
--------------------------------------------------------------------------------------------------------------------
 -- BUFF CHANGE HELPER
 -- Call this from your job file's job_buff_change() to react to Sublimation falling off.
 --
@@ -563,17 +465,13 @@ end
 --       smart_caster_buff_change(buff, gain)
 --       -- ... rest of your buff_change logic ...
 --   end
--------------------------------------------------------------------------------------------------------------------
 function smart_caster_buff_change(buff, gain)
     if buff == 'Sublimation: Activated' or buff == 'Sublimation: Complete' then
         try_sublimation()
     end
 end
-
--------------------------------------------------------------------------------------------------------------------
 -- !! IMPORTANT — DO NOT ADD job_precast / job_aftercast / job_buff_change HERE !!
 --
 -- This is an include file. Defining GearSwap hook functions here would silently
 -- overwrite the same functions in your job file (Lua last-definition wins).
 -- Instead, call the helpers above from your job file's own hook functions.
--------------------------------------------------------------------------------------------------------------------

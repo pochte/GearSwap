@@ -1,8 +1,8 @@
--------------------------------------------------------------------------------------------------------------------
+  
 -- General functions for manipulating state values via self-commands.
 -- Only handles certain specific states that we've defined, though it
 -- allows the user to hook into the cycle command.
--------------------------------------------------------------------------------------------------------------------
+  
 
 -- Routing function for general known self_commands.  Mappings are at the bottom of the file.
 -- Handles splitting the provided command line up into discrete words, for the other functions to use.
@@ -36,9 +36,9 @@ function self_command(commandArgs)
 end
 
 
--------------------------------------------------------------------------------------------------------------------
+  
 -- Functions for manipulating state vars.
--------------------------------------------------------------------------------------------------------------------
+  
 
 -- Function to set various states to specific values directly.
 -- User command format: gs c set [field] [value]
@@ -230,7 +230,7 @@ function handle_unset(cmdParams)
     end
 end
 
--------------------------------------------------------------------------------------------------------------------
+  
 
 -- User command format: gs c update [option]
 -- Where [option] can be 'user' to display current state.
@@ -291,7 +291,7 @@ function handle_naked(cmdParams)
 end
 
 
--------------------------------------------------------------------------------------------------------------------
+  
 
 -- Get the state var that matches the requested name.
 -- Only returns mode vars.
@@ -404,7 +404,7 @@ function display_current_caster_state()
 end
 
 
--------------------------------------------------------------------------------------------------------------------
+  
 
 -- Function to show what commands are available, and their syntax.
 -- Syntax: gs c help
@@ -447,9 +447,9 @@ function handle_test(cmdParams)
 end
 
 
--------------------------------------------------------------------------------------------------------------------
+  
 -- The below table maps text commands to the above handler functions.
--------------------------------------------------------------------------------------------------------------------
+  
 
 selfCommandMaps = {
     ['toggle']   = handle_toggle,

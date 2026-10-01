@@ -8,12 +8,8 @@ function user_job_setup()
     state.ResistDefenseMode:options('MEVA')
     state.Weapons:options('None','DualWeapons','MeleeWeapons')
     state.WeaponskillMode:options('Normal','Fodder')
-
-
-
     -- Force Macro Book 1 / Page 1
     set_macro_page(1, 1)
-
     -- Additional local binds
     send_command('bind != input /ja "Penury" <me>')              -- Alt + =
     send_command('bind ^@!` gs c toggle AutoCaress')             -- Ctrl + Win + Alt + `
@@ -25,21 +21,15 @@ function user_job_setup()
     send_command('bind @a gs c smartregen')                    -- Win + A
     send_command('bind @f10 gs c smartna')                      -- Win + F10
 end
-
 function user_job_lockstyle()
     send_command('input /lockstyleset 1')
 end
-
 -- Define sets and vars used by this job file.
 function init_gear_sets()
-    --------------------------------------
     -- Start defining the sets
-    --------------------------------------
-
 	-- Weapons sets
 	sets.weapons.MeleeWeapons = {main="Kaja Rod", sub="Culminus", range=empty, ammo="Crepuscular Pebble"}
 	sets.weapons.DualWeapons = {}
-	
     sets.buff.Sublimation = {waist="Embla Sash"}
     sets.buff.DTSublimation = {waist="Embla Sash"}
     -- [FIX] Removed two stray job_precast(spell, spellMap, eventArgs) stubs that were pasted
@@ -66,9 +56,7 @@ function init_gear_sets()
 		ring1="Lebeche Ring",
 		back="Alaunus's Cape",
 		waist="Cornelia's Belt"}
-		
     sets.precast.FC.DT = sets.precast.FC 
-
     sets.precast.FC['Enhancing Magic'] = set_combine(sets.precast.FC, {
     main = "Daybreak",
     sub  = "Ammurapi Shield",
@@ -78,13 +66,11 @@ function init_gear_sets()
 		ear1="Magnetic Earring",
 		waist="Siegel Sash",
 		feet="Ebers Duckbills +3",})
-	
     sets.precast.FC.Stoneskin = set_combine(sets.precast.FC['Enhancing Magic'], {
 		legs="Querkening Brais",
 		waist="Embla Sash",
 		neck  ="Nodens Gorget"
 	})
-
 sets.precast.FC['Healing Magic'] = set_combine(
     sets.precast.FC, {
         main="Vadose Rod",
@@ -109,12 +95,10 @@ sets.precast.FC['Healing Magic'] = set_combine(
 	---main=
 	})
 	sets.precast.FC.Impact =  set_combine(sets.precast.FC, {head=empty,body="Twilight Cloak"})
-	
     -- Precast sets to enhance JAs
     sets.precast.JA.Benediction = {body="Piety Bliaut +4"}
     sets.precast.JA.Devotion = {head="Piety Cap +4"}
     sets.precast.JA['Afflatus Misery'] = {legs="Piety Pantaloons +3"}
-
     -- Default set for any weaponskill that isn't any more specifically defined
     sets.precast.WS = {
 	neck="Fotia Gorget",
@@ -127,9 +111,7 @@ sets.precast.FC['Healing Magic'] = set_combine(
 	feet="Medium's Sabots",
 	head="Sukeroku Hachimaki"
 	}
-
     -- Midcast Sets
-
     sets.Kiting = {feet="Herald's Gaiters", ammo  = "Crepuscular Pebble",  main="Malignance Pole", sub="Daduchos Grip", waist="Platinum Moogle Belt"}
     sets.latent_refresh = {main="Daybreak", sub="Archduke's Shield", waist="Fucho-no-obi"}
 	sets.latent_refresh_grip = {}
@@ -137,14 +119,11 @@ sets.precast.FC['Healing Magic'] = set_combine(
 	sets.DayIdle = {}
 	sets.NightIdle = {}
 	sets.TreasureHunter = {ammo="Perfect Lucky Egg", waist="Chaac Belt"}
-	
 	--Situational sets: Gear that is equipped on certain targets
 	sets.Self_Healing = {ring1="Kunaji Ring" }
 	sets.Cure_Received = {}
 	sets.Self_Refresh = {}
-
 	-- Conserve Mp set for spells that don't need anything else, for set_combine.
-
 sets.ConserveMP = set_combine(
     sets.precast.FC,
     { 	
@@ -155,16 +134,10 @@ sets.ConserveMP = set_combine(
 		legs="SV loincloth +1"
     }
 )
-
-		
 	sets.midcast.Teleport = sets.ConserveMP
-	
 	sets.midcast.FastRecast = sets.precast.FC
-		
     -- Cure sets
-
     sets.midcast['Full Cure'] = sets.midcast.FastRecast
-
     sets.midcast.Cure = set_combine(sets.precast.FC['Healing Magic'], {
         main="Bunzi's Rod",
         sub="Sors Shield",
@@ -178,9 +151,7 @@ sets.ConserveMP = set_combine(
         ammo="Psilomene",
     })
     sets.midcast.Cure.DT = sets.midcast.Cure
-
     sets.midcast.CureSolace = set_combine(sets.midcast.Cure, {})
-
     sets.midcast.LightWeatherCure = set_combine(sets.midcast.Cure, {
         waist="Hachirin-no-obi",
         main="Chatoyant Staff",
@@ -188,17 +159,14 @@ sets.ConserveMP = set_combine(
         back="Twilight Cape"
     })
     sets.midcast.LightWeatherCureSolace = set_combine(sets.midcast.LightWeatherCure, {})
-
     -- [FIX 8]: LightDayCure/LightDayCureSolace were direct aliases to LightWeatherCureSolace
     --          (same table in memory, same bug pattern as FIX 6). set_combine now gives
     --          each its own independent copy.
     sets.midcast.LightDayCure       = set_combine(sets.midcast.LightWeatherCureSolace, {})
     sets.midcast.LightDayCureSolace = set_combine(sets.midcast.LightWeatherCureSolace, {})
-
     --change ebers for normal cure, then Theophany Bliaut +2 for curaga
     sets.midcast.LightWeatherCuraga = set_combine(sets.midcast.LightWeatherCureSolace, {body = "Theophany Bliaut +4"})
     sets.midcast.LightDayCuraga     = set_combine(sets.midcast.LightWeatherCuraga, {})
-
     -- [FIX 9]: StatusRemoval moved above Cursna/Erase — both reference it via set_combine,
     --          and it was previously defined AFTER Cursna tried to use it (nil reference,
     --          same bug class as FIX 2 with MagicBurst).
@@ -210,7 +178,6 @@ sets.ConserveMP = set_combine(
         sub="Clemency Grip",
         legs="Ebers Pantaloons +3"
     })
-
     sets.midcast.Cursna = set_combine(sets.midcast.StatusRemoval, {
         back="Alaunus's Cape",
         legs="Theophany Pantaloons +4",
@@ -218,9 +185,7 @@ sets.ConserveMP = set_combine(
         body="Ebers Bliaut +3",
         ear2="Ebers Earring +1"
     })
-
     sets.midcast.Erase = set_combine(sets.midcast.StatusRemoval, {neck="Cleric's Torque"})
-
     -- 110 total Enhancing Magic Skill; caps even without Light Arts
 	sets.midcast['Enhancing Magic'] = {	
         head="Umuthi Hat",
@@ -236,7 +201,6 @@ sets.ConserveMP = set_combine(
 		waist="Siegel Sash",
     main = "Daybreak",
     sub  = "Ammurapi Shield"}
-
 	sets.midcast.Stoneskin = set_combine(sets.midcast['Enhancing Magic'], {waist="Siegel Sash", legs="Shedir Seraweels", feet="Piety Duckbills +4", head="Umuthi Hat", neck  ="Nodens Gorget"})
 	sets.midcast.Auspice = set_combine(sets.midcast['Enhancing Magic'], {})
 	sets.midcast.Regen = set_combine(sets.midcast['Enhancing Magic'], {
@@ -247,7 +211,6 @@ sets.ConserveMP = set_combine(
 		legs="Theophany Pantaloons +4",
 		head="Inyanga Tiara +2"
 	})
-	
 	sets.midcast.BarElement = set_combine(sets.midcast['Enhancing Magic'], {
 		head="Ebers Cap +3",
 		body="Ebers Bliaut +3",
@@ -255,7 +218,6 @@ sets.ConserveMP = set_combine(
 		hands="Dynasty Mitts",
 		feet="Ebers Duckbills +3"
 	})
-
 sets.midcast['Divine Magic'] = {
 		main="Marin Staff +1",
 		sub="Willpower Grip",
@@ -273,7 +235,6 @@ sets.midcast['Divine Magic'] = {
 		back="Izdubar Mantle",
 		waist="Hachirin-no-obi"
 	}
-
 	-- [FIX 2]: MagicBurst moved here from before Divine Magic was defined (crash on load)
 	--          Also fixed typo: ing2= → ring2=
 	sets.MagicBurst = set_combine(sets.midcast['Divine Magic'], {
@@ -286,7 +247,6 @@ sets.midcast['Divine Magic'] = {
         ring2 ="Freke Ring",
         ring1 ="Locus Ring",
 	})
-
 sets.midcast.Impact = set_combine(sets.precast.FC.Impact, {}) -- [FIX 4]: was sets.precast.Impact (wrong path — Impact is in sets.precast.FC.Impact)
 	-- [FIX 5]: was sets.midcast['Divine Magic'] (direct alias) — adding .Resistant would mutate
 	--          Divine Magic as well. set_combine makes a proper independent copy.
@@ -302,17 +262,12 @@ sets.midcast['Dark Magic'] = set_combine(
 		waist="Null Belt"
     }
 )
-
-
     sets.midcast.Drain = set_combine(sets.midcast['Dark Magic'], {neck="Erra Pendant", waist="Fucho-no-obi", feet="Merlinic Crackows", ring1="Evanescence Ring"})
     sets.midcast.Drain.Resistant = set_combine(sets.midcast['Dark Magic'], {})
     sets.midcast.Aspir = sets.midcast.Drain
 	sets.midcast.Aspir.Resistant = sets.midcast.Drain.Resistant
-
 	sets.midcast.Stun = {}
 	sets.midcast.Stun.Resistant = sets.midcast.Stun
-		
-
 sets.midcast['Enfeebling Magic'] = {
 	main  ="Mpaca's Staff",
     sub="Daduchos Grip",
@@ -329,28 +284,20 @@ sets.midcast['Enfeebling Magic'] = {
 	back="Null Shawl",
 	ranged="Aureole"
 }
-
-
-
  sets.midcast['Enfeebling Magic'].Resistant = set_combine(sets.midcast['Enfeebling Magic'], {
 	main="Mpaca's Staff",
     hands="Cleric's Mitts +2",
 	waist="Null Belt"
 })
-
     sets.midcast.ElementalEnfeeble = set_combine(sets.midcast['Enfeebling Magic'], {})
     sets.midcast.ElementalEnfeeble.Resistant = set_combine(sets.midcast['Enfeebling Magic'].Resistant, {})
-
 	-- [FIX 6]: were direct aliases to ElementalEnfeeble — assigning .Resistant to one would
 	--          corrupt the others. set_combine creates proper independent copies.
 	sets.midcast.IntEnfeebles          = set_combine(sets.midcast.ElementalEnfeeble, {})
 	sets.midcast.IntEnfeebles.Resistant = set_combine(sets.midcast.ElementalEnfeeble.Resistant, {})
-
 	sets.midcast.MndEnfeebles           = set_combine(sets.midcast.ElementalEnfeeble, {})
 	sets.midcast.MndEnfeebles.Resistant = set_combine(sets.midcast.ElementalEnfeeble.Resistant, {})
     -- Sets to return to when not performing an action.
-
-    -- Idle sets — defined BEFORE sets.resting so set_combine has a valid base  [FIX 7]
 	sets.idle = {
 main="Daybreak",
 sub="Archduke's Shield",
@@ -368,12 +315,10 @@ sub="Archduke's Shield",
 		back="Archon Cape",
 		waist="Acerbic Sash +1"
 	}
-
 	sets.idle.PDT    = set_combine(sets.idle, {legs="SV loincloth +1", main="Malignance Pole", sub="Daduchos Grip"})
 	sets.idle.MDT    = set_combine(sets.idle, {})
 	sets.idle.DTHippo = set_combine(sets.idle, {})
     sets.idle.Weak   = set_combine(sets.idle, {})
-
     -- Resting: now safely references sets.idle  [FIX 7]
     sets.resting = set_combine(sets.idle, {
     main="Chatoyant Staff",
@@ -382,37 +327,24 @@ sub="Archduke's Shield",
     legs="Assiduity Pants +1",
     ear2="Magnetic Earring"
 })
-
     -- Defense sets
-
 	  sets.defense.PDT = sets.idle.PDT
-
 	sets.defense.MDT = sets.idle.MDT
-		
     sets.defense.MEVA = sets.idle.MDT
-		
 		-- Engaged sets
-
     -- Variations for TP weapon and (optional) offense/defense modes.  Code will fall back on previous
     -- sets if more refined versions aren't defined.
     -- If you create a set with both offense and defense modes, the offense mode should be first.
     -- EG: sets.engaged.Dagger.Accuracy.Evasion
-
     -- Basic set for if no TP weapon is defined.
     sets.engaged = {legs="Perdition slops"}
-
     sets.engaged.Acc = sets.engaged
 	sets.engaged.DW = sets.engaged
     sets.engaged.DW.Acc = sets.engaged
-
     sets.buff['Divine Caress'] = {
 		hands="Ebers Mitts +3"
 	}
 	sets.HPDown = {}
-
 	sets.HPCure = {}
-
 	sets.buff.Doom = set_combine(sets.buff.Doom, {})
-
 end
-
