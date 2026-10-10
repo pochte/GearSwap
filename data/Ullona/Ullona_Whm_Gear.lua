@@ -209,7 +209,8 @@ sets.ConserveMP = set_combine(
 		body="Piety Bliaut +4",
 		hands="Ebers Mitts +3",
 		legs="Theophany Pantaloons +4",
-		head="Inyanga Tiara +2"
+		head="Inyanga Tiara +2",
+        feet="Bunzi's Sabots",
 	})
 	sets.midcast.BarElement = set_combine(sets.midcast['Enhancing Magic'], {
 		head="Ebers Cap +3",

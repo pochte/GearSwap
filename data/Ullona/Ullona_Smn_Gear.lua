@@ -192,7 +192,11 @@ sets.midcast['Enfeebling Magic'] = {
 		body="Telchine Chas.",hands="Bokwus Gloves",
 		back="Izdubar Mantle",waist="Embla Sash",legs="Telchine Braconi",feet="Telchine Pigaches"}
 	sets.midcast.Refresh = set_combine(sets.midcast['Enhancing Magic'], {head="Amalric Coif +1"})
-	sets.midcast.Regen = set_combine(sets.midcast['Enhancing Magic'], {main="Bolelabunga"})
+	sets.midcast.Regen = set_combine(sets.midcast['Enhancing Magic'], {
+		main="Bolelabunga",
+    sub  = "Ammurapi Shield",
+        feet="Bunzi's Sabots",
+	})
 	sets.midcast.Aquaveil = set_combine(sets.midcast['Enhancing Magic'], {main="Vadose Rod", sub="Culminus", legs="Shedir Seraweels"})
     sets.precast.Stoneskin     = set_combine(sets.precast.FC, {waist="Siegel Sash", legs="Querkening Brais"})
 	sets.midcast.BarElement = set_combine(sets.precast.FC['Enhancing Magic'], {legs="Shedir Seraweels"})

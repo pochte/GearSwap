@@ -69,7 +69,6 @@ function job_setup()
     })
 end
 -- Job-specific hooks for standard casting events.
-  =
 function job_filtered_action(spell, eventArgs)
 end
 function job_filter_precast(spell, spellMap, eventArgs)

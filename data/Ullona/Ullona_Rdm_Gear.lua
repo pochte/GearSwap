@@ -334,6 +334,12 @@ sets.precast['Enhancing Magic'] = set_combine(sets.precast.FC, {
         main="Marin Staff +1",
         sub="Daduchos Grip"-- [FIX] explicit alongside ammo, so nothing built on this set can inherit a lingering Kaja Bow
     }
+	sets.midcast.Regen = set_combine(sets.midcast['Enhancing Magic'], {
+		main="Bolelabunga",
+    sub  = "Ammurapi Shield",
+        feet="Bunzi's Sabots",
+	})
+
     sets.midcast.Drain          = set_combine(sets.midcast['Dark Magic'], {neck="Erra Pendant"})
     sets.midcast.Aspir          = set_combine(sets.midcast.Drain, {waist="Fucho-no-obi", feet="Merlinic Crackows"})
     sets.midcast.Stun           = set_combine(sets.midcast['Dark Magic'], {})

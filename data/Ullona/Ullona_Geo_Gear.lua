@@ -19,10 +19,10 @@ function user_job_setup()
 	-- Auto-Entrust defaults
 	autoentrustee = "<st>"
 	autoentrust = "Haste"
-	  =========
+  
 	-- Additional local binds
 	-- ^ = Ctrl, ! = Alt, @ = Win, ~ = Shift
-	  =========
+  
 	send_command('bind !f12 gs c toggle PetHPMode')            -- Alt+F12 : Pet HP mode
 	send_command('bind @f10 gs c smartna')                     -- Win+F10 : SmartNa
 	send_command('bind ^backspace input /ja "Entrust" <me>')   -- Ctrl+Backspace : Entrust
@@ -31,9 +31,9 @@ function user_job_setup()
 	send_command('bind ^delete input /ma "Aspir III" <t>')     -- Ctrl+Delete : Aspir III
 	send_command('bind @delete input /ma "Sleep" <t>')         -- Win+Delete : Sleep
 	indi_duration = 290
-	  =========
+  
 	-- Macro Book
-	  =========
+  
 	set_macro_page(1, 4)
 end
 function user_job_lockstyle()
