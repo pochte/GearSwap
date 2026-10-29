@@ -385,7 +385,7 @@ function handle_pacthelp(args)
     end
     local arg = args[2] and table.concat(args,' ',2):lower()
     if not arg then
-        if pet.isvalid and ::avatars:contains(pet.name) then
+        if pet.isvalid and S(avatars):contains(pet.name) then
             show_avatar(pet.name)
         else
             add_to_chat(122,'--- Pact types (gs c pact <type>) ---')

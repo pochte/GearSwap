@@ -84,13 +84,14 @@ function job_setup()
         'Tauret'
     )
     state.OffWeapon:options(
-        'None',
+        'Culminus',
+        'SacroBulwark',
+        'ArchdukeShield',
         'DemersalDegen',
         'Machaera',
         'GletisKnife',
         'Daybreak',
-        'Culminus',
-        'SacroBulwark'
+        'None'
     )
 end
 -- Weapon locking helper.
@@ -480,7 +481,12 @@ function job_self_command(commandArgs, eventArgs)
         handle_smartcure(commandArgs)
         eventArgs.handled = true
     elseif commandArgs[1]:lower() == 'enspell' then
-        handle_enspell_shortcut(commandArgs)
+        -- gs c enspell  = Tier 1 (Enfire, Enblizzard, ...)
+        handle_enspell_shortcut(commandArgs, 1)
+        eventArgs.handled = true
+    elseif commandArgs[1]:lower() == 'enspell2' then
+        -- gs c enspell2 = Tier 2 (Enfire II, Enblizzard II, ...)
+        handle_enspell_shortcut(commandArgs, 2)
         eventArgs.handled = true
     elseif commandArgs[1]:lower() == 'convert' then
         handle_convert(commandArgs)
@@ -693,49 +699,46 @@ function job_get_spell_map(spell, default_spell_map)
     end
 end
 -- Enspell shortcut.
-function handle_enspell_shortcut(cmdParams)
+-- tier 1 = Enfire etc., tier 2 = Enfire II etc.
+-- Casts exactly the tier asked for; no fallback to the other tier.
+function handle_enspell_shortcut(cmdParams, tier)
     local element =
         data.elements.enspell_of[state.ElementalMode.value]
     local element_lower =
         element:lower()
-    local tier2_name =
-        'En'..element_lower..' II'
-    local tier1_name =
-        'En'..element_lower
+    local spell_name = 'En'..element_lower
+    if tier == 2 then
+        spell_name = spell_name..' II'
+    end
     local spell_recasts =
         windower.ffxi.get_spell_recasts()
-    local tier2_spell =
-        get_spell_table_by_name(tier2_name)
-    local tier1_spell =
-        get_spell_table_by_name(tier1_name)
+    local spell =
+        get_spell_table_by_name(spell_name)
     -- Safety net.
-    if not tier1_spell then
+    if not spell then
         add_to_chat(
             123,
             'Abort: Could not find a spell named "'..
-            tier1_name..
+            spell_name..
             '".'
         )
         return
     end
-    local tier2_id =
-        tier2_spell and tier2_spell.id
-    local tier1_id =
-        tier1_spell.id
-    if tier2_id
-        and silent_can_use(tier2_id)
-        and spell_recasts[tier2_id] < spell_latency then
-        windower.chat.input(
-            '/ma "'..tier2_name..'" <me>'
+    if tier == 2 and not silent_can_use(spell.id) then
+        add_to_chat(
+            123,
+            'Abort: '..spell_name..' is not available.'
         )
-    elseif spell_recasts[tier1_id] < spell_latency then
+        return
+    end
+    if spell_recasts[spell.id] < spell_latency then
         windower.chat.input(
-            '/ma "'..tier1_name..'" <me>'
+            '/ma "'..spell_name..'" <me>'
         )
     else
         add_to_chat(
             123,
-            'Abort: Enspell tiers on cooldown.'
+            'Abort: '..spell_name..' is on cooldown.'
         )
     end
 end

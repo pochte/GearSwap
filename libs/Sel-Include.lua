@@ -337,13 +337,13 @@ state.ElementalMode 		  = M{['description'] = 'Elemental Mode','Lightning','Ice'
 			if state.AutoCleanupMode.value and math.sqrt(target.distance) < 7 then
 				if target.name == "Runje Desaali" and bayld_items then 
 					for i in pairs(bayld_items) do
-						if player.inventory[bayld_items[i]] then
+						if player.inventory and player.inventory[bayld_items[i]] then
 							windower.chat.input('/item "'..bayld_items[i]..'" <t>')
 							windower.chat.input:schedule(2,'/targetnpc')
 							return
 						end
 					end
-				elseif target.name == "Sturdy Pyxis" and player.inventory['Forbidden Key'] then
+				elseif target.name == "Sturdy Pyxis" and player.inventory and player.inventory['Forbidden Key'] then
 					windower.chat.input('/item "Forbidden Key" <t>')
 				end
 			end
@@ -1148,12 +1148,12 @@ function default_aftercast(spell, spellMap, eventArgs)
 					slots:append(slot)
 				end
 				enable(slots)
-				if player.inventory[useItemName] then
+				if player.inventory and player.inventory[useItemName] and useItemName ~= 'Warp Ring' then
 					windower.send_command('wait 1;put '..set_to_item(useItemName)..' satchel')
 				end
 			else 
 				enable(useItemSlot)
-				if player.inventory[useItemName] then
+				if player.inventory and player.inventory[useItemName] and useItemName ~= 'Warp Ring' then
 					windower.send_command('wait 1;put '..useItemName..' satchel')
 				end
 			end
@@ -2109,12 +2109,12 @@ function status_change(newStatus, oldStatus)
 					slots:append(slot)
 				end
 				enable(slots)
-				if player.inventory[useItemName] then
+				if player.inventory and player.inventory[useItemName] and useItemName ~= 'Warp Ring' then
 					windower.send_command('wait 1;put '..set_to_item(useItemName)..' satchel')
 				end
 			else 
 				enable(useItemSlot)
-				if player.inventory[useItemName] then
+				if player.inventory and player.inventory[useItemName] and useItemName ~= 'Warp Ring' then
 					windower.send_command('wait 1;put '..useItemName..' satchel')
 				end
 			end
