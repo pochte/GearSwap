@@ -48,9 +48,9 @@ function job_setup()
     )
 end
 
--------------------------------------------------------------------------------
+ -------------------
 -- Nil-safe helpers
--------------------------------------------------------------------------------
+ -------------------
 
 -- Returns the real item name for a weapon state, or nil if unset/None/unknown.
 function get_weapon_item(mode, items)
@@ -93,9 +93,9 @@ function apply_weapon_selection(baseSet)
     return baseSet
 end
 
--------------------------------------------------------------------------------
+ -------------------
 -- Job-specific hooks for standard casting events.
--------------------------------------------------------------------------------
+ -------------------
 
 function job_filtered_action(spell, eventArgs)
     if spell.type == 'WeaponSkill' then
@@ -266,9 +266,9 @@ function job_post_aftercast(spell, spellMap, eventArgs)
     check_buff('Feint', eventArgs)
 end
 
--------------------------------------------------------------------------------
+ -------------------
 -- Job-specific hooks for non-casting events.
--------------------------------------------------------------------------------
+ -------------------
 
 function job_buff_change(buff, gain)
     -- Sel-Include.lua handles the user_buff_change dispatch.
@@ -411,9 +411,9 @@ function display_current_job_state(eventArgs)
     eventArgs.handled = true
 end
 
--------------------------------------------------------------------------------
+ -------------------
 -- Utility functions specific to this job.
--------------------------------------------------------------------------------
+ -------------------
 
 -- State buff checks that will equip buff gear and mark the event as handled.
 function check_buff(buff_name, eventArgs)

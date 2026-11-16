@@ -381,11 +381,15 @@ local function try_na_cast(spellName, target)
     return false
 end
 function handle_smart_curena(cmdParams)
-    local is_whm_main        = player.main_job == 'WHM'
-    local is_rdm_main        = player.main_job == 'RDM'
-    local is_sch_main_or_sub = player.main_job == 'SCH' or player.sub_job == 'SCH'
-    if not (is_whm_main or is_rdm_main or is_sch_main_or_sub) then
-        add_to_chat(123, 'Abort: SmartNa needs WHM/RDM main or SCH main/sub for -na spell access.')
+    -- SmartNa is available whenever WHM or SCH is the main job or support job.
+    -- This covers GEO/WHM, RDM/SCH, SCH/WHM, WHM/anything, etc.
+    local has_whm_or_sch = player.main_job == 'WHM'
+        or player.sub_job == 'WHM'
+        or player.main_job == 'SCH'
+        or player.sub_job == 'SCH'
+
+    if not has_whm_or_sch then
+        add_to_chat(123, 'Abort: SmartNa requires WHM or SCH as main job or support job.')
         return
     end
     -- [REVISED 2026-08-09] Simplified to always <st> per direct instruction -- both the

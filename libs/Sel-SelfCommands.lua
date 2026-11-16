@@ -335,12 +335,16 @@ function handle_useitem(cmdParams)
 	if cmdParams[1] ~= nil then
 		local equipslot = (table.remove(cmdParams, 1)):lower()
 		local useitem = table.concat(cmdParams, ' ')
-		useItem = true
-		if useItemName ~= useitem then
-			add_to_chat(217,"Using "..useitem..", /heal to cancel.")
+		if equipslot == 'set' or equipslot == 'item' or data.slots.slot_names:contains(equipslot) then
+			useItem = true
+			if useItemName ~= useitem then
+				add_to_chat(217,"Using "..useitem..", /heal to cancel.")
+			end
+			useItemName = useitem
+			useItemSlot = equipslot
+		else
+			add_to_chat(123,'Not a valid slot name for the UseItem command, cancelling.')
 		end
-		useItemName = useitem
-		useItemSlot = equipslot
 	else
 		add_to_chat(122,'Syntax error with UseItem command - Use: gs c UseItem equipslot Item Name (Use item for non-equippable items).')
 	end
@@ -412,13 +416,17 @@ function handle_smartws(cmdParams)
 		else
 			target = table.concat(cmdParams, ' ')
 			target = get_closest_mob_by_name(target) 
-			if not target.name then target = player.target end
-			if not target.name then target = player end
+			if not (target and target.name) then target = player.target end
+			if not (target and target.name) then target = player end
 		end
 	elseif player.target.type == 'MONSTER' then
 		target = player.target
 	elseif player.target.type == "SELF" or player.target.type == 'NONE' then
 		target = player
+	end
+	if not (target and target.id and target.distance) then
+		add_to_chat(123,'SmartWS: Could not find a target!')
+		return
 	end
 	if math.sqrt(target.distance) < 4 or (data.weaponskills.ranged:contains(autows) and math.sqrt(target.distance) < 21) then
 		local self_vector = windower.ffxi.get_mob_by_id(player.id)
@@ -429,25 +437,29 @@ function handle_smartws(cmdParams)
 		else
 			windower.send_command:schedule(.3,''..autows..' '..target.id..'')
 		end
+	else
+		add_to_chat(123,'SmartWS: Target out of range!')
 	end
 end
 function handle_facemob(cmdParams)
 	local target
-	if cmdParams[1] then
+	if cmdParams and cmdParams[1] then
 		if tonumber(cmdParams[1]) then
 			target = windower.ffxi.get_mob_by_id(tonumber(cmdParams[1]))
 		else
 			target = table.concat(cmdParams, ' ')
 			target = get_closest_mob_by_name(target) 
-			if not target.name then target = player.target end
-			if not target.name then target = player end
+			if not (target and target.name) then target = player.target end
+			if not (target and target.name) then target = player end
 		end
 	elseif player.target.type == 'MONSTER' then
 		target = player.target
 	elseif player.target.type == "SELF" or player.target.type == 'NONE' then
 		target = player
 	end
+	if not (target and target.x and target.y) then return end
 	local self_vector = windower.ffxi.get_mob_by_id(player.id)
+	if not self_vector then return end
 	local angle = (math.atan2((target.y - self_vector.y), (target.x - self_vector.x))*180/math.pi)*-1
 	windower.ffxi.turn((angle):radian())
 end
@@ -656,44 +668,45 @@ function handle_curecheat(cmdParams)
     end
 end
 function handle_smartcure(cmdParams)
+	local cureTarget
 	if cmdParams[1] then
 		if tonumber(cmdParams[1]) then
 			cureTarget = windower.ffxi.get_mob_by_id(tonumber(cmdParams[1]))
 		else
-			cureTarget = table.concat(cmdParams, ' ')
-			cureTarget = get_closest_mob_by_name(cureTarget) 
-			if not cureTarget.name then cureTarget = player.target end
-			if not cureTarget.name then cureTarget = player end
+			cureTarget = get_closest_mob_by_name(table.concat(cmdParams, ' '))
+			if not (cureTarget and cureTarget.name) then cureTarget = player.target end
+			if not (cureTarget and cureTarget.name) then cureTarget = player end
 		end
 	elseif player.target.type == "SELF" or player.target.type == 'MONSTER' or player.target.type == 'NONE' then
 		cureTarget = player
 	else
 		cureTarget = player.target
 	end
+	-- Silently do nothing if there's no valid target, or it's a monster / non-party NPC.
+	-- (Manual casts from the magic menu don't go through here, so they're unaffected.)
+	if not cureTarget or not cureTarget.id then return end
+	if cureTarget.id ~= player.id then
+		if cureTarget.type == 'MONSTER' or cureTarget.spawn_type == 16 then return end
+		if cureTarget.is_npc and not (cureTarget.in_party or cureTarget.in_alliance) and cureTarget.spawn_type ~= 13 then return end
+	end
 	if cureTarget.status == 2 or cureTarget.status == 3 then
-		windower.chat.input('/ma "Raise III" '..cureTarget..'')
+		windower.chat.input('/ma "Raise III" '..cureTarget.id..'')
 		return
 	end
 	local missingHP
 	local spell_recasts = windower.ffxi.get_spell_recasts()
-	if cureTarget.type == 'MONSTER' then
-		if silent_can_use(4) and spell_recasts[4] < spell_latency then
-			windower.chat.input('/ma "Cure IV" '..cureTarget.id..'')
-		elseif spell_recasts[3] < spell_latency then
-			windower.chat.input('/ma "Cure III" '..cureTarget.id..'')
-		elseif spell_recasts[2] < spell_latency then
-			windower.chat.input('/ma "Cure II" '..cureTarget.id..'')
-		else
-			add_to_chat(123,'Abort: Appropriate cures are on cooldown.')
-		end
-	elseif cureTarget.in_alliance then
-		cureTarget.hp = find_player_in_alliance(cureTarget.name).hp
+	if cureTarget.in_alliance then
+		local ally = find_player_in_alliance(cureTarget.name)
+		if not (ally and ally.hp and cureTarget.hpp and cureTarget.hpp > 0) then return end
+		cureTarget.hp = ally.hp
 		local est_max_hp = cureTarget.hp / (cureTarget.hpp/100)
 		missingHP = math.floor(est_max_hp - cureTarget.hp)
 	else
+		if not cureTarget.hpp then return end
 		local est_current_hp = 1800 * (cureTarget.hpp/100)
 		missingHP = math.floor(1800 - est_current_hp)
 	end
+	if not missingHP then return end
 	if missingHP < 170 then
 		if spell_recasts[1] < spell_latency then
 			windower.chat.input('/ma "Cure" '..cureTarget.id..'')

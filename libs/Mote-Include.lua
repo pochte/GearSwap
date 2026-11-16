@@ -209,9 +209,9 @@ end
 -- Each job can override any of these general functions using job_xxx() hooks.
   
 
-------------------------------------------------------------------------
+ ------------
 -- Generic function to map a set processing order to all action events.
-------------------------------------------------------------------------
+ ------------
 
 
 -- Process actions in a specific order of events:

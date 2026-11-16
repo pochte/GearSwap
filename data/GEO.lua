@@ -204,12 +204,9 @@ function job_post_midcast(spell, spellMap, eventArgs)
                 disable('head')
                 blazelocked = true
             end
-        elseif state.Buff.Entrust
-            and spell.english:startswith('Indi-') then
-            if sets.midcast.Geomancy.main == 'Idris'
-                and item_available('Solstice') then
-                equip({main="Solstice"})
-            end
+        elseif spell.english:startswith('Indi-') then
+            -- Any Indi cast: Solstice main. Idle/aftercast puts Idris back.
+            equip({main="Solstice"})
         end
     end
 end
@@ -350,15 +347,22 @@ function job_customize_idle_set(idleSet)
     return idleSet
 end
 function job_update(cmdParams, eventArgs)
+    lock_dunna()
     classes.CustomIdleGroups:clear()
     if player.indi then
         classes.CustomIdleGroups:append('Indi')
     end
 end
+-- Dunna is ALWAYS equipped: ammo forced empty, range + ammo locked.
+function lock_dunna()
+    equip({range="Dunna", ammo="empty"})
+    disable('range', 'ammo')
+end
 function job_pet_change(pet, gain)
     if not gain then
         used_ecliptic = false
     end
+    lock_dunna()
     if blazelocked then
         enable('head')
         blazelocked = false

@@ -92,7 +92,10 @@ function init_gear_sets()
     sets.Knockback = {}
     sets.Suppa = {}
     sets.DWEarrings = {}
-    sets.DWMax = {}
+    sets.DWMax = {
+        waist="Patentia Sash", -- Enhances Dual Wield
+        feet="Rawhide Boots" -- Dual Wield+3
+    }
     sets.Parry = {}
     sets.Ambush = {}
 
@@ -133,7 +136,7 @@ function init_gear_sets()
         set_combine(sets.TreasureHunter, {})
 
     -- Precast Job Abilities
-    sets.precast.JA['Collabolua lotor'] = {
+    sets.precast.JA['Collaborator'] = {
         head="Skulker's Bonnet +2"
     }
 
@@ -207,7 +210,7 @@ function init_gear_sets()
     sets.precast.FC = {
         head="Ejekamal Mask",
         ear1="Alabaster Earring",
-        ear2="Malignance Earring",
+        ear2="Loquacious Earring",
         body="Skulker's Vest +2",
         hands="Leyline Gloves",
         waist="Cornelia's Belt",
@@ -219,36 +222,37 @@ function init_gear_sets()
     }
 
     sets.precast.FC.Utsusemi = set_combine(sets.precast.FC, {
-        neck="Magoraga Bead Necklace"
+        neck="Magoraga Beads"
     })
 
     -- Ranged snapshot gear
     sets.precast.RA = {}
 
     -- Weaponskill sets
-    -- Default set for any weaponskill without a more specific set.
+    -- General-purpose set for weaponskills without a dedicated set.
+    -- Nyame assumed Path B, Rank 15.
+
     sets.precast.WS = {
-        head="Sukeroku Hachimaki",
+        head="Nyame Helm",
         neck="Fotia Gorget",
-        ear2="Ishvara Earring",
         ear1="Moonshade Earring",
-        body="Gleti's Cuirass",
-        hands="Meghanada Gloves +2",
+        ear2="Ishvara Earring",
+        body="Nyame Mail",
+        hands="Nyame Gauntlets",
         ring1="Cornelia's Ring",
         ring2="Rufescent Ring",
         back="Toutatis's Cape",
         waist="Fotia Belt",
-        legs="Malignance Tights",
-        feet="Gleti's Boots",
+        legs="Nyame Flanchard",
+        feet="Nyame Sollerets",
         ammo="Oshasha's Treatise"
     }
 
+    -- Accuracy overlay
     sets.precast.WS.SomeAcc = set_combine(sets.precast.WS, {
         hands="Leyline Gloves",
         ring2="Meghanada Ring",
-        waist="Fotia Belt",
-        legs="Malignance Tights",
-        ear1="Crepuscular Earring"
+        ear2="Crepuscular Earring"
     })
 
     sets.precast.WS.Acc = set_combine(sets.precast.WS.SomeAcc, {})
@@ -263,7 +267,7 @@ function init_gear_sets()
 
     -- Specific spells
     sets.midcast.Utsusemi = set_combine(sets.midcast.FastRecast, {
-        neck="Magoraga Bead Necklace"
+        neck="Magoraga Beads"
     })
 
     -- Ranged gear
@@ -301,7 +305,8 @@ function init_gear_sets()
 
     sets.engaged.FullAcc = set_combine(sets.engaged.Acc, {
         ring1="Mars's Ring",
-        ear2="Cessance Earring"
+        ear2="Cessance Earring",
+        waist="Null Belt"
     })
 
     sets.engaged.Fodder = set_combine(sets.engaged, {
@@ -341,9 +346,54 @@ function init_gear_sets()
     })
 
     -- Defense sets
-    sets.defense.PDT = {}
-    sets.defense.MDT = {}
-    sets.defense.MEVA = {}
+    -- Defense sets don't touch main/sub/range: weapons are locked via MainWeapon/OffWeapon/RangedWeapon.
+    sets.defense.PDT = {
+        ammo="Crepuscular Pebble",
+        head="Gleti's Mask",
+        neck="Null Loop",
+        ear1="Alabaster Earring",
+        ear2="Genmei Earring",
+        body="Malignance Tabard",
+        hands="Gleti's Gauntlets",
+        ring1="Murky Ring",
+        ring2="Meghanada Ring",
+        back="Archon Cape",
+        waist="Platinum Moogle Belt",
+        legs="Malignance Tights",
+        feet="Malignance Boots",
+    }
+
+    sets.defense.MDT = {
+        ammo="Crepuscular Pebble",
+        head="Gleti's Mask",
+        neck="Null Loop",
+        ear1="Alabaster Earring",
+        ear2="Odnowa Earring +1",
+        body="Malignance Tabard",
+        hands="Malignance Gloves",
+        ring1="Murky Ring",
+        ring2="Archon Ring",
+        back="Null Shawl",
+        waist="Platinum Moogle Belt",
+        legs="Malignance Tights",
+        feet="Malignance Boots",
+    }
+
+    sets.defense.MEVA = {
+        ammo="Crepuscular Pebble",
+        head="Gleti's Mask",
+        neck="Null Loop",
+        ear1="Alabaster Earring",
+        ear2="Odnowa Earring +1",
+        body="Malignance Tabard",
+        hands="Malignance Gloves",
+        ring1="Archon Ring",
+        ring2="Shadow Ring",
+        back="Null Shawl",
+        waist="Null Belt",
+        legs="Malignance Tights",
+        feet="Malignance Boots",
+    }
 
     sets.engaged.Haste_15 = {}
     sets.engaged.Haste_30 = {}

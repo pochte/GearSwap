@@ -70,10 +70,11 @@ function init_gear_sets()
         feet="Regal Pumps",
         neck="Voltsurge Torque",
         ear1="Malignance Earring",
+        ear2="Loquacious Earring",
         ring2="Kishar Ring",
         ring1="Lebeche Ring",
         back="Alaunus's Cape",
-        waist="Cornelia's Belt"
+        waist="Embla Sash"
     }
 
     sets.precast.FC.DT = set_combine(sets.precast.FC, {})
@@ -94,6 +95,16 @@ function init_gear_sets()
         waist="Embla Sash",
         neck="Nodens Gorget"
     })
+
+     
+-- PROTECT / SHELL
+sets.midcast.Protect = set_combine(sets.midcast['Enhancing Magic'], {
+    ring1 = "Sheltered Ring",
+})
+
+sets.midcast.Shell = sets.midcast.Protect
+sets.midcast.Protectra = sets.midcast.Protect
+sets.midcast.Shellra = sets.midcast.Shell
 
     sets.precast.FC['Healing Magic'] = set_combine(sets.precast.FC, {
         main="Vadose Rod",
@@ -264,8 +275,8 @@ function init_gear_sets()
         hands="Theophany Mitts +4",
         feet="Theophany Duckbills +4",
         neck="Null Loop",
-        ear1="Ebers Earring +1",
-        ear2="Andoaa Earring",
+        ear1="Andoaa Earring",
+        ear2="Ebers Earring +1",
         ring2="Murky Ring",
         ring1="Vertigo Ring",
         back="Izdubar Mantle",
@@ -305,7 +316,7 @@ function init_gear_sets()
     -- Divine Magic
     sets.midcast['Divine Magic'] = {
         main="Marin Staff +1",
-        sub="Willpower Grip",
+        sub="Daduchos Grip",
         ammo="Ghastly Tathlum",
         head="Inyanga Tiara +2",
         body="Vanya Robe",
@@ -356,7 +367,6 @@ function init_gear_sets()
     sets.midcast.Drain = set_combine(sets.midcast['Dark Magic'], {
         neck="Erra Pendant",
         waist="Fucho-no-obi",
-        feet="Merlinic Crackows",
         ring1="Evanescence Ring"
     })
 
@@ -381,7 +391,6 @@ function init_gear_sets()
         ring1="Crepuscular Ring",
         waist="Obstinate Sash",
         back="Null Shawl",
-        ranged="Aureole"
     }
 
     sets.midcast['Enfeebling Magic'].Resistant = set_combine(sets.midcast['Enfeebling Magic'], {
@@ -415,7 +424,7 @@ function init_gear_sets()
         ring2="Murky Ring",
         ring1="Inyanga Ring",
         back="Archon Cape",
-        waist="Acerbic Sash +1"
+        waist="Null Belt"
     }
 
     sets.idle.PDT = set_combine(sets.idle, {
@@ -436,9 +445,59 @@ function init_gear_sets()
     })
 
     -- Defense sets
-    sets.defense.PDT = set_combine(sets.idle.PDT, {})
-    sets.defense.MDT = set_combine(sets.idle.MDT, {})
-    sets.defense.MEVA = set_combine(sets.idle.MDT, {})
+    sets.defense.PDT = {
+        main="Malignance Pole",
+        sub="Daduchos Grip",
+        ammo="Crepuscular Pebble",
+        head="Bunzi's Hat",
+        neck="Null Loop",
+        ear1="Alabaster Earring",
+        ear2="Genmei Earring",
+        body="Bunzi's Robe",
+        hands="Bunzi's Gloves",
+        ring1="Murky Ring",
+        ring2="Vertigo Ring",
+        back="Archon Cape",
+        waist="Platinum Moogle Belt",
+        legs="Bunzi's Pants",
+        feet="Bunzi's Sabots",
+    }
+
+    sets.defense.MDT = {
+        main="Malignance Pole",
+        sub="Daduchos Grip",
+        ammo="Crepuscular Pebble",
+        head="Inyanga Tiara +2",
+        neck="Null Loop",
+        ear1="Alabaster Earring",
+        ear2="Odnowa Earring +1",
+        body="Bunzi's Robe",
+        hands="Bunzi's Gloves",
+        ring1="Murky Ring",
+        ring2="Inyanga Ring",
+        back="Archon Cape",
+        waist="Platinum Moogle Belt",
+        legs="Bunzi's Pants",
+        feet="Bunzi's Sabots",
+    }
+
+    sets.defense.MEVA = {
+        main="Daybreak",
+        sub="Genmei Shield",
+        ammo="Crepuscular Pebble",
+        head="Bunzi's Hat",
+        neck="Null Loop",
+        ear1="Alabaster Earring",
+        ear2="Odnowa Earring +1",
+        body="Bunzi's Robe",
+        hands="Bunzi's Gloves",
+        ring1="Murky Ring",
+        ring2="Inyanga Ring",
+        back="Null Shawl",
+        waist="Null Belt",
+        legs="Bunzi's Pants",
+        feet="Bunzi's Sabots",
+    }
 
     -- Engaged sets
     sets.engaged = {

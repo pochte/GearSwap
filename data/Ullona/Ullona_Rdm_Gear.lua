@@ -87,7 +87,7 @@ function init_gear_sets()
         ear2  = "Lethargy Earring",
         ring1 = "Naji's Loop",
         ring2 = "Kishar Ring",
-        waist = "Cornelia's Belt",
+        waist = "Embla Sash",
         neck  = "Voltsurge Torque"
     }
 
@@ -117,18 +117,21 @@ function init_gear_sets()
 
     sets.precast['Healing Magic'] = set_combine(sets.precast.FC, {
         main="Daybreak",
-        sub="Sors Sheild",
+        sub="Sors Shield",
         legs="Doyen Pants",
         body="Vanya Robe"
     })
 
     -- Weaponskill sets
+    -- General-purpose physical WS set.
+    -- Nyame assumed Path B, Rank 15.
+
     sets.precast.WS = {
-        head  = "Vitiation Chapeau +4",
+        head  = "Nyame Helm",
         body  = "Egbesu Frock",
-        legs  = "Malignance Tights",
+        legs  = "Nyame Flanchard",
         hands = "Atrophy Gloves +4",
-        feet  = "Lethargy Houseaux +3",
+        feet  = "Nyame Sollerets",
         neck  = "Fotia Gorget",
         back  = "Sucellos's Cape",
         waist = "Fotia Belt",
@@ -157,13 +160,13 @@ function init_gear_sets()
     sets.midcast.FastRecast = sets.precast.FC
 
     sets.midcast['Healing Magic'] = {
-        main  = "Bunzi Rod",
+        main  = "Bunzi's Rod",
         sub   = "Sacro Bulwark",
         head  = "Vanya Hood",
         body  = "Bunzi's Robe",
         hands = "Bokwus Gloves",
         neck  = "Nodens Gorget",
-        ear1  = "Glorious Earring",
+        ear1  = "Gifted Earring",
         ear2  = "Mendicant's Earring",
         ring1 = "Naji's Loop",
         ring2 = "Janniston Ring",
@@ -176,7 +179,7 @@ function init_gear_sets()
         legs="Doyen Pants",
         body="Vanya Robe",
         main="Daybreak",
-        sub="Sors Sheild",
+        sub="Sors Shield",
         back="Pahtli Cape"
     })
 
@@ -184,12 +187,12 @@ function init_gear_sets()
 
     sets.midcast.LightWeatherCure = {
         main="Chatoyant Staff",
-        sub="Achaq Grip",
+        sub="Clemency Grip",
     }
 
     sets.midcast.LightDayCure = set_combine(sets.midcast['Healing Magic'], {
         main="Chatoyant Staff",
-        sub="Achaq Grip",
+        sub="Clemency Grip",
     })
 
     sets.midcast.StatusRemoval = set_combine(sets.midcast.FastRecast, {})
@@ -230,6 +233,16 @@ function init_gear_sets()
         waist = "Embla Sash"
     }
 
+     
+-- PROTECT / SHELL
+ 
+
+sets.midcast.Protect = set_combine(sets.midcast['Enhancing Magic'], {
+    ring1 = "Sheltered Ring",
+})
+
+sets.midcast.Shell = sets.midcast.Protect
+
     sets.buff.ComposureOther = {
         head  = "Lethargy Chappel +3",
         body  = "Lethargy Sayon +3",
@@ -245,7 +258,7 @@ function init_gear_sets()
 
     -- Preserve both previously assigned Self_Refresh pieces.
     sets.Self_Refresh = set_combine(sets.midcast['Enhancing Magic'], {
-        head="Amalric Coif +1",
+        head="Umuthi Hat",
         feet="Inspirited Boots"
     })
 
@@ -266,7 +279,7 @@ function init_gear_sets()
 
     sets.precast.Aquaveil = set_combine(sets.precast.FC, {
         hands="Vitiation Gloves +3",
-        main="Vadose Rod",
+        main="Daybreak",
         sub="Culminus"
     })
 
@@ -366,9 +379,7 @@ function init_gear_sets()
     })
 
     sets.midcast.SkillBasedEnfeebling = set_combine(sets.midcast['Enfeebling Magic'], {
-        ear2="Alabaster Earring",
-        hands="Leth. Gantherots +1",
-        legs="Psycloth Lappas"
+        ear2="Alabaster Earring"
     })
 
     sets.midcast['Frazzle II'] = set_combine(sets.midcast['Enfeebling Magic'].Resistant, {})
@@ -471,7 +482,7 @@ function init_gear_sets()
         ring1 = "Crepuscular Ring",
         ring2 = "Evanescence Ring",
         back  = "Izdubar Mantle",
-        waist = "Eschan Stone",
+        waist = "Null Belt",
         ammo  = "Ghastly Tathlum",
         range = empty,
         main  = "Marin Staff +1",
@@ -511,7 +522,7 @@ function init_gear_sets()
     -- Idle
     sets.idle = {
         main  = "Daybreak",
-        sub   = "Archduke's Sheild",
+        sub   = "Archduke's Shield",
         ammo  = "Crepuscular Pebble",
         head  = "Vitiation Chapeau +4",
         body  = "Lethargy Sayon +3",
@@ -543,10 +554,56 @@ function init_gear_sets()
     })
 
     -- Defense sets
-    sets.defense.PDT = {}
+    -- Defense sets don't touch main/sub: weapons are locked via MainWeapon/OffWeapon.
+    sets.defense.PDT = {
+        ammo="Crepuscular Pebble",
+        head="Bunzi's Hat",
+        neck="Null Loop",
+        ear1="Alabaster Earring",
+        ear2="Genmei Earring",
+        body="Bunzi's Robe",
+        hands="Bunzi's Gloves",
+        ring1="Murky Ring",
+        ring2="Vertigo Ring",
+        back="Archon Cape",
+        waist="Platinum Moogle Belt",
+        legs="Bunzi's Pants",
+        feet="Bunzi's Sabots",
+    }
+
     sets.defense.NukeLock = sets.midcast['Elemental Magic']
-    sets.defense.MDT = set_combine(sets.idle.MDT, {})
-    sets.defense.MEVA = set_combine(sets.defense.MDT, {})
+
+    sets.defense.MDT = {
+        ammo="Crepuscular Pebble",
+        head="Bunzi's Hat",
+        neck="Null Loop",
+        ear1="Alabaster Earring",
+        ear2="Odnowa Earring +1",
+        body="Bunzi's Robe",
+        hands="Bunzi's Gloves",
+        ring1="Murky Ring",
+        ring2="Archon Ring",
+        back="Null Shawl",
+        waist="Platinum Moogle Belt",
+        legs="Bunzi's Pants",
+        feet="Bunzi's Sabots",
+    }
+
+    sets.defense.MEVA = {
+        ammo="Crepuscular Pebble",
+        head="Bunzi's Hat",
+        neck="Null Loop",
+        ear1="Alabaster Earring",
+        ear2="Odnowa Earring +1",
+        body="Bunzi's Robe",
+        hands="Bunzi's Gloves",
+        ring1="Archon Ring",
+        ring2="Shadow Ring",
+        back="Null Shawl",
+        waist="Null Belt",
+        legs="Bunzi's Pants",
+        feet="Bunzi's Sabots",
+    }
 
     sets.Kiting = {
         legs="Carmine Cuisses +1",
@@ -595,7 +652,8 @@ function init_gear_sets()
 
     -- Engaged
     sets.engaged = {
-        neck  = "Lissome Necklace",
+        head  = "Nyame Helm", -- Path B
+        neck  = "Anu Torque",
         ear1  = "Sherida Earring",
         ear2  = "Cessance Earring",
         body  = "Malignance Tabard",
@@ -612,7 +670,7 @@ function init_gear_sets()
 
     sets.engaged.Acc = set_combine(sets.engaged, {
         ammo="Ginsen",
-        waist="Null Loop",
+        waist="Null Belt",
         ring2="Mars's Ring"
     })
 

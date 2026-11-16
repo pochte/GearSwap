@@ -7,10 +7,11 @@ function user_job_setup()
     state.IdleMode:options('Normal','PDT','DTHippo')
     state.Weapons:options('None','BurstWeapons','Khatvanga','Lathi')
 
-    gear.nuke_jse_back = {
-        name="Taranus's Cape",
-        augments={'INT+20','Mag. Acc+20 /Mag. Dmg.+20','INT+10','"Mag.Atk.Bns."+10',}
-    }
+    -- Plain name on purpose: only one Taranus's Cape, so no augment matching needed.
+    gear.nuke_jse_back = "Taranus's Cape"
+
+    -- Death sets reference this (normally defined in BLM.lua; Grioavolr isn't in the inventory).
+    gear.grioavolr_nuke_staff = "Marin Staff +1"
 
     -- Macro Book
     set_macro_page(1, 2) -- Page 1, Macro Book 2
@@ -64,8 +65,8 @@ end
 
 function init_gear_sets()
     sets.weapons                 = sets.weapons or {}
-    sets.weapons.BurstWeapons    = sets.weapons.Default
     sets.weapons.Default         = sets.weapons.Default or {main="Marin Staff +1"}
+    sets.weapons.BurstWeapons    = sets.weapons.Default
 
     -- Buff overlay sets
     sets.buff                    = sets.buff or {}
@@ -93,18 +94,18 @@ function init_gear_sets()
     -- Precast: Fast Cast
     sets.precast.FC = {
         main  = "Mpaca's Staff",
-        sub   = "Willpower Grip",
+        sub   = "Daduchos Grip",
         head  = "Nahtirah Hat",
         body  = "Agwu's Robe",
-        hands = "Mallquis Cuffs +2",
-        legs  = "Querkening Brais",
+        hands = "Agwu's Gages",
+        legs  = "Agwu's Slops",
         feet  = "Regal Pumps",
         neck  = "Voltsurge Torque",
-        ear1  = "Alabaster Earring",
+        ear1  = "Loquacious Earring",
         ear2  = "Malignance Earring",
         ring1 = "Naji's Loop",
         ring2 = "Kishar Ring",
-        waist = "Cornelia's Belt",
+        waist = "Embla Sash",
     }
 
     sets.precast.FC['Enhancing Magic'] = set_combine(sets.precast.FC, {
@@ -124,7 +125,7 @@ function init_gear_sets()
     sets.precast.FC['Elemental Magic'] = set_combine(sets.precast.FC, {
         head  = "Wicce Petasos +2",
         neck  = "Baetyl Pendant",
-        body  = "Wicce Coat +2",
+        body  = "Wicce Coat +3",
         feet  = "Spaekona's Sabots +3",
         ring1 = "Mallquis Ring",
     })
@@ -172,14 +173,14 @@ function init_gear_sets()
     sets.midcast.FastRecast = sets.precast.FC
 
     sets.midcast.Cure = {
-        main  = "Bunzi Rod",
-        sub   = "Sors Sheild",
+        main  = "Bunzi's Rod",
+        sub   = "Sors Shield",
         head  = "Vanya Hood",
         body  = "Vrikodara Jupon",
         hands = "Bokwus Gloves",
         feet  = "Vanya Clogs",
         neck  = "Nodens Gorget",
-        ear1  = "Glorious Earring",
+        ear1  = "Gifted Earring",
         ear2  = "Mendicant's Earring",
         ring1 = "Lebeche Ring",
         ring2 = "Janniston Ring",
@@ -242,17 +243,15 @@ function init_gear_sets()
         neck   = "Sorcerer's Stole +1",
         ring1  = "Mallquis Ring",
         ring2  = "Kishar Ring",
-        ear1   = "Wicce Earring +1",
+        ear1   = "Crepuscular Earring",
         ear2   = "Malignance Earring",
         back   = "Taranus's Cape",
-        waist  = "Obstinate Sash",
-        ranged = "Aureole",
+        waist  = "Null Belt",
     }
 
     sets.midcast['Enfeebling Magic'].Resistant = set_combine(sets.midcast['Enfeebling Magic'], {
         main  = "Mpaca's Staff",
         body  = "Spaekona's Coat +3",
-        ear1  = "Gwati Earring",
         waist = "Null Belt"
     })
 
@@ -260,7 +259,7 @@ function init_gear_sets()
         back = "Taranus's Cape",
         body = "Spaekona's Coat +3",
         legs = "Archmage's Tonban +3",
-        feet = "Archmage's Sabots +2"
+        feet = "Archmage's Sabots +3"
     })
 
     sets.midcast.ElementalEnfeeble.Resistant = set_combine(sets.midcast['Enfeebling Magic'].Resistant, {})
@@ -273,7 +272,7 @@ function init_gear_sets()
     sets.midcast['Dark Magic'] = {
         sub    = "Daduchos Grip",
         head   = "Mallquis Chapeau +2",
-        body   = "Wicce Coat +2",
+        body   = "Wicce Coat +3",
         hands  = "Archmage's Gloves +3",
         legs   = "Spaekona's Tonban +3",
         feet   = "Wicce Sabots +2",
@@ -283,7 +282,6 @@ function init_gear_sets()
         ring1  = "Mallquis Ring",
         ring2  = "Evanescence Ring",
         back   = "Taranus's Cape",
-        ranged = "Aureole"
     }
 
     sets.midcast.Drain = set_combine(sets.midcast['Dark Magic'], {
@@ -302,15 +300,16 @@ function init_gear_sets()
     -- Midcast: Elemental Magic
     sets.midcast['Elemental Magic'] = {
         main  = "Marin Staff +1",
-        sub   = "Willpower Grip",
+        sub   = "Daduchos Grip",
         ammo  = "Ghastly Tathlum",
         head  = "Wicce Petasos +2",
-        body  = "Wicce Coat +2",
+        body  = "Wicce Coat +3",
         hands = "Wicce Gloves +2",
         legs  = "Wicce Chausses +2",
         feet  = "Wicce Sabots +2",
         neck  = "Baetyl Pendant",
-        ear1  = "Wicce Earring +1",
+        ear1  = "Malignance Earring",
+        ear2  = "Wicce Earring +1",
         ring1 = "Jhakri Ring",
         ring2 = "Freke Ring",
         back  = "Taranus's Cape",
@@ -322,7 +321,6 @@ function init_gear_sets()
         sub   = "Daduchos Grip",
         neck  = "Incanter's Torque",
         feet  = "Medium's Sabots",
-        ranged = "Aureole",
         hands = "Spaekona's Gloves +2"
     })
 
@@ -331,14 +329,16 @@ function init_gear_sets()
 
     sets.midcast['Elemental Magic'].Proc = set_combine(sets.midcast['Elemental Magic'], {
         main   = "Marin Staff +1",
-        ranged = "Aureole"
     })
 
     sets.midcast['Elemental Magic'].OccultAcumen = set_combine(sets.midcast['Elemental Magic'], {})
 
     sets.midcast.Impact.OccultAcumen = set_combine(
         sets.midcast['Elemental Magic'].OccultAcumen or {},
-        {head=empty, body="Twilight Cloak"}
+        {
+            head=empty,
+            body="Twilight Cloak",
+        }
     )
 
     sets.RecoverMP = {
@@ -347,7 +347,7 @@ function init_gear_sets()
 
     sets.MagicBurst = set_combine(sets.midcast['Elemental Magic'], {
         head  = "Archmage's Petasos +3",
-        neck  = "Sorcerer's Stole +1",
+        neck  = "Mizukage-no-Kubikazari",
         body  = "Agwu's Robe",
         hands = "Archmage's Gloves +3",
         legs  = "Archmage's Tonban +3",
@@ -392,9 +392,59 @@ function init_gear_sets()
         legs = "Assiduity Pants +1",
     })
 
-    sets.defense.PDT = sets.idle.PDT
-    sets.defense.MDT = sets.idle.MDT
-    sets.defense.MEVA = sets.idle.MDT
+    sets.defense.PDT = {
+        main="Malignance Pole",
+        sub="Daduchos Grip",
+        ammo="Crepuscular Pebble",
+        head="Wicce Petasos +2",
+        neck="Null Loop",
+        ear1="Alabaster Earring",
+        ear2="Genmei Earring",
+        body="Mallquis Saio +2",
+        hands="Wicce Gloves +2",
+        ring1="Murky Ring",
+        ring2="Vertigo Ring",
+        back="Archon Cape",
+        waist="Platinum Moogle Belt",
+        legs="SV Loincloth +1",
+        feet="Wicce Sabots +2",
+    }
+
+    sets.defense.MDT = {
+        main="Malignance Pole",
+        sub="Daduchos Grip",
+        ammo="Crepuscular Pebble",
+        head="Wicce Petasos +2",
+        neck="Null Loop",
+        ear1="Alabaster Earring",
+        ear2="Odnowa Earring +1",
+        body="Mallquis Saio +2",
+        hands="Wicce Gloves +2",
+        ring1="Murky Ring",
+        ring2="Archon Ring",
+        back="Null Shawl",
+        waist="Platinum Moogle Belt",
+        legs="SV Loincloth +1",
+        feet="Wicce Sabots +2",
+    }
+
+    sets.defense.MEVA = {
+        main="Daybreak",
+        sub="Culminus",
+        ammo="Crepuscular Pebble",
+        head="Agwu's Cap",
+        neck="Null Loop",
+        ear1="Alabaster Earring",
+        ear2="Odnowa Earring +1",
+        body="Agwu's Robe",
+        hands="Agwu's Gages",
+        ring1="Archon Ring",
+        ring2="Shadow Ring",
+        back="Null Shawl",
+        waist="Null Belt",
+        legs="Agwu's Slops",
+        feet="Agwu's Pigaches",
+    }
 
     sets.Kiting = {
         feet="Herald's Gaiters",
@@ -425,15 +475,15 @@ function init_gear_sets()
     sets.engaged = {
         main  = "Malignance Pole",
         sub   = "Daduchos Grip",
-        head  = "Jhakri Coronal +2",
-        body  = "SV Separates +1",
-        hands = "SV Gauntlets +1",
-        legs  = "Perdition slops",
-        feet  = "SV Gaiters +1",
+        head  = "Nyame Helm", -- Path B
+        body  = "Nyame Mail", -- Path B
+        hands = "Nyame Gauntlets", -- Path B
+        legs  = "Nyame Flanchard", -- Path B
+        feet  = "Nyame Sollerets", -- Path B
         neck  = "Peacock Amulet",
-        ring1 = "Mars's Ring",
+        ring2 = "Mars's Ring",
         back  = "Null Shawl",
-        waist = "Eschan Stone",
+        waist = "Null Belt",
     }
 
     sets.engaged.DT = sets.engaged

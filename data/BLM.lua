@@ -339,7 +339,18 @@ function handle_elemental(cmdParams)
 	elseif command == 'helix' then
 		windower.chat.input('/ma "'..data.elements.helix_of[state.ElementalMode.value]..'helix" '..target..'')
 	elseif command == 'ancientmagic' then
-		windower.chat.input('/ma "'..data.elements.ancient_nuke_of[state.ElementalMode.value]..'" '..target..'')
+		-- Try Tier II first; fall back to Tier I if II is unknown, on cooldown, or too expensive.
+		local spell_recasts = windower.ffxi.get_spell_recasts()
+		local ancient = data.elements.ancient_nuke_of[state.ElementalMode.value]
+		local tiers = {' II',''}
+		for k in ipairs(tiers) do
+			local spell = get_spell_table_by_name(ancient..tiers[k])
+			if spell and silent_can_use(spell.id) and spell_recasts[spell.id] < spell_latency and actual_cost(spell) < player.mp then
+				windower.chat.input('/ma "'..ancient..tiers[k]..'" '..target..'')
+				return
+			end
+		end
+		add_to_chat(123,'Abort: '..ancient..' II and '..ancient..' on cooldown, unlearned, or not enough MP.')
 	elseif command == 'ancientmagic2' then
 		windower.chat.input('/ma "'..data.elements.ancient_nuke_of[state.ElementalMode.value]..' II" '..target..'')
 	elseif command == 'enfeeble' then
