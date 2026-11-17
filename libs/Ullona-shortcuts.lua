@@ -1,5 +1,3 @@
-
-  
 -- ULLONA'S ULTIMATE SHORTCUTS
 -- GearSwap / Windower
 --
@@ -522,6 +520,13 @@ function setup_command_shortcuts()
     send_command('alias invs input /ma "Invisible" <t>')
     send_command('alias inv input /ma "Invisible" <t>')
     send_command('alias invisi input /ma "Invisible" <t>')
+
+
+  ----------------
+    -- ITEMS
+  ----------------
+
+    send_command('alias remedy input /item "Remedy" <me>')
 
 end
 

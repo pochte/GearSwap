@@ -1,4 +1,15 @@
 -- GEO.lua — Changelog
+-- Weapon-mode option values must stay single-word (spaces/apostrophes break the console
+-- status bar display) -- real item names are looked up from the short token instead.
+main_weapon_items = {
+    Idris = "Idris",
+    KajaRod = "Kaja Rod"
+}
+off_weapon_items = {
+    GenmeiShield = "Genmei Shield",
+    AmmurapiShield = "Ammurapi Shield",
+    Culminus = "Culminus"
+}
 -- Setup functions for this job. Generally should not be modified.
 -- Initialization function for this job file.
 function get_sets()
@@ -17,13 +28,16 @@ function get_sets()
 end
 -- Setup vars that are user-independent. state.Buff vars initialized here will automatically be tracked.
 function job_setup()
+    -- Construct our custom weapon state before init_job_states().
+    state.MainWeapon = M{['description']='Main Weapon'}
+    state.OffWeapon = M{['description']='Off Weapon'}
     state.Buff.Entrust = buffactive.Entrust or false
     state.Buff['Blaze of Glory'] = buffactive['Blaze of Glory'] or false
     LowTierNukes = S{'Stone', 'Water', 'Aero', 'Fire', 'Blizzard', 'Thunder',
         'Stone II', 'Water II', 'Aero II', 'Fire II', 'Blizzard II', 'Thunder II',
         'Stonega', 'Waterga', 'Aeroga', 'Firaga', 'Blizzaga', 'Thundaga'}
     MaxNukeTier = 5
-    autows = 'Realmrazer'
+    autows = 'Exudation'
     autofood = 'Miso Ramen'
     autoindi = 'Torpor'
     autoentrust = 'Fury'
@@ -57,7 +71,8 @@ function job_setup()
         "PetHPMode"
     },{
         "AutoBuffMode",
-        "Weapons",
+        "MainWeapon",
+        "OffWeapon",
         "OffenseMode",
         "WeaponskillMode",
         "IdleMode",
@@ -162,6 +177,15 @@ function job_precast(spell, spellMap, eventArgs)
     end
 end
 function job_post_precast(spell, spellMap, eventArgs)
+    -- Geomancy casts are exempt from the weapon locks ONLY while not engaged: the Geomancy
+    -- sets pick their own main/sub (Idris for Geo-, Solstice for Indi-). While engaged the
+    -- locks stay on so a weapon swap never costs you TP. Unlocked here, after precast cancel checks,
+    -- and re-locked in job_aftercast.
+    if spell.skill == 'Geomancy'
+        and player.status ~= 'Engaged'
+        and (state.MainWeapon.value ~= 'None' or state.OffWeapon.value ~= 'None') then
+        enable('main', 'sub')
+    end
     if spell.type == 'WeaponSkill' then
         local WSset = standardize_set(get_precast_set(spell, spellMap))
         if WSset.ear1 == "Moonshade Earring"
@@ -211,6 +235,11 @@ function job_post_midcast(spell, spellMap, eventArgs)
     end
 end
 function job_aftercast(spell, spellMap, eventArgs)
+    -- Put the locked main/sub back after any Geomancy cast (success or interrupted).
+    if spell.skill == 'Geomancy'
+        and (state.MainWeapon.value ~= 'None' or state.OffWeapon.value ~= 'None') then
+        send_command('wait 0.2; gs c lockselectedweapons')
+    end
     try_sublimation()
     if not spell.interrupted then
         if spell.english:startswith('Indi-') then
@@ -303,10 +332,66 @@ function job_get_spell_map(spell, default_spell_map)
         end
     end
 end
+-- Weapon locking helper.
+--
+-- GearSwap's disable() blocks future equips on that slot, so the weapon MUST be
+-- equipped first and only then locked. "None" leaves that slot unlocked.
+-- Only 'main'/'sub' are touched here -- never range/ammo (Dunna stays locked by lock_dunna()).
+function lock_selected_weapons()
+    enable('main', 'sub')
+    if state.MainWeapon.value ~= 'None' then
+        local main_weapon = main_weapon_items[state.MainWeapon.value]
+        if main_weapon then
+            equip({main = main_weapon})
+        end
+    end
+    if state.OffWeapon.value ~= 'None' then
+        local off_weapon = off_weapon_items[state.OffWeapon.value]
+        if off_weapon then
+            equip({sub = off_weapon})
+        end
+    end
+    if state.MainWeapon.value ~= 'None' and main_weapon_items[state.MainWeapon.value] then
+        disable('main')
+    end
+    if state.OffWeapon.value ~= 'None' and off_weapon_items[state.OffWeapon.value] then
+        disable('sub')
+    end
+end
 function job_state_change(stateField, newValue, oldValue)
     try_offense_weapon_lock(stateField, newValue)
+    if stateField == 'Main Weapon' or stateField == 'MainWeapon' then
+        -- Unlock first so the newly selected weapon can equip, then lock shortly after.
+        enable('main')
+        -- Keep AutoWS pointed at the WS for the selected weapon.
+        autows = (ws_by_main_weapon and ws_by_main_weapon[newValue])
+            or ws_by_main_weapon_default
+            or autows
+        send_command('wait 0.2; gs c lockselectedweapons')
+    elseif stateField == 'Off Weapon' or stateField == 'OffWeapon' then
+        enable('sub')
+        send_command('wait 0.2; gs c lockselectedweapons')
+    elseif stateField == 'Offense Mode' and newValue ~= 'None'
+        and (state.MainWeapon.value ~= 'None' or state.OffWeapon.value ~= 'None') then
+        -- try_offense_weapon_lock just re-enabled main/sub/range; put the weapon lock back.
+        send_command('wait 0.2; gs c lockselectedweapons')
+    end
 end
 function job_customize_idle_set(idleSet)
+    -- Main weapon selection (Ctrl+F7 cycles MainWeapon).
+    if state.MainWeapon.value ~= 'None' then
+        local weapon = main_weapon_items[state.MainWeapon.value]
+        if weapon then
+            idleSet = set_combine(idleSet, {main = weapon})
+        end
+    end
+    -- Sub selection (Alt+F7 cycles OffWeapon).
+    if state.OffWeapon.value ~= 'None' then
+        local weapon = off_weapon_items[state.OffWeapon.value]
+        if weapon then
+            idleSet = set_combine(idleSet, {sub = weapon})
+        end
+    end
     if state.PetHPMode.value and sets.PetHP then
         idleSet = set_combine(idleSet, sets.PetHP)
     end
@@ -326,8 +411,7 @@ function job_customize_idle_set(idleSet)
             if sets.latent_refresh then
                 idleSet = set_combine(idleSet, sets.latent_refresh)
             end
-            if (state.Weapons.value == 'None'
-                or (state.UnlockWeapons and state.UnlockWeapons.value))
+            if state.MainWeapon.value == 'None'
                 and idleSet.main then
                 local main_table = get_item_table(idleSet.main)
                 if main_table
@@ -345,6 +429,22 @@ function job_customize_idle_set(idleSet)
         end
     end
     return idleSet
+end
+-- Melee gear customization.
+function job_customize_melee_set(meleeSet)
+    if state.MainWeapon.value ~= 'None' then
+        local weapon = main_weapon_items[state.MainWeapon.value]
+        if weapon then
+            meleeSet = set_combine(meleeSet, {main = weapon})
+        end
+    end
+    if state.OffWeapon.value ~= 'None' then
+        local weapon = off_weapon_items[state.OffWeapon.value]
+        if weapon then
+            meleeSet = set_combine(meleeSet, {sub = weapon})
+        end
+    end
+    return meleeSet
 end
 function job_update(cmdParams, eventArgs)
     lock_dunna()
@@ -454,6 +554,15 @@ function job_self_command(commandArgs, eventArgs)
         eventArgs.handled = true
     elseif lowerCommand == 'smartcure' then
         handle_smartcure(commandArgs)
+        eventArgs.handled = true
+    elseif lowerCommand == 'castws' then
+        -- Fires the WS matching MainWeapon (see ws_by_main_weapon in the gear file).
+        -- Named castws because plain 'ws' collides with Sel-SelfCommands.lua's own command.
+        handle_autows(commandArgs)
+        eventArgs.handled = true
+    elseif lowerCommand == 'lockselectedweapons' then
+        -- Lets weapon state changes equip first and lock second.
+        lock_selected_weapons()
         eventArgs.handled = true
     end
 end

@@ -43,7 +43,7 @@ function init_include()
 	state.ResistDefenseMode   = M{['description'] = 'Resistance Defense Mode', 'MEVA'}
 	
 	state.Passive   		  = M{['description'] = 'Passive Mode','None'}
-	state.Kiting              = M(true, 'Kiting')
+	state.Kiting              = M(false, 'Kiting')
 	state.SelectNPCTargets    = M(false, 'Select NPC Targets')
 	state.Capacity 			  = M(false, 'Capacity Mode')
 	state.ReEquip 			  = M(false, 'ReEquip Mode')

@@ -2,6 +2,14 @@
 -- GEO gear setup.
 -- AF (Geomancy/Geo.), Relic (Bagua) and Empyrean (Azimuth) pieces are tagged.
 
+-- gs c castws fires the WS for the selected MainWeapon (handled by smart-ws.lua).
+ws_by_main_weapon = {
+    Idris = 'Exudation',
+    KajaRod = 'Black Halo',
+}
+ws_by_main_weapon_default = 'Exudation'
+include('smart-ws.lua')
+
 function user_job_setup()
     -- Modes
     state.OffenseMode:options('Normal', 'None') -- Normal first: engaged set is used when engaged
@@ -10,7 +18,10 @@ function user_job_setup()
     state.PhysicalDefenseMode:options('PDT', 'NukeLock', 'GeoLock', 'PetPDT')
     state.MagicalDefenseMode:options('MDT', 'NukeLock')
     state.ResistDefenseMode:options('MEVA')
-    state.Weapons:options('None', 'Idris', 'DualWeapons')
+    -- Main-hand lock: Ctrl+F7 cycles. Geomancy casts temporarily unlock it (see GEO.lua).
+    state.MainWeapon:options('Idris', 'KajaRod', 'None')
+    -- Sub-hand lock: Alt+F7 cycles. GEO is never /NIN so no dual wield.
+    state.OffWeapon:options('GenmeiShield', 'AmmurapiShield', 'Culminus', 'None')
 
     -- AutoGeo defaults
     autoindi = "Fury"
@@ -42,6 +53,9 @@ function user_job_setup()
     -- Dunna forever: no ammo, no other range items, slots locked.
     equip({range="Dunna", ammo="empty"})
     disable('range', 'ammo')
+
+    -- Apply the default main-hand lock once everything has loaded.
+    send_command('wait 3; gs c lockselectedweapons')
 
     set_macro_page(1, 4)
 end
@@ -93,7 +107,7 @@ function init_gear_sets()
         head="Nahtirah Hat",
         body="Agwu's Robe",
         hands="Agwu's Gages",
-legs="Geomancy Pants +2",
+legs="Geomancy Pants +3",
         feet="Regal Pumps",
         neck="Voltsurge Torque",
         ear1="Loquacious Earring",
@@ -153,7 +167,7 @@ legs="Geomancy Pants +2",
         sub="Ammurapi Shield",
         head="Nahtirah Hat",
         body="Jhakri Robe +2",
-        legs="Geomancy Pants +1",
+        legs="Geomancy Pants +3",
         hands="Geo. Mitaines +4",
         feet="Geomancy Sandals +3",
         ear1="Magnetic Earring",
@@ -208,6 +222,11 @@ legs="Geomancy Pants +2",
         ear1="Moonshade Earring",
     })
 
+    -- Exudation: physical Club WS (50% INT / 50% MND), Idris only.
+    sets.precast.WS['Exudation'] = set_combine(sets.precast.WS, {
+        ear1="Moonshade Earring",
+    })
+
     -- Flash Nova is magical: keeps the old magic-leaning WS base.
     sets.precast.WS['Flash Nova'] = {
         head="Jhakri Coronal +2",
@@ -241,7 +260,7 @@ legs="Geomancy Pants +2",
         ring2="Vertigo Ring",
         back="Nantosuelta's Cape",
         waist="Platinum Moogle Belt",
-        legs="Geomancy Pants +1",
+        legs="Geomancy Pants +3",
         feet="Geomancy Sandals +3",
     }
 
@@ -282,7 +301,7 @@ legs="Geomancy Pants +2",
         ring2="Lebeche Ring",
         back="Twilight Cape",
         waist="Hachirin-no-Obi",
-        legs="Geomancy Pants +1",
+        legs="Geomancy Pants +3",
         feet="Vanya Clogs",
     }
 
@@ -443,7 +462,7 @@ legs="Geomancy Pants +2",
         sub="Ammurapi Shield",
         head="Geomancy Galero +1",
         body="Mallquis Saio +2",
-        legs="Geomancy Pants +1",
+        legs="Geomancy Pants +3",
         hands="Geo. Mitaines +4",
         feet="Geomancy Sandals +3",
         ear1="Magnetic Earring",
@@ -674,7 +693,7 @@ legs="Geomancy Pants +2",
     sets.buff.Sublimation = {waist="Embla Sash"}
     sets.buff.DTSublimation = {waist="Embla Sash"}
 
-    -- Weapon sets
+    -- Weapon sets (legacy: state.Weapons is retired on GEO; MainWeapon handles weapon locks)
     sets.weapons.Idris = {
         main="Idris",
         sub="Genmei Shield",

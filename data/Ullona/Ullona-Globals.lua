@@ -31,7 +31,33 @@ state.AutoArts = M(true, 'AutoArts')
 -- Shared ElementalMode order.
 state.ElementalMode = M{['description'] = 'Elemental Mode','Lightning','Ice','Fire','Wind','Water','Earth','Dark','Light',}
 -- Silence ElementalMode announcements.
+-- Capacity Mode back lock (all jobs): while Capacity Mode is on the EXP cape stays on.
+-- The cape MUST be equipped first and only then locked, so this runs deferred.
+function lock_capacity_back()
+    enable('back')
+    if state.Capacity.value then
+        local cape = (item_available('Aptitude Mantle +1') and 'Aptitude Mantle +1')
+            or (item_available('Aptitude Mantle') and 'Aptitude Mantle')
+        if cape then
+            sets.Capacity.back = cape
+            equip({back = cape})
+            disable('back')
+        end
+    end
+end
+function user_state_change(stateField, newValue, oldValue)
+    if stateField == 'Capacity' or stateField == 'Capacity Mode' then
+        -- Unlock now so the cape can swap, then (re)lock shortly after. Capacity off just unlocks.
+        enable('back')
+        send_command('wait 0.2; gs c lockcapacityback')
+    end
+end
 function user_self_command(cmdParams, eventArgs)
+    if cmdParams[1]:lower() == 'lockcapacityback' then
+        lock_capacity_back()
+        eventArgs.handled = true
+        return
+    end
     if cmdParams[1]:lower() == 'displayelement' then
         eventArgs.handled = true
         return
