@@ -79,7 +79,7 @@ function init_gear_sets()
     sets.precast.JA = {
         Bolster = {body="Bagua Tunic"},
         ['Life Cycle'] = {
-            body="Geo. Tunic +3",-- AF
+            body="Geomancy Tunic +3",-- AF
             back="Nantosuelta's Cape",
         },
         ['Radial Arcana'] = {feet="Bagua Sandals +3"}, -- Relic
@@ -89,7 +89,7 @@ function init_gear_sets()
             head="Azimuth Hood +3", -- Empy
             hands="Bagua Mitaines +3", -- Relic
         },
-                ['Curative Recantation'] = {
+        ['Curative Recantation'] = {
             hands="Bagua Mitaines +3", -- Relic
         },
     }
@@ -107,7 +107,7 @@ function init_gear_sets()
         head="Nahtirah Hat",
         body="Agwu's Robe",
         hands="Agwu's Gages",
-legs="Geomancy Pants +3",
+        legs="Geomancy Pants +3",
         feet="Regal Pumps",
         neck="Voltsurge Torque",
         ear1="Loquacious Earring",
@@ -204,18 +204,18 @@ legs="Geomancy Pants +3",
     -- Same physical WS set as RDM (Nyame assumed Path B), swapping out what GEO
     -- can't wear: Atrophy Gloves +4 -> Nyame Gauntlets, Sucellos's Cape -> Null Shawl.
     sets.precast.WS = {
-        head  = "Nyame Helm", -- Path B
-        body  = "Egbesu Frock",
-        hands = "Nyame Gauntlets", -- Path B
-        legs  = "Nyame Flanchard", -- Path B
-        feet  = "Nyame Sollerets", -- Path B
-        neck  = "Fotia Gorget",
-        ear1  = "Crepuscular Earring",
-        ear2  = "Ishvara Earring",
-        ring1 = "Cornelia's Ring",
-        ring2 = "Mars's Ring",
-        back  = "Null Shawl",
-        waist = "Fotia Belt",
+        head="Nyame Helm", -- Path B
+        body="Egbesu Frock",
+        hands="Nyame Gauntlets", -- Path B
+        legs="Nyame Flanchard", -- Path B
+        feet="Nyame Sollerets", -- Path B
+        neck="Fotia Gorget",
+        ear1="Crepuscular Earring",
+        ear2="Ishvara Earring",
+        ring1="Cornelia's Ring",
+        ring2="Mars's Ring",
+        back="Null Shawl",
+        waist="Fotia Belt",
     }
 
     sets.precast.WS['Black Halo'] = set_combine(sets.precast.WS, {
@@ -238,7 +238,7 @@ legs="Geomancy Pants +3",
         ring1="Locus Ring",
         ring2="Freke Ring",
         back="Izdubar Mantle",
-        waist="Hachirin-no-obi",
+        waist="Hachirin-no-Obi",
         legs="Jhakri Slops +2",
         feet="Jhakri Pigaches +2",
     }
@@ -343,7 +343,7 @@ legs="Geomancy Pants +3",
         ring1="Jhakri Ring",
         ring2="Freke Ring",
         back="Nantosuelta's Cape",
-        waist="Hachirin-no-obi",
+        waist="Hachirin-no-Obi",
         legs="Jhakri Slops +2",
         feet="Jhakri Pigaches +2",
     }
@@ -377,7 +377,7 @@ legs="Geomancy Pants +3",
         main="Marin Staff +1",
         sub="Daduchos Grip",
         head="Mallquis Chapeau +2",
-        body="Geo. Tunic +3", -- AF
+        body="Geomancy Tunic +3", -- AF
         hands="Jhakri Cuffs +2",
         legs="Azimuth Tights +2",
         feet="Jhakri Pigaches +2",
@@ -392,12 +392,12 @@ legs="Geomancy Pants +3",
 
     sets.midcast.Drain = set_combine(sets.midcast['Dark Magic'], {
         head="Bagua Galero",
-        waist="Fucho-no-obi",
+        waist="Fucho-no-Obi",
         feet="Agwu's Pigaches",
     })
 
     sets.midcast.Aspir = set_combine(sets.midcast.Drain, {
-        waist="Fucho-no-obi",
+        waist="Fucho-no-Obi",
         feet="Agwu's Pigaches",
     })
 
@@ -515,12 +515,12 @@ legs="Geomancy Pants +3",
         neck="Null Loop",
         ear1="Gifted Earring",
         ear2="Odnowa Earring +1",
-        body="Geo. Tunic +3", -- AF
+        body="Geomancy Tunic +3", -- AF
         hands="Jhakri Cuffs +2",
         ring1="Murky Ring",
         ring2="Vertigo Ring",
         back="Archon Cape",
-        legs="Assid. Pants +1",
+        legs="Assiduity Pants +1",
         feet="Jhakri Pigaches +2",
     }
 
@@ -539,7 +539,7 @@ legs="Geomancy Pants +3",
         ring2="Murky Ring",
         back="Archon Cape",
         waist="Fucho-no-Obi",
-        legs="Assid. Pants +1",
+        legs="Assiduity Pants +1",
         feet="Bagua Sandals +3",
     }
 
@@ -561,7 +561,7 @@ legs="Geomancy Pants +3",
         sub="Genmei Shield",
         ear1="Handler's Earring",
         ear2="Handler's Earring +1",
-        body="Geo. Tunic +3", -- AF
+        body="Geomancy Tunic +3", -- AF
         hands="Geo. Mitaines +4",
         ring1="Murky Ring",
         ring2="Vertigo Ring",
@@ -645,7 +645,7 @@ legs="Geomancy Pants +3",
         back="Nantosuelta's Cape",
     }
 
-    sets.latent_refresh = {waist="Fucho-no-obi"}
+    sets.latent_refresh = {waist="Fucho-no-Obi"}
     sets.latent_refresh_grip = {sub="Oneiros Grip"}
     sets.DayIdle = {}
     sets.NightIdle = {}
@@ -656,19 +656,19 @@ legs="Geomancy Pants +3",
     -- Full Nyame (Path B) with RDM/BLM jewelry, limited to what GEO can wear
     -- (no Malignance, Sherida Earring, Sailfi Belt +1 or Sucellos's Cape).
     sets.engaged = {
-        main  = "Idris",
-        head  = "Nyame Helm", -- Path B
-        neck  = "Lissome Necklace",
-        ear1  = "Cessance Earring",
-        ear2  = "Crepuscular Earring",
-        body  = "Nyame Mail", -- Path B
-        hands = "Nyame Gauntlets", -- Path B
-        ring1 = "Petrov Ring",
-        ring2 = "Rajas Ring",
-        back  = "Null Shawl",
-        waist = "Eschan Stone",
-        legs  = "Nyame Flanchard", -- Path B
-        feet  = "Nyame Sollerets", -- Path B
+        main="Idris",
+        head="Nyame Helm", -- Path B
+        neck="Lissome Necklace",
+        ear1="Cessance Earring",
+        ear2="Crepuscular Earring",
+        body="Nyame Mail", -- Path B
+        hands="Nyame Gauntlets", -- Path B
+        ring1="Petrov Ring",
+        ring2="Rajas Ring",
+        back="Null Shawl",
+        waist="Eschan Stone",
+        legs="Nyame Flanchard", -- Path B
+        feet="Nyame Sollerets", -- Path B
     }
 
     sets.engaged.DW = {}

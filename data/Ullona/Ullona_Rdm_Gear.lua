@@ -76,19 +76,19 @@ function init_gear_sets()
 
     -- Fast Cast
     sets.precast.FC = {
-        main  = "Emissary",
-        sub   = "Culminus",
-        head  = "Atrophy Chapeau +4",
-        body  = "Vitiation Tabard +4",
-        legs  = "Ayanmo Cosciales +2",
-        hands = "Leyline Gloves",
-        feet  = "Bunzi's Sabots",
-        ear1  = "Malignance Earring",
-        ear2  = "Lethargy Earring",
-        ring1 = "Naji's Loop",
-        ring2 = "Kishar Ring",
-        waist = "Embla Sash",
-        neck  = "Voltsurge Torque"
+        main="Emissary",
+        sub="Culminus",
+        head="Atrophy Chapeau +4",
+        body="Vitiation Tabard +4",
+        legs="Ayanmo Cosciales +2",
+        hands="Leyline Gloves",
+        feet="Bunzi's Sabots",
+        ear1="Malignance Earring",
+        ear2="Lethargy Earring",
+        ring1="Naji's Loop",
+        ring2="Kishar Ring",
+        waist="Embla Sash",
+        neck="Voltsurge Torque"
     }
 
     sets.precast.FC.Enfeebling = set_combine(sets.precast.FC, {
@@ -127,19 +127,19 @@ function init_gear_sets()
     -- Nyame assumed Path B, Rank 15.
 
     sets.precast.WS = {
-        head  = "Nyame Helm",
-        body  = "Egbesu Frock",
-        legs  = "Nyame Flanchard",
-        hands = "Atrophy Gloves +4",
-        feet  = "Nyame Sollerets",
-        neck  = "Fotia Gorget",
-        back  = "Sucellos's Cape",
-        waist = "Fotia Belt",
-        ear1  = "Crepuscular Earring",
-        ear2  = "Ishvara Earring",
-        ring1 = "Cornelia's Ring",
-        ring2 = "Mars's Ring",
-        ammo  = "Oshasha's Treatise",
+        head="Nyame Helm",
+        body="Egbesu Frock",
+        legs="Nyame Flanchard",
+        hands="Atrophy Gloves +4",
+        feet="Nyame Sollerets",
+        neck="Fotia Gorget",
+        back="Sucellos's Cape",
+        waist="Fotia Belt",
+        ear1="Crepuscular Earring",
+        ear2="Ishvara Earring",
+        ring1="Cornelia's Ring",
+        ring2="Mars's Ring",
+        ammo="Oshasha's Treatise",
         range = empty
     }
 
@@ -160,19 +160,19 @@ function init_gear_sets()
     sets.midcast.FastRecast = sets.precast.FC
 
     sets.midcast['Healing Magic'] = {
-        main  = "Bunzi's Rod",
-        sub   = "Sacro Bulwark",
-        head  = "Vanya Hood",
-        body  = "Bunzi's Robe",
-        hands = "Bokwus Gloves",
-        neck  = "Nodens Gorget",
-        ear1  = "Gifted Earring",
-        ear2  = "Mendicant's Earring",
-        ring1 = "Naji's Loop",
-        ring2 = "Janniston Ring",
-        back  = "Ghostfyre Cape",
-        legs  = "Atrophy Tights +3",
-        feet  = "Vanya Clogs",
+        main="Bunzi's Rod",
+        sub="Sacro Bulwark",
+        head="Vanya Hood",
+        body="Bunzi's Robe",
+        hands="Bokwus Gloves",
+        neck="Nodens Gorget",
+        ear1="Gifted Earring",
+        ear2="Mendicant's Earring",
+        ring1="Naji's Loop",
+        ring2="Janniston Ring",
+        back="Ghostfyre Cape",
+        legs="Atrophy Tights +3",
+        feet="Vanya Clogs",
     }
 
     sets.precast.Cure = set_combine(sets.midcast['Healing Magic'], {
@@ -217,20 +217,20 @@ function init_gear_sets()
     })
 
     sets.midcast['Enhancing Magic'] = {
-        main  = "Daybreak",
-        sub   = "Ammurapi Shield",
-        head  = "Lethargy Chappel +3",
-        body  = "Lethargy Sayon +3",
-        legs  = "Lethargy Fuseau +3",
-        hands = "Lethargy Gantherots +3",
-        feet  = "Lethargy Houseaux +3",
-        neck  = "Duelist's Torque +1",
-        ear1  = "Andoaa Earring",
-        ear2  = "Lethargy Earring",
-        ring1 = "Lebeche Ring",
-        ring2 = "Murky Ring",
-        back  = "Sucellos's Cape",
-        waist = "Embla Sash"
+        main="Daybreak",
+        sub="Ammurapi Shield",
+        head="Lethargy Chappel +3",
+        body="Lethargy Sayon +3",
+        legs="Lethargy Fuseau +3",
+        hands="Lethargy Gantherots +3",
+        feet="Lethargy Houseaux +3",
+        neck="Duelist's Torque +1",
+        ear1="Andoaa Earring",
+        ear2="Lethargy Earring",
+        ring1="Lebeche Ring",
+        ring2="Murky Ring",
+        back="Sucellos's Cape",
+        waist="Embla Sash"
     }
 
      
@@ -238,17 +238,17 @@ function init_gear_sets()
  
 
 sets.midcast.Protect = set_combine(sets.midcast['Enhancing Magic'], {
-    ring1 = "Sheltered Ring",
+    ring1="Sheltered Ring",
 })
 
 sets.midcast.Shell = sets.midcast.Protect
 
     sets.buff.ComposureOther = {
-        head  = "Lethargy Chappel +3",
-        body  = "Lethargy Sayon +3",
-        legs  = "Lethargy Fuseau +3",
-        hands = "Lethargy Gantherots +3",
-        feet  = "Lethargy Houseaux +3",
+        head="Lethargy Chappel +3",
+        body="Lethargy Sayon +3",
+        legs="Lethargy Fuseau +3",
+        hands="Lethargy Gantherots +3",
+        feet="Lethargy Houseaux +3",
     }
 
     -- Red Mage enhancing sets layer onto the enhancing set.
@@ -320,22 +320,22 @@ sets.midcast.Shell = sets.midcast.Protect
 
     -- Midcast: Enfeebling Magic
     sets.midcast['Enfeebling Magic'] = {
-        main  = "Mpaca's Staff",
-        sub   = "Daduchos Grip",
-        head  = "Vitiation Chapeau +4",
-        body  = "Lethargy Sayon +3",
-        legs  = "Lethargy Fuseau +3",
-        hands = "Lethargy Gantherots +3",
-        feet  = "Vitiation Boots +3",
-        neck  = "Duelist's Torque +1",
-        ear1  = "Malignance Earring",
-        ear2  = "Lethargy Earring",
-        ring1 = "Crepuscular Ring",
-        ring2 = "Kishar Ring",
-        back  = "Sucellos's Cape",
-        waist = "Null Belt",
+        main="Mpaca's Staff",
+        sub="Daduchos Grip",
+        head="Vitiation Chapeau +4",
+        body="Lethargy Sayon +3",
+        legs="Lethargy Fuseau +3",
+        hands="Lethargy Gantherots +3",
+        feet="Vitiation Boots +3",
+        neck="Duelist's Torque +1",
+        ear1="Malignance Earring",
+        ear2="Lethargy Earring",
+        ring1="Crepuscular Ring",
+        ring2="Kishar Ring",
+        back="Sucellos's Cape",
+        waist="Null Belt",
         range = empty,
-        ammo  = "Regal Gem"
+        ammo="Regal Gem"
     }
 
     sets.midcast['Enfeebling Magic'].Resistant = set_combine(sets.midcast['Enfeebling Magic'], {
@@ -398,21 +398,21 @@ sets.midcast.Shell = sets.midcast.Protect
 
     -- Elemental Magic
     sets.midcast['Elemental Magic'] = {
-        main  = "Marin Staff +1",
-        sub   = "Daduchos Grip",
-        ammo  = "Ghastly Tathlum",
-        head  = "Lethargy Chappel +3",
-        body  = "Bunzi's Robe",
-        legs  = "Lethargy Fuseau +3",
-        hands = "Lethargy Gantherots +3",
-        feet  = "Vitiation Boots +3",
-        neck  = "Baetyl Pendant",
-        ear1  = "Malignance Earring",
-        ear2  = "Hecate's Earring",
-        ring1 = "Jhakri Ring",
-        ring2 = "Freke Ring",
-        back  = "Izdubar Mantle",
-        waist = "Hachirin-no-obi",
+        main="Marin Staff +1",
+        sub="Daduchos Grip",
+        ammo="Ghastly Tathlum",
+        head="Lethargy Chappel +3",
+        body="Bunzi's Robe",
+        legs="Lethargy Fuseau +3",
+        hands="Lethargy Gantherots +3",
+        feet="Vitiation Boots +3",
+        neck="Baetyl Pendant",
+        ear1="Malignance Earring",
+        ear2="Hecate's Earring",
+        ring1="Jhakri Ring",
+        ring2="Freke Ring",
+        back="Izdubar Mantle",
+        waist="Hachirin-no-Obi",
         range = empty
     }
 
@@ -471,22 +471,22 @@ sets.midcast.Shell = sets.midcast.Protect
 
     -- Dark Magic
     sets.midcast['Dark Magic'] = {
-        head  = "Jhakri Coronal +2",
-        body  = "Jhakri Robe +2",
-        legs  = "Jhakri Slops +2",
-        hands = "Malignance Gloves",
-        feet  = "Jhakri Pigaches +2",
-        neck  = "Erra Pendant",
-        ear1  = "Malignance Earring",
-        ear2  = "Alabaster Earring",
-        ring1 = "Crepuscular Ring",
-        ring2 = "Evanescence Ring",
-        back  = "Izdubar Mantle",
-        waist = "Null Belt",
-        ammo  = "Ghastly Tathlum",
+        head="Jhakri Coronal +2",
+        body="Jhakri Robe +2",
+        legs="Jhakri Slops +2",
+        hands="Malignance Gloves",
+        feet="Jhakri Pigaches +2",
+        neck="Erra Pendant",
+        ear1="Malignance Earring",
+        ear2="Alabaster Earring",
+        ring1="Crepuscular Ring",
+        ring2="Evanescence Ring",
+        back="Izdubar Mantle",
+        waist="Null Belt",
+        ammo="Ghastly Tathlum",
         range = empty,
-        main  = "Marin Staff +1",
-        sub   = "Daduchos Grip"
+        main="Marin Staff +1",
+        sub="Daduchos Grip"
     }
 
     sets.midcast.Drain = set_combine(sets.midcast['Dark Magic'], {
@@ -494,7 +494,7 @@ sets.midcast.Shell = sets.midcast.Protect
     })
 
     sets.midcast.Aspir = set_combine(sets.midcast.Drain, {
-        waist="Fucho-no-obi",
+        waist="Fucho-no-Obi",
         feet="Merlinic Crackows"
     })
 
@@ -521,21 +521,21 @@ sets.midcast.Shell = sets.midcast.Protect
 
     -- Idle
     sets.idle = {
-        main  = "Daybreak",
-        sub   = "Archduke's Shield",
-        ammo  = "Crepuscular Pebble",
-        head  = "Vitiation Chapeau +4",
-        body  = "Lethargy Sayon +3",
-        legs  = "Carmine Cuisses +1",
-        hands = "Malignance Gloves",
-        feet  = "Malignance Boots",
-        neck  = "Null Loop",
-        ear1  = "Odnowa Earring +1",
-        ear2  = "Alabaster Earring",
-        ring1 = "Ayanmo Ring",
-        ring2 = "Murky Ring",
-        back  = "Archon Cape",
-        waist = "Null Belt",
+        main="Daybreak",
+        sub="Archduke's Shield",
+        ammo="Crepuscular Pebble",
+        head="Vitiation Chapeau +4",
+        body="Lethargy Sayon +3",
+        legs="Carmine Cuisses +1",
+        hands="Malignance Gloves",
+        feet="Malignance Boots",
+        neck="Null Loop",
+        ear1="Odnowa Earring +1",
+        ear2="Alabaster Earring",
+        ring1="Ayanmo Ring",
+        ring2="Murky Ring",
+        back="Archon Cape",
+        waist="Null Belt",
         range = empty
     }
 
@@ -612,7 +612,7 @@ sets.midcast.Shell = sets.midcast.Protect
         ammo="Crepuscular Pebble"
     }
 
-    sets.latent_refresh = {waist="Fucho-no-obi"}
+    sets.latent_refresh = {waist="Fucho-no-Obi"}
     sets.latent_refresh_grip = {
         main="Mpaca's Staff",
         sub="Oneiros Grip"
@@ -652,19 +652,19 @@ sets.midcast.Shell = sets.midcast.Protect
 
     -- Engaged
     sets.engaged = {
-        head  = "Nyame Helm", -- Path B
-        neck  = "Anu Torque",
-        ear1  = "Sherida Earring",
-        ear2  = "Cessance Earring",
-        body  = "Malignance Tabard",
-        hands = "Malignance Gloves",
-        ring1 = "Petrov Ring",
-        ring2 = "Rajas Ring",
-        back  = "Sucellos's Cape",
-        waist = "Sailfi Belt +1",
-        legs  = "Malignance Tights",
-        feet  = "Malignance Boots",
-        ammo  = "Crepuscular Pebble",
+        head="Nyame Helm", -- Path B
+        neck="Anu Torque",
+        ear1="Sherida Earring",
+        ear2="Cessance Earring",
+        body="Malignance Tabard",
+        hands="Malignance Gloves",
+        ring1="Petrov Ring",
+        ring2="Rajas Ring",
+        back="Sucellos's Cape",
+        waist="Sailfi Belt +1",
+        legs="Malignance Tights",
+        feet="Malignance Boots",
+        ammo="Crepuscular Pebble",
         range = empty
     }
 

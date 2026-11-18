@@ -122,7 +122,7 @@ function init_gear_sets()
         ring1="Mars's Ring",
         ring2="Meghanada Ring",
         waist="Sailfi Belt +1",
-        legs="SV loincloth +1",
+        legs="SV Loincloth +1",
         feet="Plunderer's Poulaines",
         ammo="Perfect Lucky Egg"
     }

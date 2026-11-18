@@ -66,9 +66,9 @@ function init_gear_sets()
     -- Weapon modes
     ---------------------------------------------------------------------------
     sets.weapons = sets.weapons or {}
-    sets.weapons.Tumafyrig = {main = "Tumafyrig"}
-    sets.weapons.Marquetry = {main = "Marquetry Staff"}
-    sets.weapons.Frazil = {main = "Frazil Staff"}
+    sets.weapons.Tumafyrig = {main="Tumafyrig"}
+    sets.weapons.Marquetry = {main="Marquetry Staff"}
+    sets.weapons.Frazil = {main="Frazil Staff"}
 
     sets.TreasureHunter = set_combine(sets.TreasureHunter or {}, {
         feet = gear.merlinic_treasure_feet
@@ -77,22 +77,22 @@ function init_gear_sets()
     ---------------------------------------------------------------------------
     -- Job abilities
     ---------------------------------------------------------------------------
-    sets.precast.JA['Astral Flow'] = {head = "Glyphic Horn +1"}
+    sets.precast.JA['Astral Flow'] = {head="Glyphic Horn +1"}
     sets.precast.JA['Elemental Siphon'] = {
-        main = "Tumafyrig",
-        head = "Beckoner's Horn +1",
-        body = "Beck. Doublet +1",
-        hands = "Glyphic Bracers",
-        legs = "Beck. Spats +1",
-        feet = "Beck. Pigaches +1",
-        neck = "Incanter's Torque",
-        ear1 = "Andoaa Earring",
-        ring1 = "Evoker's Ring",
-        ring2 = "Inyanga Ring",
-        back = "Conveyance Cape",
-        waist = "Lucidity Sash",
+        main="Tumafyrig",
+        head="Beckoner's Horn +1",
+        body="Beck. Doublet +1",
+        hands="Glyphic Bracers",
+        legs="Beck. Spats +1",
+        feet="Beck. Pigaches +1",
+        neck="Incanter's Torque",
+        ear1="Andoaa Earring",
+        ring1="Evoker's Ring",
+        ring2="Inyanga Ring",
+        back="Conveyance Cape",
+        waist="Lucidity Sash",
     }
-    sets.precast.JA['Mana Cede'] = {hands = "Beck. Bracers +1"}
+    sets.precast.JA['Mana Cede'] = {hands="Beck. Bracers +1"}
     -- Convoker's Horn +1 is an optional +2 Summoning skill over Beckoner's Horn +1;
     -- not worth farming solely for that small gain. Convoker's Bracers +1 are skipped.
 
@@ -104,20 +104,20 @@ function init_gear_sets()
     -- Damage / accuracy gear belongs in the pet midcast set.
     ---------------------------------------------------------------------------
     sets.precast.BloodPactWard = {
-        ammo = "Seraphicaller",
-        head = "Glyphic Horn +1",
-        body = "Glyphic Doublet",
-        hands = "Glyphic Bracers",
-        legs = "Glyphic Spats",
-        feet = "Glyph. Pigaches",
-        back = "Conveyance Cape",
+        ammo="Seraphicaller",
+        head="Glyphic Horn +1",
+        body="Glyphic Doublet",
+        hands="Glyphic Bracers",
+        legs="Glyphic Spats",
+        feet="Glyphic Pigaches",
+        back="Conveyance Cape",
     }
     -- Cait Sith's Mewing Lullaby gets its own named override. Use the strongest
     -- BP-delay head/body pieces here; the remaining slots inherit the Ward delay set.
     -- (The ability is officially named "Mewing Lullaby" in FFXI.)
     sets.precast.BloodPactWard['Mewing Lullaby'] = set_combine(
         sets.precast.BloodPactWard, {
-            head = "Beckoner's Horn +1",
+            head="Beckoner's Horn +1",
             body = gear.shomonjijoe,
         }
     )
@@ -127,46 +127,46 @@ function init_gear_sets()
     -- Fast Cast
     ---------------------------------------------------------------------------
     sets.precast.FC = {
-        main = "Mpaca's Staff",
-        sub = "Willpower Grip",
-        head = "Nahtirah Hat",
-        body = "Inyanga Jubbah +2",
-        hands = "SV Gauntlets +1",
-        legs = "Querkening Brais",
-        feet = "Regal Pumps",
-        neck = "Voltsurge Torque",
-        ear1 = "Loquacious Earring",
-        ear2 = "Malignance Earring",
-        ring1 = "Naji's Loop",
-        ring2 = "Kishar Ring",
-        waist = "Embla Sash",
+        main="Mpaca's Staff",
+        sub="Willpower Grip",
+        head="Nahtirah Hat",
+        body="Inyanga Jubbah +2",
+        hands="SV Gauntlets +1",
+        legs="Querkening Brais",
+        feet="Regal Pumps",
+        neck="Voltsurge Torque",
+        ear1="Loquacious Earring",
+        ear2="Malignance Earring",
+        ring1="Naji's Loop",
+        ring2="Kishar Ring",
+        waist="Embla Sash",
     }
     sets.precast.FC.Cure = set_combine(sets.precast.FC, {
-        main = "Vadose Rod", sub = "empty", ammo = "Psilomene",
-        head = "Vanya Hood", hands = "Bokwus Gloves",
-        legs = "Gyve Trousers", feet = "Vanya Clogs",
-        ear1 = "Loquacious Earring", ear2 = "Novia Earring",
-        ring1 = "Lebeche Ring", ring2 = "Janniston Ring",
-        back = "Tempered Cape +1", waist = "Acerbic Sash +1",
+        main="Vadose Rod", sub="empty", ammo="Psilomene",
+        head="Vanya Hood", hands="Bokwus Gloves",
+        legs="Gyve Trousers", feet="Vanya Clogs",
+        ear1="Loquacious Earring", ear2="Novia Earring",
+        ring1="Lebeche Ring", ring2="Janniston Ring",
+        back="Tempered Cape +1", waist="Acerbic Sash +1",
     })
     sets.precast.FC['Enhancing Magic'] = set_combine(sets.precast.FC, {
-        hands = "Bokwus Gloves", legs = "Shedir Seraweels",
-        feet = "Medium's Sabots", ear1 = "Magnetic Earring",
-        ear2 = "Andoaa Earring", ring2 = "Vertigo Ring",
-        waist = "Siegel Sash",
+        hands="Bokwus Gloves", legs="Shedir Seraweels",
+        feet="Medium's Sabots", ear1="Magnetic Earring",
+        ear2="Andoaa Earring", ring2="Vertigo Ring",
+        waist="Siegel Sash",
     })
     sets.precast.FC.Stoneskin = set_combine(sets.precast.FC['Enhancing Magic'], {
-        head = "Umuthi Hat", neck = "Nodens Gorget",
-        legs = "Shedir Seraweels", waist = "Siegel Sash",
+        head="Umuthi Hat", neck="Nodens Gorget",
+        legs="Shedir Seraweels", waist="Siegel Sash",
     })
     sets.precast.FC.Impact = set_combine(sets.precast.FC, {
-        head = "empty", body = "Twilight Cloak",
+        head="empty", body="Twilight Cloak",
     })
     sets.precast.FC.Dispelga = set_combine(sets.precast.FC, {
-        main = "Daybreak", sub = "Culminus",
+        main="Daybreak", sub="Culminus",
     })
     sets.precast.Stoneskin = set_combine(sets.precast.FC, {
-        waist = "Siegel Sash", legs = "Querkening Brais",
+        waist="Siegel Sash", legs="Querkening Brais",
     })
 
     ---------------------------------------------------------------------------
@@ -178,100 +178,100 @@ function init_gear_sets()
     -- Player midcast: healing / status removal
     ---------------------------------------------------------------------------
     sets.midcast.Cure = {
-        main = "Bunzi's Rod",
-        head = "Vanya Hood",
-        body = "Vrikodara Jupon",
-        hands = "Bokwus Gloves",
-        legs = "Gyve Trousers",
-        feet = "Vanya Clogs",
-        neck = "Nodens Gorget",
-        ear1 = "Mendicant's Earring",
-        ear2 = "Gifted Earring",
-        ring1 = "Lebeche Ring",
-        ring2 = "Janniston Ring",
+        main="Bunzi's Rod",
+        head="Vanya Hood",
+        body="Vrikodara Jupon",
+        hands="Bokwus Gloves",
+        legs="Gyve Trousers",
+        feet="Vanya Clogs",
+        neck="Nodens Gorget",
+        ear1="Mendicant's Earring",
+        ear2="Gifted Earring",
+        ring1="Lebeche Ring",
+        ring2="Janniston Ring",
     }
     sets.Self_Healing = {}
     sets.Cure_Received = {}
     sets.Self_Refresh = {}
     sets.midcast.Cursna = set_combine(sets.midcast.Cure, {
-        hands = "Bokwus Gloves", feet = "Vanya Clogs",
-        neck = "Nodens Gorget", back = "Tempered Cape +1",
-        waist = "Cornelia's Belt",
+        hands="Bokwus Gloves", feet="Vanya Clogs",
+        neck="Nodens Gorget", back="Tempered Cape +1",
+        waist="Cornelia's Belt",
     })
     sets.midcast.StatusRemoval = set_combine(sets.midcast.FastRecast or {}, {
-        sub = "Clemency Grip",
+        sub="Clemency Grip",
     })
 
     ---------------------------------------------------------------------------
     -- Player midcast: summoning and nuking
     ---------------------------------------------------------------------------
     sets.midcast['Summoning Magic'] = {
-        main = "Malignance Pole", sub = "Willpower Grip",
+        main="Malignance Pole", sub="Willpower Grip",
     }
     sets.midcast['Elemental Magic'] = {
-        main = "Marin Staff +1", sub = "Willpower Grip",
-        ammo = "Ghastly Tathlum",
-        head = "Bunzi's Hat", body = "Bunzi's Robe",
-        hands = "Bunzi's Gloves", legs = "Bunzi's Pants",
-        feet = "Bunzi's Sabots",
-        neck = "Baetyl Pendant",
-        ear1 = "Malignance Earring", ear2 = "Hecate's Earring",
-        ring1 = "Resonance Ring", ring2 = "Freke Ring",
-        back = "Izdubar Mantle", waist = "Hachirin-no-Obi",
+        main="Marin Staff +1", sub="Willpower Grip",
+        ammo="Ghastly Tathlum",
+        head="Bunzi's Hat", body="Bunzi's Robe",
+        hands="Bunzi's Gloves", legs="Bunzi's Pants",
+        feet="Bunzi's Sabots",
+        neck="Baetyl Pendant",
+        ear1="Malignance Earring", ear2="Hecate's Earring",
+        ring1="Resonance Ring", ring2="Freke Ring",
+        back="Izdubar Mantle", waist="Hachirin-no-Obi",
     }
     sets.midcast['Elemental Magic'].Resistant = set_combine(
         sets.midcast['Elemental Magic'], {
-            main = "Mpaca's Staff", head = "Inyanga Tiara +2",
-            neck = "Incanter's Torque", waist = "Null Belt",
-            back = "Null Shawl",
+            main="Mpaca's Staff", head="Inyanga Tiara +2",
+            neck="Incanter's Torque", waist="Null Belt",
+            back="Null Shawl",
         }
     )
     sets.midcast['Elemental Magic'].OccultAcumen = set_combine(
         sets.midcast['Elemental Magic'], {
-            main = "Mpaca's Staff", neck = "Incanter's Torque",
-            waist = "Acerbic Sash +1",
+            main="Mpaca's Staff", neck="Incanter's Torque",
+            waist="Acerbic Sash +1",
         }
     )
     sets.midcast.Impact = set_combine(sets.midcast['Elemental Magic'], {
-        head = "empty", body = "Twilight Cloak",
+        head="empty", body="Twilight Cloak",
     })
     sets.midcast['Divine Magic'] = set_combine(
         sets.midcast['Elemental Magic'], {
-            feet = "Medium's Sabots", body = "Vanya Robe",
+            feet="Medium's Sabots", body="Vanya Robe",
         }
     )
     sets.midcast['Dark Magic'] = set_combine(
         sets.midcast['Elemental Magic'], {
-            neck = "Erra Pendant",
-            ear1 = "Alabaster Earring", ear2 = "Malignance Earring",
-            ring1 = "Crepuscular Ring", ring2 = "Evanescence Ring",
-            back = "Izdubar Mantle", waist = "Eschan Stone",
+            neck="Erra Pendant",
+            ear1="Alabaster Earring", ear2="Malignance Earring",
+            ring1="Crepuscular Ring", ring2="Evanescence Ring",
+            back="Izdubar Mantle", waist="Eschan Stone",
         }
     )
     sets.midcast.Drain = set_combine(sets.midcast['Dark Magic'], {
-        neck = "Erra Pendant", waist = "Fucho-no-Obi",
-        feet = "Merlinic Crackows",
+        neck="Erra Pendant", waist="Fucho-no-Obi",
+        feet="Merlinic Crackows",
     })
     sets.midcast.Aspir = sets.midcast.Drain
     sets.midcast.Stun = sets.midcast['Dark Magic']
     sets.midcast.Stun.Resistant = set_combine(sets.midcast.Stun, {
-        main = "Mpaca's Staff", neck = "Incanter's Torque",
+        main="Mpaca's Staff", neck="Incanter's Torque",
     })
 
     sets.midcast['Enfeebling Magic'] = {
-        main = "Mpaca's Staff", sub = "Willpower Grip",
-        head = "Bunzi's Hat", body = "Bunzi's Robe",
-        legs = "Bunzi's Pants", feet = "Bunzi's Sabots",
-        hands = "Bunzi's Gloves",
-        neck = "Null Loop",
-        ear1 = "Malignance Earring", ear2 = "Crepuscular Earring",
-        ring1 = "Inyanga Ring", ring2 = "Crepuscular Ring",
-        waist = "Null Belt", back = "Altruistic Cape",
+        main="Mpaca's Staff", sub="Willpower Grip",
+        head="Bunzi's Hat", body="Bunzi's Robe",
+        legs="Bunzi's Pants", feet="Bunzi's Sabots",
+        hands="Bunzi's Gloves",
+        neck="Null Loop",
+        ear1="Malignance Earring", ear2="Crepuscular Earring",
+        ring1="Inyanga Ring", ring2="Crepuscular Ring",
+        waist="Null Belt", back="Altruistic Cape",
     }
     sets.midcast['Enfeebling Magic'].Resistant = set_combine(
         sets.midcast['Enfeebling Magic'], {
-            main = "Mpaca's Staff", neck = "Incanter's Torque",
-            waist = "Null Belt",
+            main="Mpaca's Staff", neck="Incanter's Torque",
+            waist="Null Belt",
         }
     )
     sets.midcast.Dia = set_combine(sets.midcast['Enfeebling Magic'], sets.TreasureHunter)
@@ -284,25 +284,25 @@ function init_gear_sets()
     -- Enhancing magic
     ---------------------------------------------------------------------------
     sets.midcast['Enhancing Magic'] = {
-        main = "Daybreak", sub = "Ammurapi Shield", ammo = "Psilomene",
-        head = "Umuthi Hat", body = "Bunzi's Robe",
-        hands = "Bokwus Gloves", legs = "Shedir Seraweels",
-        feet = "Regal Pumps",
-        neck = "Incanter's Torque",
-        ear1 = "Andoaa Earring", ear2 = "Gifted Earring",
-        back = "Izdubar Mantle", waist = "Embla Sash",
+        main="Daybreak", sub="Ammurapi Shield", ammo="Psilomene",
+        head="Umuthi Hat", body="Bunzi's Robe",
+        hands="Bokwus Gloves", legs="Shedir Seraweels",
+        feet="Regal Pumps",
+        neck="Incanter's Torque",
+        ear1="Andoaa Earring", ear2="Gifted Earring",
+        back="Izdubar Mantle", waist="Embla Sash",
     }
     sets.midcast.Refresh = set_combine(sets.midcast['Enhancing Magic'], {
-        head = "Umuthi Hat",
+        head="Umuthi Hat",
     })
     sets.midcast.Regen = set_combine(sets.midcast['Enhancing Magic'], {
-        main = "Bolelabunga", feet = "Bunzi's Sabots",
+        main="Bolelabunga", feet="Bunzi's Sabots",
     })
     sets.midcast.Aquaveil = set_combine(sets.midcast['Enhancing Magic'], {
-        main = "Vadose Rod", sub = "Culminus", legs = "Shedir Seraweels",
+        main="Vadose Rod", sub="Culminus", legs="Shedir Seraweels",
     })
     sets.midcast.BarElement = set_combine(sets.precast.FC['Enhancing Magic'], {
-        legs = "Shedir Seraweels",
+        legs="Shedir Seraweels",
     })
 
     ---------------------------------------------------------------------------
@@ -310,25 +310,25 @@ function init_gear_sets()
     ---------------------------------------------------------------------------
     sets.midcast.Pet = sets.midcast.Pet or {}
     sets.midcast.Pet.BloodPactWard = {
-        main = "Tumafyrig", ammo = "Seraphicaller",
-        head = "Beckoner's Horn +1", body = "Beck. Doublet +1",
-        hands = "Glyphic Bracers", legs = "Beck. Spats +1",
-        feet = "Beck. Pigaches +1",
-        neck = "Incanter's Torque",
-        ear1 = "Andoaa Earring", ear2 = "Beck. Earring +1",
-        ring1 = "Evoker's Ring", ring2 = "Inyanga Ring",
-        back = "Conveyance Cape", waist = "Lucidity Sash",
+        main="Tumafyrig", ammo="Seraphicaller",
+        head="Beckoner's Horn +1", body="Beck. Doublet +1",
+        hands="Glyphic Bracers", legs="Beck. Spats +1",
+        feet="Beck. Pigaches +1",
+        neck="Incanter's Torque",
+        ear1="Andoaa Earring", ear2="Beck. Earring +1",
+        ring1="Evoker's Ring", ring2="Inyanga Ring",
+        back="Conveyance Cape", waist="Lucidity Sash",
     }
 
     sets.midcast.Pet.DebuffBloodPactWard = {
-        main = "Marquetry Staff", ammo = "Seraphicaller",
-        head = "Bunzi's Hat", body = "Bunzi's Robe",
-        hands = "Bunzi's Gloves", legs = "Bunzi's Pants",
-        feet = "Bunzi's Sabots",
-        neck = "Adad Amulet",
-        ear1 = "Enmerkar Earring", ear2 = "Beck. Earring +1",
-        ring1 = "C. Palug Ring", ring2 = "Murky Ring",
-        back = "Samanisi Cape", waist = "Regal Belt",
+        main="Marquetry Staff", ammo="Seraphicaller",
+        head="Bunzi's Hat", body="Bunzi's Robe",
+        hands="Bunzi's Gloves", legs="Bunzi's Pants",
+        feet="Bunzi's Sabots",
+        neck="Adad Amulet",
+        ear1="Enmerkar Earring", ear2="Beck. Earring +1",
+        ring1="C. Palug Ring", ring2="Murky Ring",
+        back="Samanisi Cape", waist="Regal Belt",
     }
     sets.midcast.Pet.DebuffBloodPactWard.Acc =
         sets.midcast.Pet.DebuffBloodPactWard
@@ -339,25 +339,25 @@ function init_gear_sets()
     -- Pet Blood Pact rage: physical and magical
     ---------------------------------------------------------------------------
     sets.midcast.Pet.PhysicalBloodPactRage = {
-        main = "Tumafyrig", ammo = "Seraphicaller",
-        head = "Bunzi's Hat", body = "Convoker's Doublet +1",
-        hands = "Beck. Bracers +1", legs = "Enticer's Pants",
-        feet = "Inyan. Crackows +2",
-        neck = "Shulmanu Collar",
-        ear1 = "Enmerkar Earring", ear2 = "Beck. Earring +1",
-        ring1 = "C. Palug Ring", ring2 = "Murky Ring",
-        back = "Samanisi Cape", waist = "Regal Belt",
+        main="Tumafyrig", ammo="Seraphicaller",
+        head="Bunzi's Hat", body="Convoker's Doublet +1",
+        hands="Beck. Bracers +1", legs="Enticer's Pants",
+        feet="Inyan. Crackows +2",
+        neck="Shulmanu Collar",
+        ear1="Enmerkar Earring", ear2="Beck. Earring +1",
+        ring1="C. Palug Ring", ring2="Murky Ring",
+        back="Samanisi Cape", waist="Regal Belt",
     }
     sets.midcast.Pet.PhysicalBloodPactRage.AM = set_combine(
         sets.midcast.Pet.PhysicalBloodPactRage, {
-            body = "Bunzi's Robe", feet = "Bunzi's Sabots",
+            body="Bunzi's Robe", feet="Bunzi's Sabots",
         }
     )
     sets.midcast.Pet.PhysicalBloodPactRage.Acc = set_combine(
         sets.midcast.Pet.PhysicalBloodPactRage, {
-            body = "Bunzi's Robe", hands = "Bunzi's Gloves",
-            legs = "Convoker's Spats +1", feet = "Bunzi's Sabots",
-            neck = "Adad Amulet",
+            body="Bunzi's Robe", hands="Bunzi's Gloves",
+            legs="Convoker's Spats +1", feet="Bunzi's Sabots",
+            neck="Adad Amulet",
         }
     )
 
@@ -365,39 +365,39 @@ function init_gear_sets()
     -- is used for physical BP damage; compare in-game if your pact/target favors
     -- the alternative body for a particular Rage ability.
     sets.midcast.Pet.MagicalBloodPactRage = {
-        main = "Frazil Staff", ammo = "Seraphicaller",
-        head = "Bunzi's Hat", body = gear.shomonjijoe,
-        hands = "Bunzi's Gloves", legs = "Avatara Slops",
-        feet = "Inyan. Crackows +2",
-        neck = "Adad Amulet",
-        ear1 = "Enmerkar Earring", ear2 = "Beck. Earring +1",
-        ring1 = "C. Palug Ring", ring2 = "Murky Ring",
-        back = "Samanisi Cape", waist = "Regal Belt",
+        main="Frazil Staff", ammo="Seraphicaller",
+        head="Bunzi's Hat", body = gear.shomonjijoe,
+        hands="Bunzi's Gloves", legs="Avatara Slops",
+        feet="Inyan. Crackows +2",
+        neck="Adad Amulet",
+        ear1="Enmerkar Earring", ear2="Beck. Earring +1",
+        ring1="C. Palug Ring", ring2="Murky Ring",
+        back="Samanisi Cape", waist="Regal Belt",
     }
     sets.midcast.Pet.MagicalBloodPactRage.Acc = set_combine(
         sets.midcast.Pet.MagicalBloodPactRage, {
-            main = "Marquetry Staff", body = "Bunzi's Robe",
-            legs = "Bunzi's Pants", feet = "Bunzi's Sabots",
+            main="Marquetry Staff", body="Bunzi's Robe",
+            legs="Bunzi's Pants", feet="Bunzi's Sabots",
         }
     )
 
     -- Fervor Ring's Avatar MAB bonus is Ifrit-only; never use it in generic sets.
     sets.midcast.Pet.MagicalBloodPactRage.Ifrit = set_combine(
-        sets.midcast.Pet.MagicalBloodPactRage, {ring2 = "Fervor Ring"}
+        sets.midcast.Pet.MagicalBloodPactRage, {ring2="Fervor Ring"}
     )
 
     -- Spirit spells are ordinary pet spell midcasts, not Blood Pacts.
-    sets.midcast.Pet.WhiteMagic = {legs = "Glyphic Spats"}
+    sets.midcast.Pet.WhiteMagic = {legs="Glyphic Spats"}
     sets.midcast.Pet['Elemental Magic'] = set_combine(
         sets.midcast.Pet.MagicalBloodPactRage, {
-            legs = "Glyphic Spats",
+            legs="Glyphic Spats",
         }
     )
     sets.midcast.Pet['Elemental Magic'].Resistant = set_combine(
         sets.midcast.Pet['Elemental Magic'], {
-            main = "Marquetry Staff", body = "Bunzi's Robe",
-            head = "Bunzi's Hat", hands = "Bunzi's Gloves",
-            legs = "Bunzi's Pants", feet = "Bunzi's Sabots",
+            main="Marquetry Staff", body="Bunzi's Robe",
+            head="Bunzi's Hat", hands="Bunzi's Gloves",
+            legs="Bunzi's Pants", feet="Bunzi's Sabots",
         }
     )
     sets.midcast.Pet.Impact = sets.midcast.Pet.DebuffBloodPactWard
@@ -406,55 +406,55 @@ function init_gear_sets()
     -- Idle / perpetuation
     ---------------------------------------------------------------------------
     sets.idle = {
-        main = "Mpaca's Staff", sub = "Willpower Grip",
-        ammo = "Crepuscular Pebble",
-        head = "Beckoner's Horn +1", body = gear.shomonjijoe,
-        hands = "Beck. Bracers +1", legs = "Assid. Pants +1",
-        -- hands = "Asteria Mitts", -- NQ placeholder: Carbuncle / Avatar MAB and Refresh
-        feet = "Beck. Pigaches +1",
-        neck = "Null Loop",
-        ear1 = "Alabaster Earring", ear2 = "Beck. Earring +1",
-        ring1 = "Evoker's Ring", ring2 = "Inyanga Ring",
-        back = "Conveyance Cape", waist = "Regal Belt",
+        main="Mpaca's Staff", sub="Willpower Grip",
+        ammo="Crepuscular Pebble",
+        head="Beckoner's Horn +1", body = gear.shomonjijoe,
+        hands="Beck. Bracers +1", legs="Assid. Pants +1",
+        -- hands="Asteria Mitts", -- NQ placeholder: Carbuncle / Avatar MAB and Refresh
+        feet="Beck. Pigaches +1",
+        neck="Null Loop",
+        ear1="Alabaster Earring", ear2="Beck. Earring +1",
+        ring1="Evoker's Ring", ring2="Inyanga Ring",
+        back="Conveyance Cape", waist="Regal Belt",
     }
     sets.idle.PDT = {
-        main = "Malignance Pole", sub = "Willpower Grip",
-        ammo = "Crepuscular Pebble",
-        head = "Nyame Helm", body = "Nyame Mail",
-        hands = "Nyame Gauntlets", legs = "Nyame Flanchard",
-        feet = "Nyame Sollerets",
-        neck = "Null Loop",
-        ear1 = "Alabaster Earring", ear2 = "Odnowa Earring +1",
-        ring1 = "Murky Ring", ring2 = "Inyanga Ring",
-        back = "Archon Cape", waist = "Platinum Moogle Belt",
+        main="Malignance Pole", sub="Willpower Grip",
+        ammo="Crepuscular Pebble",
+        head="Nyame Helm", body="Nyame Mail",
+        hands="Nyame Gauntlets", legs="Nyame Flanchard",
+        feet="Nyame Sollerets",
+        neck="Null Loop",
+        ear1="Alabaster Earring", ear2="Odnowa Earring +1",
+        ring1="Murky Ring", ring2="Inyanga Ring",
+        back="Archon Cape", waist="Platinum Moogle Belt",
     }
 
     -- Handler's pair is deliberate: pet PDT on both; +1 adds pet Acc/MAcc when augmented R15.
     sets.idle.Avatar = {
-        main = "Mpaca's Staff", sub = "Oneiros Grip",
-        ammo = "Seraphicaller",
-        head = "Beckoner's Horn +1", body = "Beck. Doublet +1",
-        hands = "Beck. Bracers +1", legs = "Assid. Pants +1",
-        feet = "Beck. Pigaches +1",
-        neck = "Null Loop",
-        ear1 = "Handler's Earring +1", ear2 = "Handler's Earring",
-        ring1 = "Evoker's Ring", ring2 = "Inyanga Ring",
-        back = "Conveyance Cape", waist = "Regal Belt",
+        main="Mpaca's Staff", sub="Oneiros Grip",
+        ammo="Seraphicaller",
+        head="Beckoner's Horn +1", body="Beck. Doublet +1",
+        hands="Beck. Bracers +1", legs="Assid. Pants +1",
+        feet="Beck. Pigaches +1",
+        neck="Null Loop",
+        ear1="Handler's Earring +1", ear2="Handler's Earring",
+        ring1="Evoker's Ring", ring2="Inyanga Ring",
+        back="Conveyance Cape", waist="Regal Belt",
     }
     sets.idle.PDT.Avatar = set_combine(sets.idle.Avatar, {
-        main = "Malignance Pole", body = gear.shomonjijoe,
-        head = "Nyame Helm", hands = "Beck. Bracers +1",
-        legs = "Nyame Flanchard", feet = "Nyame Sollerets",
-        neck = "Adad Amulet", ear1 = "Odnowa Earring +1",
-        ear2 = "Beck. Earring +1", ring1 = "Murky Ring",
-        back = "Archon Cape", waist = "Regal Belt",
+        main="Malignance Pole", body = gear.shomonjijoe,
+        head="Nyame Helm", hands="Beck. Bracers +1",
+        legs="Nyame Flanchard", feet="Nyame Sollerets",
+        neck="Adad Amulet", ear1="Odnowa Earring +1",
+        ear2="Beck. Earring +1", ring1="Murky Ring",
+        back="Archon Cape", waist="Regal Belt",
     })
     sets.idle.Spirit = set_combine(sets.idle.Avatar, {
-        body = gear.shomonjijoe, ear1 = "Alabaster Earring",
-        ear2 = "Odnowa Earring +1", waist = "Fucho-no-Obi",
+        body = gear.shomonjijoe, ear1="Alabaster Earring",
+        ear2="Odnowa Earring +1", waist="Fucho-no-Obi",
     })
     sets.idle.PDT.Spirit = set_combine(sets.idle.PDT.Avatar, {
-        feet = "Battlecast Gaiters",
+        feet="Battlecast Gaiters",
     })
 
     -- Favor and engaged variants are intentionally explicit placeholders.
@@ -464,7 +464,7 @@ function init_gear_sets()
     sets.idle.Avatar.Engaged = {}
     sets.idle.Avatar.Engaged.Carbuncle = {}
     sets.idle.Avatar.Engaged['Cait Sith'] = {
-        -- hands = "Lamassu Mitts", -- NQ placeholder: Cait Sith skill / magic accuracy
+        -- hands="Lamassu Mitts", -- NQ placeholder: Cait Sith skill / magic accuracy
     }
 
     ---------------------------------------------------------------------------
@@ -480,21 +480,21 @@ function init_gear_sets()
     -- Convoker's Pigaches +1 are not selected here: their -4 is weaker than
     -- Beck. Pigaches +1's -7, which this character already owns.
     sets.perp = set_combine(sets.idle.Avatar, {
-        main = "Mpaca's Staff",
-        head = "Beckoner's Horn +1",
+        main="Mpaca's Staff",
+        head="Beckoner's Horn +1",
         body = gear.shomonjijoe,
-        hands = "Beck. Bracers +1",
-        legs = "Assid. Pants +1",
-        feet = "Beck. Pigaches +1",
-        ring1 = "Evoker's Ring",
-        waist = "Lucidity Sash",
+        hands="Beck. Bracers +1",
+        legs="Assid. Pants +1",
+        feet="Beck. Pigaches +1",
+        ring1="Evoker's Ring",
+        waist="Lucidity Sash",
     })
     -- Beckoner's Bracers +1's half-cost effect is conditional on matching
     -- avatar element day/weather; the base set already equips them.
     sets.perp.Day = {}
     sets.perp.Weather = {}
     sets.perp.Carbuncle = set_combine(sets.perp, {})
-    sets.perp.Diabolos = set_combine(sets.perp, {waist = "Diabolos's Rope"})
+    sets.perp.Diabolos = set_combine(sets.perp, {waist="Diabolos's Rope"})
     sets.perp.Alexander = sets.midcast.Pet.BloodPactWard
     sets.perp.staff_and_grip = {}
 
@@ -503,30 +503,30 @@ function init_gear_sets()
     ---------------------------------------------------------------------------
     sets.defense.PDT = sets.idle.PDT
     sets.defense.MDT = {
-        main = "Malignance Pole", sub = "Willpower Grip",
-        ammo = "Crepuscular Pebble",
-        head = "Nyame Helm", body = "Nyame Mail",
-        hands = "Nyame Gauntlets", legs = "Nyame Flanchard",
-        feet = "Nyame Sollerets",
-        neck = "Null Loop",
-        ear1 = "Alabaster Earring", ear2 = "Odnowa Earring +1",
-        ring1 = "Murky Ring", ring2 = "Inyanga Ring",
-        back = "Archon Cape", waist = "Platinum Moogle Belt",
+        main="Malignance Pole", sub="Willpower Grip",
+        ammo="Crepuscular Pebble",
+        head="Nyame Helm", body="Nyame Mail",
+        hands="Nyame Gauntlets", legs="Nyame Flanchard",
+        feet="Nyame Sollerets",
+        neck="Null Loop",
+        ear1="Alabaster Earring", ear2="Odnowa Earring +1",
+        ring1="Murky Ring", ring2="Inyanga Ring",
+        back="Archon Cape", waist="Platinum Moogle Belt",
     }
     sets.defense.MEVA = {
-        main = "Daybreak", sub = "Genmei Shield",
-        ammo = "Crepuscular Pebble",
-        head = "Bunzi's Hat", body = "Bunzi's Robe",
-        hands = "Bunzi's Gloves", legs = "Bunzi's Pants",
-        feet = "Bunzi's Sabots",
-        neck = "Null Loop",
-        ear1 = "Alabaster Earring", ear2 = "Odnowa Earring +1",
-        ring1 = "Murky Ring", ring2 = "Inyanga Ring",
-        back = "Null Shawl", waist = "Null Belt",
+        main="Daybreak", sub="Genmei Shield",
+        ammo="Crepuscular Pebble",
+        head="Bunzi's Hat", body="Bunzi's Robe",
+        hands="Bunzi's Gloves", legs="Bunzi's Pants",
+        feet="Bunzi's Sabots",
+        neck="Null Loop",
+        ear1="Alabaster Earring", ear2="Odnowa Earring +1",
+        ring1="Murky Ring", ring2="Inyanga Ring",
+        back="Null Shawl", waist="Null Belt",
     }
-    sets.Kiting = {feet = "Herald's Gaiters"}
-    sets.latent_refresh = {waist = "Fucho-no-Obi"}
-    sets.latent_refresh_grip = {sub = "Oneiros Grip"}
+    sets.Kiting = {feet="Herald's Gaiters"}
+    sets.latent_refresh = {waist="Fucho-no-Obi"}
+    sets.latent_refresh_grip = {sub="Oneiros Grip"}
     sets.DayIdle = {}
     sets.NightIdle = {}
     sets.HPDown = {}
@@ -536,8 +536,8 @@ function init_gear_sets()
     ---------------------------------------------------------------------------
     sets.buff.Doom = set_combine(sets.buff.Doom or {}, {})
     sets.buff.Sleep = {}
-    sets.buff.Sublimation = {waist = "Embla Sash"}
-    sets.buff.DTSublimation = {waist = "Embla Sash"}
+    sets.buff.Sublimation = {waist="Embla Sash"}
+    sets.buff.DTSublimation = {waist="Embla Sash"}
 
     ---------------------------------------------------------------------------
     -- Custom mode placeholders expected by SMN.lua
@@ -554,8 +554,8 @@ function init_gear_sets()
     sets.element.Dark = {}
 
     sets.MagicBurst = set_combine(sets.midcast['Elemental Magic'], {
-        neck = "Mizukage-no-Kubikazari",
-        ring1 = "Locus Ring", ring2 = "Freke Ring",
+        neck="Mizukage-no-Kubikazari",
+        ring1="Locus Ring", ring2="Freke Ring",
     })
     sets.RecoverMP = {}
     sets.RecoverBurst = set_combine(sets.RecoverMP, {})

@@ -261,7 +261,7 @@ function init_gear_sets()
  
 
 sets.midcast.Protect = set_combine(sets.midcast['Enhancing Magic'], {
-    ring1 = "Sheltered Ring",
+    ring1="Sheltered Ring",
 })
 
 sets.midcast.Shell = sets.midcast.Protect
@@ -433,7 +433,7 @@ sets.midcast.Shell = sets.midcast.Protect
         sub="Willpower Grip", -- placeholder until mastered: replace with proper grip
         ammo="Crepuscular Pebble",
         head="Mallquis Chapeau +2",
-        neck="Null ",
+        neck="Null Loop",
         ear1="Cessance Earring",
         ear2="Crepuscular Earring",
         body="Jhakri Robe +2",
