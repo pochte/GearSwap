@@ -1,6 +1,18 @@
+-- CHANGELOG
+-- 2026-11-19: Replaced Altruistic Cape (now in storage) with Null Shawl in the Enfeebling set.
+-- 2026-11-19: Note: SCH is a WIP job. Argute +2 is the WIP Pedagogy gear; Arbatel pieces are in a Storage Slip.
+-- 2026-11-19: Elite Royal Collar (San d'Oria citizen: Regen+3, DT-5%) now the neck in sets.idle / sets.idle.PDT (2 set(s)); replaces Null Loop there (Null Loop kept in all other sets).
+-- 2026-11-19: Replaced Platinum Moogle Belt with Null Belt (Regen+3, Eva/MEva/Acc/MAcc+30) in 2 idle set(s); the belt caused too much blood aggro. Defense/FC/other sets unchanged.
+-- 2026-11-19: Added Platinum Moogle Belt to sets.Kiting (moved out of idle).
+-- 2026-11-19: Pedagogy pieces set to the base reforged item (Pedagogy Gown/Pants, Peda. Loafers); +1 deferred as too expensive.
+-- 2026-11-19: Academic's: Gown is owned (base); Pants and Mortarboard commented out as "get:" until owned.
+-- 2026-11-19: Arbatel +1 set confirmed owned (was in a Storage Slip); no code change.
+-- 2026-11-19: Uncommented the Nyame body/hands/legs/feet (all owned) in sets.idle and sets.defense.PDT; swapped SV Separates/Gauntlets/Loincloth/Gaiters for Nyame in idle.PDT and defense PDT/MDT (12 replacements). Old lines kept as "-- previous" where a commented Nyame line existed.
+
 -- Ullona_Sch_Gear.lua
 -- SCH gear setup. One item per line.
--- i109 set for now: Pedagogy (relic) +1, Academic's (AF) +1, Arbatel (Empy) +1. Each line notes the +3 BIS target.
+-- i109 set for now: Pedagogy (relic) reforged base, Academic's (AF) reforged base (only the Gown is owned), Arbatel (Empy) +1 (owned, in Storage Slip).
+-- The +1 upgrades for Pedagogy/Academic's are deferred (too expensive for a rarely played job). Each line notes the +3 BIS target.
 -- Argute +2 is the unupgraded relic; once reforged it becomes Pedagogy.
 -- Relic (Pedagogy) = +2, still needs Dynamis for +3.
 -- Items marked "-- get:" are not owned yet.
@@ -79,10 +91,10 @@ function init_gear_sets()
 
     -- Precast sets to enhance JAs
     sets.precast.JA['Tabula Rasa'] = {
-        legs="Peda. Pants +1", -- Relic +1 (BIS: Peda. Pants +3)
+        legs="Pedagogy Pants", -- Relic reforged (BIS: Peda. Pants +3)
     }
     sets.precast.JA['Enlightenment'] = {
-        body="Peda. Gown +1", -- Relic +1 (BIS: Peda. Gown +3)
+        body="Pedagogy Gown", -- Relic reforged (BIS: Peda. Gown +3)
     }
 
     -- Fast cast: full Agwu's is +30% FC on its own.
@@ -101,7 +113,7 @@ function init_gear_sets()
         back="Izdubar Mantle",
         waist="Embla Sash",
         legs="Agwu's Slops",
-        feet="Peda. Loafers +1", -- Relic +1: FC+6% (BIS: Peda. Loafers +3)
+        feet="Peda. Loafers", -- Relic reforged (FC+6% at +1) (BIS: Peda. Loafers +3)
     }
 
     sets.precast.FC.Arts = {}
@@ -247,7 +259,7 @@ function init_gear_sets()
         neck="Incanter's Torque",
         ear1="Andoaa Earring",
         ear2="Gifted Earring",
-        body="Peda. Gown +1", -- Relic +1: Enhancing skill +15 (BIS: Peda. Gown +3)
+        body="Pedagogy Gown", -- Relic reforged (Enhancing skill +15 at +1) (BIS: Peda. Gown +3)
         hands="Bokwus Gloves",
         ring1="Murky Ring",
         ring2="Vertigo Ring",
@@ -291,7 +303,7 @@ sets.midcast.Shell = sets.midcast.Protect
     })
 
     sets.midcast.Storm = set_combine(sets.midcast['Enhancing Magic'], {
-        feet="Peda. Loafers +1", -- Relic +1 (BIS: Peda. Loafers +3)
+        feet="Peda. Loafers", -- Relic reforged (BIS: Peda. Loafers +3)
     })
 
     sets.midcast.Protect = set_combine(sets.midcast['Enhancing Magic'], {})
@@ -313,7 +325,7 @@ sets.midcast.Shell = sets.midcast.Protect
         hands="Agwu's Gages",
         ring1="Kishar Ring",
         ring2="Vertigo Ring",
-        back="Altruistic Cape",
+        back="Null Shawl",
         waist="Obstinate Sash",
         legs="Arbatel Pants +1", -- Empy +1: Enfeebling skill +18, Grimoire MAcc+26 (BIS: Arbatel Pants +3)
         feet="Skaoi Boots",
@@ -360,7 +372,7 @@ sets.midcast.Shell = sets.midcast.Protect
         ring2="Archon Ring",
         back="Izdubar Mantle",
         waist="Fucho-no-Obi",
-        legs="Peda. Pants +1", -- Relic +1: Dark skill +15 (BIS: Peda. Pants +3)
+        legs="Pedagogy Pants", -- Relic reforged (Dark skill +15 at +1) (BIS: Peda. Pants +3)
         feet="Agwu's Pigaches",
     }
 
@@ -487,21 +499,21 @@ sets.midcast.Shell = sets.midcast.Protect
         sub="Kaja Grip",
         ammo="Crepuscular Pebble",
         head="Nyame Helm", -- Path B
-        neck="Null Loop",
+        neck="Elite Royal Collar",
         ear1="Alabaster Earring",
         ear2="Odnowa Earring +1",
-        body="Jhakri Robe +2",
-        -- body="Nyame Mail", -- Path B (not bought yet)
-        hands="SV Gauntlets +1",
-        -- hands="Nyame Gauntlets", -- Path B (not bought yet)
+        body="Nyame Mail", -- Path B
+        -- body="Jhakri Robe +2", -- previous
+        hands="Nyame Gauntlets", -- Path B
+        -- hands="SV Gauntlets +1", -- previous
         ring1="Archon Ring",
         ring2="Murky Ring",
         back="Archon Cape",
         waist="Fucho-no-Obi",
-        legs="Assiduity Pants +1",
-        -- legs="Nyame Flanchard", -- Path B (not bought yet)
-        feet="Herald's Gaiters",
-        -- feet="Nyame Sollerets", -- Path B (not bought yet)
+        legs="Nyame Flanchard", -- Path B
+        -- legs="Assiduity Pants +1", -- previous
+        feet="Nyame Sollerets", -- Path B
+        -- feet="Herald's Gaiters", -- previous
     }
 
     sets.idle.PDT = {
@@ -509,17 +521,17 @@ sets.midcast.Shell = sets.midcast.Protect
         sub="Willpower Grip", -- placeholder until mastered: replace with proper grip
         ammo="Crepuscular Pebble",
         head="Nyame Helm", -- Path B
-        neck="Null Loop",
+        neck="Elite Royal Collar",
         ear1="Alabaster Earring",
         ear2="Genmei Earring",
-        body="SV Separates +1",
-        hands="SV Gauntlets +1",
+        body="Nyame Mail",
+        hands="Nyame Gauntlets",
         ring1="Murky Ring",
         ring2="Vertigo Ring",
         back="Archon Cape",
-        waist="Platinum Moogle Belt",
-        legs="SV Loincloth +1",
-        feet="SV Gaiters +1",
+        waist="Null Belt",
+        legs="Nyame Flanchard",
+        feet="Nyame Sollerets",
     }
 
     sets.idle.Hippo = set_combine(sets.idle.PDT, {}) -- get: Hippo. Socks +1 (feet)
@@ -535,18 +547,18 @@ sets.midcast.Shell = sets.midcast.Protect
         neck="Null Loop",
         ear1="Alabaster Earring",
         ear2="Genmei Earring",
-        body="SV Separates +1",
-        -- body="Nyame Mail", -- Path B (not bought yet)
-        hands="SV Gauntlets +1",
-        -- hands="Nyame Gauntlets", -- Path B (not bought yet)
+        body="Nyame Mail", -- Path B
+        -- body="SV Separates +1", -- previous
+        hands="Nyame Gauntlets", -- Path B
+        -- hands="SV Gauntlets +1", -- previous
         ring1="Murky Ring",
         ring2="Vertigo Ring",
         back="Archon Cape",
-        waist="Platinum Moogle Belt",
-        legs="SV Loincloth +1",
-        -- legs="Nyame Flanchard", -- Path B (not bought yet)
-        feet="SV Gaiters +1",
-        -- feet="Nyame Sollerets", -- Path B (not bought yet)
+        waist="Null Belt",
+        legs="Nyame Flanchard", -- Path B
+        -- legs="SV Loincloth +1", -- previous
+        feet="Nyame Sollerets", -- Path B
+        -- feet="SV Gaiters +1", -- previous
     }
 
     sets.defense.MDT = {
@@ -557,14 +569,14 @@ sets.midcast.Shell = sets.midcast.Protect
         neck="Null Loop",
         ear1="Alabaster Earring",
         ear2="Odnowa Earring +1",
-        body="SV Separates +1",
-        hands="SV Gauntlets +1",
+        body="Nyame Mail",
+        hands="Nyame Gauntlets",
         ring1="Murky Ring",
         ring2="Archon Ring",
         back="Null Shawl",
         waist="Platinum Moogle Belt",
-        legs="SV Loincloth +1",
-        feet="SV Gaiters +1",
+        legs="Nyame Flanchard",
+        feet="Nyame Sollerets",
     }
 
     sets.defense.MEVA = {
@@ -587,6 +599,7 @@ sets.midcast.Shell = sets.midcast.Protect
 
     sets.Kiting = {
         feet="Herald's Gaiters",
+        waist="Platinum Moogle Belt",
     }
     sets.latent_refresh = {
         waist="Fucho-no-Obi",
@@ -628,10 +641,10 @@ sets.midcast.Shell = sets.midcast.Protect
         legs="Arbatel Pants +1", -- Empy +1 (BIS: Arbatel Pants +3)
     }
     sets.buff['Celerity'] = {
-        feet="Peda. Loafers +1", -- Relic +1 (BIS: Peda. Loafers +3)
+        feet="Peda. Loafers", -- Relic reforged (BIS: Peda. Loafers +3)
     }
     sets.buff['Alacrity'] = {
-        feet="Peda. Loafers +1", -- Relic +1 (BIS: Peda. Loafers +3)
+        feet="Peda. Loafers", -- Relic reforged (BIS: Peda. Loafers +3)
     }
     sets.buff['Klimaform'] = {
         feet="Arbatel Loafers +1", -- Empy +1 (BIS: Arbatel Loafers +3)
@@ -642,19 +655,19 @@ sets.midcast.Shell = sets.midcast.Protect
 
     sets.buff.Doom = set_combine(sets.buff.Doom, {})
 
-    -- AF (Academic's) +1 for now. Upgrade to +3 for BIS.
+    -- AF (Academic's) reforged base for now (only the Gown is owned). Upgrade to +3 for BIS.
     sets.buff['Light Arts'] = {
-        legs="Acad. Pants +1", -- AF +1 (upgrade: Acad. Pants +3)
+        -- legs="Academic's Pants", -- get: not owned (AF reforged; +1 deferred; BIS: Acad. Pants +3)
     }
     sets.buff['Dark Arts'] = {
-        body="Acad. Gown +1", -- AF +1: Dark Arts +20 (BIS: Acad. Gown +3)
+        body="Academic's Gown", -- AF reforged (owned): Dark Arts +20 at +1 (BIS: Acad. Gown +3)
     }
     -- Other AF upgrade targets: Acad. Mortar. +3 (Sublimation head), Acad. Bracers +3 (FC+9%, Conserve MP+8),
     -- Acad. Loafers +3 (casting time -12%, Magic Acc+20)
 
     sets.buff.Sublimation = {
-        head="Acad. Mortar. +1", -- AF +1 (upgrade: Acad. Mortar. +3)
-        body="Peda. Gown +1", -- Relic +1: Sublimation+3 (BIS: Peda. Gown +3)
+        -- head="Acad. Mortarboard", -- get: not owned (AF reforged; +1 deferred; BIS: Acad. Mortar. +3)
+        body="Pedagogy Gown", -- Relic reforged (Sublimation+3 at +1) (BIS: Peda. Gown +3)
         waist="Embla Sash",
     }
     sets.buff.DTSublimation = {

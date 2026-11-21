@@ -1,3 +1,6 @@
+-- CHANGELOG
+-- 2026-11-19: Added Tauret to off_weapon_items. Ullona_Thf_Gear.lua already offers OffWeapon "Tauret", which previously equipped nothing.
+
 -- THF.lua
 -- Weapon-mode option values must stay single-word (spaces/apostrophes break the console
 -- status bar display) -- real item names are looked up from the short token instead.
@@ -7,6 +10,7 @@ main_weapon_items = {
 }
 off_weapon_items = {
     GletisKnife = "Gleti's Knife",
+    Tauret = "Tauret",
     Sandung = "Sandung"
 }
 ranged_weapon_items = {

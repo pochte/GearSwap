@@ -1,3 +1,10 @@
+-- CHANGELOG
+-- 2026-11-19: Replaced Ejekamal Mask with Nyame Helm in sets.precast.FC and sets.midcast.Cure (Ejekamal has Haste+9% but no Fast Cast; no owned head wearable by COR gives FC).
+-- 2026-11-19: Replaced Lissome Necklace with Null Loop in sets.engaged neck slot.
+-- 2026-11-19: Elite Royal Collar (San d'Oria citizen: Regen+3, DT-5%) now the neck in sets.idle / sets.idle.PDT (2 set(s)); replaces Null Loop there (Null Loop kept in all other sets).
+-- 2026-11-19: Replaced Platinum Moogle Belt with Null Belt (Regen+3, Eva/MEva/Acc/MAcc+30) in 2 idle set(s); the belt caused too much blood aggro. Defense/FC/other sets unchanged.
+-- 2026-11-19: Added Platinum Moogle Belt to sets.Kiting (moved out of idle).
+
 -- Ullona_Cor_Gear.lua
 -- COR gear setup. One item per line.
 -- COR AF / relic / empyrean pieces are not owned yet; relevant upgrade targets remain commented.
@@ -165,7 +172,7 @@ function init_gear_sets()
 
     -- Fast Cast.
     sets.precast.FC = {
-        head="Ejekamal Mask",
+        head="Nyame Helm",
         neck="Voltsurge Torque",
         ear1="Loquac. Earring",
         ear2="Magnetic Earring",
@@ -272,7 +279,7 @@ function init_gear_sets()
     -- Midcast.
     sets.midcast.FastRecast = set_combine(sets.precast.FC, {})
     sets.midcast.Cure = {
-        head="Ejekamal Mask",
+        head="Nyame Helm",
         ear1="Loquac. Earring",
         ear2="Mendi. Earring",
         body="Malignance Tabard",
@@ -321,7 +328,7 @@ function init_gear_sets()
     sets.idle = {
         ammo="Crepuscular Pebble",
         head="Nyame Helm",
-        neck="Null Loop",
+        neck="Elite Royal Collar",
         ear1="Alabaster Earring",
         ear2="Genmei Earring",
         body="Malignance Tabard",
@@ -329,14 +336,14 @@ function init_gear_sets()
         ring1="Murky Ring",
         ring2="Meghanada Ring",
         back="Archon Cape",
-        waist="Platinum Moogle Belt",
+        waist="Null Belt",
         legs="Carmine Cuisses +1",
         feet="Malignance Boots",
     }
     sets.idle.PDT = {
         ammo="Crepuscular Pebble",
         head="Nyame Helm",
-        neck="Null Loop",
+        neck="Elite Royal Collar",
         ear1="Alabaster Earring",
         ear2="Genmei Earring",
         body="Malignance Tabard",
@@ -344,7 +351,7 @@ function init_gear_sets()
         ring1="Murky Ring",
         ring2="Meghanada Ring",
         back="Archon Cape",
-        waist="Platinum Moogle Belt",
+        waist="Null Belt",
         legs="Malignance Tights",
         feet="Malignance Boots",
     }
@@ -396,7 +403,7 @@ function init_gear_sets()
         feet="Malignance Boots",
     }
 
-    sets.Kiting = {legs="Carmine Cuisses +1"}
+    sets.Kiting = {legs="Carmine Cuisses +1", waist="Platinum Moogle Belt"}
     sets.TreasureHunter = set_combine(sets.TreasureHunter, {})
     sets.DWMax = {feet="Rawhide Boots"}
 
@@ -404,7 +411,7 @@ function init_gear_sets()
     sets.engaged = {
         ammo="Ginsen",
         head="Nyame Helm",
-        neck="Lissome Necklace",
+        neck="Null Loop",
         ear1="Cessance Earring",
         ear2="Crep. Earring",
         body="Malignance Tabard",

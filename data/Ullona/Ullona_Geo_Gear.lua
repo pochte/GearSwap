@@ -1,3 +1,8 @@
+-- CHANGELOG
+-- 2026-11-19: Replaced Lissome Necklace with Null Loop in sets.engaged neck slot.
+-- 2026-11-19: Elite Royal Collar (San d'Oria citizen: Regen+3, DT-5%) now the neck in sets.idle / sets.idle.PDT (1 set(s)); replaces Null Loop there (Null Loop kept in all other sets).
+-- 2026-11-19: Replaced Platinum Moogle Belt with Null Belt (Regen+3, Eva/MEva/Acc/MAcc+30) in 3 idle set(s); the belt caused too much blood aggro. Defense/FC/other sets unchanged.
+
 -- Ullona_Geo_Gear.lua
 -- GEO gear setup.
 -- AF (Geomancy/Geo.), Relic (Bagua) and Empyrean (Azimuth) pieces are tagged.
@@ -530,7 +535,7 @@ function init_gear_sets()
         range="Dunna",
         ammo="empty",
         head="Azimuth Hood +3",
-        neck="Null Loop",
+        neck="Elite Royal Collar",
         ear1="Alabaster Earring",
         ear2="Odnowa Earring +1",
         body="Azimuth Coat +3",
@@ -552,7 +557,7 @@ function init_gear_sets()
         hands="Bagua Mitaines +3",
         ring1="Murky Ring",
         ring2="Vertigo Ring",
-        waist="Platinum Moogle Belt",
+        waist="Null Belt",
         legs="SV Loincloth +1",
     })
 
@@ -566,7 +571,7 @@ function init_gear_sets()
         ring1="Murky Ring",
         ring2="Vertigo Ring",
         back="Nantosuelta's Cape",
-        waist="Platinum Moogle Belt",
+        waist="Null Belt",
         legs="Assiduity Pants +1",
         neck="Bagua Charm +1",
     })
@@ -602,7 +607,7 @@ function init_gear_sets()
         ring1="Murky Ring",
         ring2="Vertigo Ring",
         back="Archon Cape",
-        waist="Platinum Moogle Belt",
+        waist="Null Belt",
         legs="SV Loincloth +1",
         feet="SV Gaiters +1",
     }
@@ -658,7 +663,7 @@ function init_gear_sets()
     sets.engaged = {
         main="Idris",
         head="Nyame Helm", -- Path B
-        neck="Lissome Necklace",
+        neck="Null Loop",
         ear1="Cessance Earring",
         ear2="Crepuscular Earring",
         body="Nyame Mail", -- Path B

@@ -1,3 +1,10 @@
+-- CHANGELOG
+-- 2026-11-19: Replaced Altruistic Cape (now in storage) with Null Shawl in the Enfeebling set.
+-- 2026-11-19: Note: Shomonjijoe +1 is a WIP (grind nearly complete); the file already treats it as available.
+-- 2026-11-19: Elite Royal Collar (San d'Oria citizen: Regen+3, DT-5%) now the neck in sets.idle / sets.idle.PDT (2 set(s)); replaces Null Loop there (Null Loop kept in all other sets).
+-- 2026-11-19: Replaced Platinum Moogle Belt with Null Belt (Regen+3, Eva/MEva/Acc/MAcc+30) in 1 idle set(s); the belt caused too much blood aggro. Defense/FC/other sets unchanged.
+-- 2026-11-19: Added Platinum Moogle Belt to sets.Kiting (moved out of idle).
+
 -- Ullona_Smn_Gear.lua
 -- Rebuilt SMN GearSwap file.
 -- Assumptions: Glyphic Horn +1 (other Glyphic pieces NQ), Convoker's body/legs/feet +1,
@@ -266,7 +273,7 @@ function init_gear_sets()
         neck="Null Loop",
         ear1="Malignance Earring", ear2="Crepuscular Earring",
         ring1="Inyanga Ring", ring2="Crepuscular Ring",
-        waist="Null Belt", back="Altruistic Cape",
+        waist="Null Belt", back="Null Shawl",
     }
     sets.midcast['Enfeebling Magic'].Resistant = set_combine(
         sets.midcast['Enfeebling Magic'], {
@@ -412,7 +419,7 @@ function init_gear_sets()
         hands="Beck. Bracers +1", legs="Assid. Pants +1",
         -- hands="Asteria Mitts", -- NQ placeholder: Carbuncle / Avatar MAB and Refresh
         feet="Beck. Pigaches +1",
-        neck="Null Loop",
+        neck="Elite Royal Collar",
         ear1="Alabaster Earring", ear2="Beck. Earring +1",
         ring1="Evoker's Ring", ring2="Inyanga Ring",
         back="Conveyance Cape", waist="Regal Belt",
@@ -423,10 +430,10 @@ function init_gear_sets()
         head="Nyame Helm", body="Nyame Mail",
         hands="Nyame Gauntlets", legs="Nyame Flanchard",
         feet="Nyame Sollerets",
-        neck="Null Loop",
+        neck="Elite Royal Collar",
         ear1="Alabaster Earring", ear2="Odnowa Earring +1",
         ring1="Murky Ring", ring2="Inyanga Ring",
-        back="Archon Cape", waist="Platinum Moogle Belt",
+        back="Archon Cape", waist="Null Belt",
     }
 
     -- Handler's pair is deliberate: pet PDT on both; +1 adds pet Acc/MAcc when augmented R15.
@@ -524,7 +531,7 @@ function init_gear_sets()
         ring1="Murky Ring", ring2="Inyanga Ring",
         back="Null Shawl", waist="Null Belt",
     }
-    sets.Kiting = {feet="Herald's Gaiters"}
+    sets.Kiting = {feet="Herald's Gaiters", waist="Platinum Moogle Belt"}
     sets.latent_refresh = {waist="Fucho-no-Obi"}
     sets.latent_refresh_grip = {sub="Oneiros Grip"}
     sets.DayIdle = {}

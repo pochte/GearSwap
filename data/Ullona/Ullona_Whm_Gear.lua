@@ -1,3 +1,6 @@
+-- CHANGELOG
+-- 2026-11-19: Elite Royal Collar (San d'Oria citizen: Regen+3, DT-5%) now the neck in sets.idle / sets.idle.PDT (1 set(s)); replaces Null Loop there (Null Loop kept in all other sets).
+
 --WHM_Gear.lua
 function user_job_setup()
     state.OffenseMode:options('Normal','Acc')
@@ -140,7 +143,7 @@ sets.midcast.Shellra = sets.midcast.Shell
         back="Alaunus's Cape",
         head="Ebers Cap +3",
         body="Ebers Bliaut +3",
-        main="Kaja Staff",
+        main="Mpaca's Staff",
         sub="Clemency Grip"
     })
 
@@ -418,7 +421,7 @@ sets.midcast.Shellra = sets.midcast.Shell
         legs="Assiduity Pants +1",
         hands="Inyanga Dastanas +2",
         feet="Inyanga Crackows +2",
-        neck="Null Loop",
+        neck="Elite Royal Collar",
         ear2="Ebers Earring +1",
         ear1="Alabaster Earring",
         ring2="Murky Ring",

@@ -1,3 +1,8 @@
+-- CHANGELOG
+-- 2026-11-19: Replaced Ejekamal Mask with Nyame Helm in sets.precast.FC (Ejekamal has Haste+9% but no Fast Cast).
+-- 2026-11-19: Added Platinum Moogle Belt to sets.Kiting (moved out of idle).
+-- 2026-11-19: Documented Pillager's Vest +1 purpose (sets.precast.JA['Hide']: Hide duration +100).
+
 
 -- Ullona_Thf_Gear.lua
 function user_job_setup()
@@ -72,7 +77,8 @@ function init_gear_sets()
     }
 
     sets.Kiting = {
-        feet="Pillager's Poulaines +1"
+        feet="Pillager's Poulaines +1",
+        waist="Platinum Moogle Belt"
     }
 
     sets.buff.Doom = set_combine(sets.buff.Doom, {})
@@ -149,7 +155,7 @@ function init_gear_sets()
     }
 
     sets.precast.JA['Hide'] = {
-        body="Pillager's Vest +1"
+        body="Pillager's Vest +1" -- Hide duration +100 and Crit Dmg +5%: its only job. Skulker's Vest +2 / Malignance cover every other body slot.
     }
 
     sets.precast.JA['Conspirator'] = {
@@ -182,7 +188,9 @@ function init_gear_sets()
     sets.precast.JA['Feint'] = {
         legs="Plunderer's Culottes +1"
     }
-
+    sets.precast.JA['Hide'] = {
+        body="Pillager's Vest +1"
+    }
     sets.precast.JA["Assassin's Charge"] = {}
 
     sets.precast.JA['Sneak Attack'] =
@@ -208,7 +216,7 @@ function init_gear_sets()
 
     -- Fast Cast
     sets.precast.FC = {
-        head="Ejekamal Mask",
+        head="Nyame Helm",
         ear1="Alabaster Earring",
         ear2="Loquacious Earring",
         body="Skulker's Vest +2",
@@ -222,7 +230,8 @@ function init_gear_sets()
     }
 
     sets.precast.FC.Utsusemi = set_combine(sets.precast.FC, {
-        neck="Magoraga Beads"
+        neck="Magoraga Beads",
+        hands="Rawhide Gloves"
     })
 
     -- Ranged snapshot gear

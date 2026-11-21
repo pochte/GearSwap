@@ -1,3 +1,6 @@
+-- CHANGELOG
+-- 2026-11-19: Elite Royal Collar (San d'Oria citizen: Regen+3, DT-5%) now the neck in sets.idle / sets.idle.PDT (1 set(s)); replaces Null Loop there (Null Loop kept in all other sets).
+
 -- Blm_Gear.lua
 
 function user_job_setup()
@@ -369,7 +372,7 @@ function init_gear_sets()
         hands="SV Gauntlets +1",
         legs="Assiduity Pants +1",
         feet="Herald's Gaiters",
-        neck="Null Loop",
+        neck="Elite Royal Collar",
         ear1="Alabaster Earring",
         ear2="Odnowa Earring +1",
         ring1="Archon Ring",
