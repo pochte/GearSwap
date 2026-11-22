@@ -17,6 +17,9 @@ validate.lua
 version_history.txt
 README.md
 
+# Ignore exported GearSwap files
+data/export/
+
 # Keep custom data files
 !data/
 !data/**/
