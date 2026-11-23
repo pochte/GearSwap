@@ -573,7 +573,7 @@ end
 -- Each job can override any of these general functions using job_xxx() hooks.
   
 
------------------------------------	-------------------------------------
+--------------	----------------
 -- Generic function to map a set processing order to all action events.
  ------------
 
@@ -719,9 +719,9 @@ function handle_actions(spell, action)
 end
 
 
---------------------------------------
+-----------------
 -- Action hooks called by GearSwap.
---------------------------------------
+-----------------
 
 function filtered_action(spell, eventArgs)
 	local eventArgs = {cancel = false}
@@ -788,9 +788,9 @@ function pet_aftercast(spell)
     handle_actions(spell, 'pet_aftercast')
 end
 
---------------------------------------
+-----------------
 -- Default code for each action.
---------------------------------------
+-----------------
 
 function default_filtered_action(spell, eventArgs)
 	if spell.english == 'Warp' then
@@ -1180,11 +1180,11 @@ function default_pet_aftercast(spell, spellMap, eventArgs)
 	petWillAct = 0
 end
 
---------------------------------------
+-----------------
 -- Filters for each action.
 -- Set eventArgs.cancel to true to stop further processing.
 -- May show notification messages, but should not do any processing here.
---------------------------------------
+-----------------
 
 function filter_precast(spell, spellMap, eventArgs)
 	if check_rnghelper(spell, spellMap, eventArgs) then return end
@@ -1240,9 +1240,9 @@ function filter_pet_aftercast(spell, spellMap, eventArgs)
     end
 end
 
---------------------------------------
+-----------------
 -- Cleanup code for each action.
---------------------------------------
+-----------------
 
 function cleanup_precast(spell, spellMap, eventArgs)
     -- If show_set is flagged for precast, notify that we won't try to equip later gear.

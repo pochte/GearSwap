@@ -1,4 +1,8 @@
 -- CHANGELOG
+-- 2026-11-23: Rebuilt GEO casting/pet priorities: Lifestream for Geomancy/Indi casts;
+--             Nantosuelta's for Luopan idle/survival; assumed Azimuth Gloves/Tights +3.
+--             Geomancy casting now uses Idris + Dunna and the available skill pieces.
+--             Azimuth Tights +3 added to Dark Magic and Magic Burst; Gloves +3 to Enfeebling.
 -- 2026-11-19: Replaced Lissome Necklace with Null Loop in sets.engaged neck slot.
 -- 2026-11-19: Elite Royal Collar (San d'Oria citizen: Regen+3, DT-5%) now the neck in sets.idle / sets.idle.PDT (1 set(s)); replaces Null Loop there (Null Loop kept in all other sets).
 -- 2026-11-19: Replaced Platinum Moogle Belt with Null Belt (Regen+3, Eva/MEva/Acc/MAcc+30) in 3 idle set(s); the belt caused too much blood aggro. Defense/FC/other sets unchanged.
@@ -24,10 +28,9 @@ function user_job_setup()
     state.MagicalDefenseMode:options('MDT', 'NukeLock')
     state.ResistDefenseMode:options('MEVA')
     -- Main-hand lock: Ctrl+F7 cycles. Geomancy casts temporarily unlock it (see GEO.lua).
-    state.MainWeapon:options('Idris', 'KajaRod', 'None')
+    state.MainWeapon:options('None', 'Idris', 'KajaRod')
     -- Sub-hand lock: Alt+F7 cycles. GEO is never /NIN so no dual wield.
-    state.OffWeapon:options('GenmeiShield', 'AmmurapiShield', 'Culminus', 'None')
-
+    state.OffWeapon:options('None', 'GenmeiShield', 'AmmurapiShield', 'Culminus')
     -- AutoGeo defaults
     autoindi = "Fury"
     autogeo = "Frailty"
@@ -119,7 +122,7 @@ function init_gear_sets()
         ear2="Malignance Earring",
         ring1="Naji's Loop",
         ring2="Kishar Ring",
-        back="Lifestream Cape",
+        back="Null Shawl", -- Lifestream reserved for Geomancy/Indi midcast
         waist="Embla Sash",
     }
 
@@ -179,7 +182,7 @@ function init_gear_sets()
         ear2="Gifted Earring",
         ring1="Murky Ring",
         ring2="Lebeche Ring",
-        back="Lifestream Cape",
+        back="Null Shawl", -- Lifestream reserved for Geomancy/Indi midcast
         waist="Embla Sash",
     })
 
@@ -251,10 +254,13 @@ function init_gear_sets()
     -- Midcast
     sets.midcast.FastRecast = {}
 
-    -- Geomancy skill
+    -- Geomancy potency / skill casting.
+    -- Lifestream is reserved for actual Geo-/Indi- casts. Assumed augment target:
+    -- Geomancy Skill +10 (and Indi duration if the roll also has it).
+    -- Dunna remains locked in the range slot by user_job_setup().
     sets.midcast.Geomancy = {
         main="Idris",
-        sub="Culminus",
+        sub="Genmei Shield",
         head="Azimuth Hood +3",
         neck="Incanter's Torque",
         ear1="Gifted Earring",
@@ -263,15 +269,17 @@ function init_gear_sets()
         hands="Geo. Mitaines +4",
         ring1="Murky Ring",
         ring2="Vertigo Ring",
-        back="Nantosuelta's Cape",
-        waist="Platinum Moogle Belt",
-        legs="Geomancy Pants +3",
-        feet="Geomancy Sandals +3",
+        back="Lifestream Cape",
+        waist="Null Belt",
+        legs="Bagua Pants +3",
+        feet="Azimuth Gaiters +3",
     }
 
+    -- Indi gets the same skill/potency core, plus the duration pieces.
+    -- Idris is retained instead of Solstice: potency takes priority over +15s.
     sets.midcast.Geomancy.Indi = set_combine(sets.midcast.Geomancy, {
-        main="Solstice",
-        back="Nantosuelta's Cape",
+        main="Idris",
+        back="Lifestream Cape",
         legs="Bagua Pants +3",
         feet="Azimuth Gaiters +3",
     })
@@ -337,28 +345,28 @@ function init_gear_sets()
 
     -- Elemental Magic
     sets.midcast['Elemental Magic'] = {
-        main="Marin Staff +1",
-        sub="Daduchos Grip",
-        head="Jhakri Coronal +2",
-        body="Jhakri Robe +2",
-        hands="Jhakri Cuffs +2",
+        main="Bunzi's Rod",
+        sub="Ammurapi Shield",
+        head="Azimuth Hood +3",
+        body="Azimuth Coat +3",
+        hands="Azimuth Gloves +3",
         neck="Baetyl Pendant",
         ear1="Malignance Earring",
         ear2="Hecate's Earring",
         ring1="Jhakri Ring",
         ring2="Freke Ring",
-        back="Nantosuelta's Cape",
+        back="Null Shawl", -- Nantosuelta's Cape is reserved for Luopan survival
         waist="Hachirin-no-Obi",
-        legs="Jhakri Slops +2",
-        feet="Jhakri Pigaches +2",
+        legs="Azimuth Tights +3",
+        feet="Azimuth Gaiters +3",
     }
 
     sets.midcast['Elemental Magic'].Resistant = {
         main="Mpaca's Staff",
         sub="Daduchos Grip",
-        head="Jhakri Coronal +2",
-        body="Jhakri Robe +2",
-        hands="Agwu's Gages",
+        head="Azimuth Hood +3",
+        body="Azimuth Coat +3",
+        hands="Azimuth Gloves +3",
         neck="Incanter's Torque",
         ear1="Gwati Earring",
         ear2="Malignance Earring",
@@ -366,8 +374,8 @@ function init_gear_sets()
         ring2="Freke Ring",
         waist="Null Belt",
         back="Null Shawl",
-        legs="Jhakri Slops +2",
-        feet="Medium's Sabots",
+        legs="Azimuth Tights +3",
+        feet="Azimuth Gaiters +3",
     }
 
     -- Keep these variants available for the GEO.lua casting-mode logic.
@@ -379,19 +387,19 @@ function init_gear_sets()
 
     -- Dark Magic
     sets.midcast['Dark Magic'] = {
-        main="Marin Staff +1",
-        sub="Daduchos Grip",
+        main="Bunzi's Rod",
+        sub="Ammurapi Shield",
         head="Mallquis Chapeau +2",
-        body="Geomancy Tunic +3", -- AF
-        hands="Jhakri Cuffs +2",
-        legs="Azimuth Tights +2",
-        feet="Jhakri Pigaches +2",
+        body="Azimuth Coat +3",
+        hands="Azimuth Gloves +3",
+        legs="Azimuth Tights +3",
+        feet="Azimuth Gaiters +3",
         neck="Erra Pendant",
         ear1="Alabaster Earring",
         ear2="Malignance Earring",
         ring1="Mallquis Ring",
         ring2="Evanescence Ring",
-        back="Nantosuelta's Cape",
+        back="Null Shawl", -- Nantosuelta's Cape is reserved for Luopan survival
         waist="Eschan Stone",
     }
 
@@ -406,8 +414,17 @@ function init_gear_sets()
         feet="Agwu's Pigaches",
     })
 
-    sets.midcast.Stun = sets.midcast['Dark Magic']
-    sets.midcast.Stun.Resistant = sets.midcast['Dark Magic']
+    sets.midcast.Stun = set_combine(sets.midcast['Dark Magic'], {
+        main="Mpaca's Staff",
+        sub="Daduchos Grip",
+        neck="Null Loop",
+        ear1="Crepuscular Earring",
+        ring1="Mallquis Ring",
+        ring2="Kishar Ring",
+        back="Null Shawl",
+        waist="Null Belt",
+    })
+    sets.midcast.Stun.Resistant = sets.midcast.Stun
     sets.midcast.Impact = sets.precast.FC.Impact
 
     -- Enfeebling Magic
@@ -416,7 +433,7 @@ function init_gear_sets()
         sub="Daduchos Grip",
         head="Mallquis Chapeau +2",
         body="Vanya Robe",
-        hands="Azimuth Gloves +2",
+        hands="Azimuth Gloves +3",
         legs="Jhakri Slops +2",
         feet="Bagua Sandals +3",
         neck="Null Loop",
@@ -424,7 +441,7 @@ function init_gear_sets()
         ear2="Malignance Earring",
         ring1="Mallquis Ring",
         ring2="Kishar Ring",
-        back="Nantosuelta's Cape",
+        back="Null Shawl", -- Nantosuelta's Cape is reserved for Luopan survival
         waist="Null Belt",
     }
 
@@ -551,39 +568,47 @@ function init_gear_sets()
     sets.idle.PDT = set_combine(sets.idle, {
         main="Idris",
         sub="Genmei Shield",
-        head="Nyame Helm",
+        head="Nyame Helm", -- Path B R15
         ear1="Genmei Earring",
-        body="Jhakri Robe +2",
-        hands="Bagua Mitaines +3",
+        body="Nyame Mail", -- Path B R15
+        hands="Nyame Gauntlets", -- Path B R15
         ring1="Murky Ring",
         ring2="Vertigo Ring",
         waist="Null Belt",
-        legs="SV Loincloth +1",
+        legs="Nyame Flanchard", -- Path B R15
+        feet="Nyame Sollerets", -- Path B R15
     })
 
     sets.idle.Pet = set_combine(sets.idle, {
         main="Idris",
         sub="Genmei Shield",
+        head="Azimuth Hood +3", -- Luopan: Regen +5 / Damage Taken -12%
         ear1="Handler's Earring",
         ear2="Handler's Earring +1",
         body="Geomancy Tunic +3", -- AF
-        hands="Geo. Mitaines +4",
+        hands="Geo. Mitaines +4", -- Luopan: Damage Taken -13%
         ring1="Murky Ring",
         ring2="Vertigo Ring",
-        back="Nantosuelta's Cape",
+        back="Nantosuelta's Cape", -- Ambuscade cape; pet augment assumed focused on Regen
+        feet="Bagua Sandals +3",
         waist="Null Belt",
         legs="Assiduity Pants +1",
         neck="Bagua Charm +1",
     })
 
-    sets.idle.PDT.Pet = set_combine(sets.idle.PDT, sets.idle.Pet, {
+    -- Hybrid pet/PDT: retain Azimuth Hood +3, Geo. Mitaines +4 and Nantosuelta's
+    -- Cape for the Luopan; add player-side defense only in slots that do not
+    -- displace those pet-survival pieces.
+    sets.idle.PDT.Pet = set_combine(sets.idle.Pet, {
         neck="Null Loop",
+        body="Nyame Mail", -- Path B R15; player-side defense
+        legs="Nyame Flanchard", -- Path B R15; player-side defense
     })
 
     -- Indi idle variants
     local indi_idle = {
         main="Idris",
-        back="Nantosuelta's Cape",
+        back="Nantosuelta's Cape", -- Pet-out idle cape; cast duration is calculated in midcast
         legs="Bagua Pants +3",
         feet="Azimuth Gaiters +3",
     }
@@ -596,20 +621,20 @@ function init_gear_sets()
 
     -- Defense
     sets.defense.PDT = {
-        main="Malignance Pole",
-        sub="Daduchos Grip",
-        head="Nyame Helm",
+        main="Idris",
+        sub="Genmei Shield",
+        head="Nyame Helm", -- Path B R15
         neck="Null Loop",
         ear1="Alabaster Earring",
         ear2="Genmei Earring",
-        body="SV Separates +1",
-        hands="SV Gauntlets +1",
+        body="Nyame Mail", -- Path B R15
+        hands="Nyame Gauntlets", -- Path B R15
         ring1="Murky Ring",
         ring2="Vertigo Ring",
-        back="Archon Cape",
+        back="Null Shawl",
         waist="Null Belt",
-        legs="SV Loincloth +1",
-        feet="SV Gaiters +1",
+        legs="Nyame Flanchard", -- Path B R15
+        feet="Nyame Sollerets", -- Path B R15
     }
 
     sets.defense.MDT = set_combine(sets.defense.PDT, {
@@ -683,12 +708,12 @@ function init_gear_sets()
 
     sets.MagicBurst = set_combine(sets.midcast['Divine Magic'], {
         main="Bunzi's Rod",
-        sub="Culminus",
+        sub="Ammurapi Shield",
         head="Agwu's Cap",
         body="Agwu's Robe",
         hands="Agwu's Gages",
-        legs="Agwu's Slops",
-        feet="Agwu's Pigaches",
+        legs="Azimuth Tights +3",
+        feet="Azimuth Gaiters +3",
         neck="Mizukage-no-Kubikazari",
         ring1="Locus Ring",
         ring2="Freke Ring",

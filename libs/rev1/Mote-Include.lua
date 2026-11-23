@@ -283,9 +283,9 @@ function handle_actions(spell, action)
 end
 
 
---------------------------------------
+-----------------
 -- Action hooks called by GearSwap.
---------------------------------------
+-----------------
 
 function pretarget(spell)
 	handle_actions(spell, 'pretarget')
@@ -317,9 +317,9 @@ function pet_aftercast(spell)
 	handle_actions(spell, 'pet_aftercast')
 end
 
---------------------------------------
+-----------------
 -- Default code for each action.
---------------------------------------
+-----------------
 
 function default_pretarget(spell, spellMap)
 	auto_change_target(spell, spellMap)
@@ -347,11 +347,11 @@ function default_pet_aftercast(spell, spellMap)
 	handle_equipping_gear(player.status)
 end
 
---------------------------------------
+-----------------
 -- Filters for each action.
 -- Set eventArgs.cancel to true to stop further processing.
 -- May show notification messages, but should not do any processing here.
---------------------------------------
+-----------------
 
 function filter_midcast(spell, spellMap, eventArgs)
 	if mote_vars.show_set == 'precast' then
@@ -382,9 +382,9 @@ function filter_pet_aftercast(spell, spellMap, eventArgs)
 	end
 end
 
---------------------------------------
+-----------------
 -- Cleanup code for each action.
---------------------------------------
+-----------------
 
 function cleanup_precast(spell, spellMap, eventArgs)
 	-- If show_set is flagged for precast, notify that we won't try to equip later gear.

@@ -851,7 +851,7 @@ end
 function handle_help(cmdParams)
     if cmdParams[1] and cmdParams[1]:lower():startswith('field') then
         print('Predefined Library Fields:')
-        print('--------------------------')
+        print('-----')
         print('OffenseMode, HybridMode, RangedMode, WeaponskillMode')
         print('CastingMode, IdleMode, RestingMode, Kiting')
         print('DefenseMode, PhysicalDefenseMode, MagicalDefenseMode')
@@ -859,7 +859,7 @@ function handle_help(cmdParams)
         print('EquipStop (precast, midcast, pet_midcast)')
     else
         print('Custom Library Self-commands:')
-        print('-----------------------------')
+        print('--------')
         print('Show TP Set:      gs c showtp')
         print('Toggle bool:      gs c toggle [field]')
         print('Cycle list:       gs c cycle [field] [(r)everse]')

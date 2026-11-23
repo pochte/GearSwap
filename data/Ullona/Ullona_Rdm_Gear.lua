@@ -215,112 +215,116 @@ function init_gear_sets()
     sets.Cure_Received = {}
 
     -- Enhancing Magic
-    sets.precast['Enhancing Magic'] = set_combine(sets.precast.FC, {
-        main="Daybreak",
-        sub="Ammurapi Shield",
-    })
+-- Enhancing Magic
+sets.precast['Enhancing Magic'] = set_combine(sets.precast.FC, {
+    main="Daybreak",
+    sub="Ammurapi Shield",
+})
 
-    sets.midcast['Enhancing Magic'] = {
-        main="Daybreak",
-        sub="Ammurapi Shield",
-        head="Lethargy Chappel +3",
-        body="Lethargy Sayon +3",
-        legs="Lethargy Fuseau +3",
-        hands="Lethargy Gantherots +3",
-        feet="Lethargy Houseaux +3",
-        neck="Duelist's Torque +1",
-        ear1="Andoaa Earring",
-        ear2="Lethargy Earring",
-        ring1="Lebeche Ring",
-        ring2="Murky Ring",
-        back="Sucellos's Cape",
-        waist="Embla Sash"
-    }
+-- General Enhancing Magic (Duration)
+sets.midcast['Enhancing Magic'] = {
+    main="Daybreak",
+    sub="Ammurapi Shield",
+    head="Lethargy Chappel +3",
+    body="Lethargy Sayon +3",
+    legs="Lethargy Fuseau +3",
+    hands="Lethargy Gantherots +3",
+    feet="Lethargy Houseaux +3",
+    neck="Duelist's Torque +1",
+    ear1="Andoaa Earring",
+    ear2="Lethargy Earring",
+    ring1="Lebeche Ring",
+    ring2="Murky Ring",
+    back="Sucellos's Cape",
+    waist="Embla Sash"
+}
 
-     
--- PROTECT / SHELL
- 
+-- Enhancing Magic Skill / Potency
+sets.EnhancingSkill = set_combine(sets.midcast['Enhancing Magic'], {
+    back="Ghostfyre Cape",
+    hands="Vitiation Gloves +3"
+})
 
+-- Protect / Shell (Duration)
 sets.midcast.Protect = set_combine(sets.midcast['Enhancing Magic'], {
     ring1="Sheltered Ring",
 })
 
 sets.midcast.Shell = sets.midcast.Protect
 
-    sets.buff.ComposureOther = {
-        head="Lethargy Chappel +3",
-        body="Lethargy Sayon +3",
-        legs="Lethargy Fuseau +3",
-        hands="Lethargy Gantherots +3",
-        feet="Lethargy Houseaux +3",
-    }
+-- Composure: Other targets
+sets.buff.ComposureOther = {
+    head="Lethargy Chappel +3",
+    body="Lethargy Sayon +3",
+    legs="Lethargy Fuseau +3",
+    hands="Lethargy Gantherots +3",
+    feet="Lethargy Houseaux +3",
+}
 
-    -- Red Mage enhancing sets layer onto the enhancing set.
-    sets.midcast.BoostStat = {
-        hands="Vitiation Gloves +3"
-    }
+-- Boost-Stat spells
+sets.midcast.BoostStat = set_combine(sets.EnhancingSkill, {
+    hands="Vitiation Gloves +3"
+})
 
-    -- Preserve both previously assigned Self_Refresh pieces.
-    sets.Self_Refresh = set_combine(sets.midcast['Enhancing Magic'], {
-        head="Umuthi Hat",
-        feet="Inspirited Boots"
-    })
+-- Self Refresh
+sets.Self_Refresh = set_combine(sets.midcast['Enhancing Magic'], {
+    head="Umuthi Hat",
+    feet="Inspirited Boots"
+})
 
-    sets.midcast.Regen = set_combine(sets.midcast['Enhancing Magic'], {
-        main="Bolelabunga",
-        sub="Ammurapi Shield",
-        feet="Bunzi's Sabots",
-    })
+-- Regen
+sets.midcast.Regen = set_combine(sets.midcast['Enhancing Magic'], {
+    main="Bolelabunga",
+    sub="Ammurapi Shield",
+    feet="Bunzi's Sabots",
+})
 
-    sets.EnhancingSkill = set_combine(sets.midcast['Enhancing Magic'], {
-        hands="Vitiation Gloves +3"
-    })
+-- Bar-element spells (Skill)
+sets.midcast.BarElement = set_combine(sets.EnhancingSkill, {
+    hands="Vitiation Gloves +3"
+})
 
-    sets.midcast.Refresh = set_combine(sets.midcast['Enhancing Magic'], {
-        legs="Lethargy Fuseau +3",
-        body="Vitiation Tabard +4"
-    })
+-- Temper (Skill / Potency)
+sets.midcast.Temper = set_combine(sets.EnhancingSkill, {})
+sets.midcast.Temper.DW = set_combine(sets.midcast.Temper, {})
 
-    sets.precast.Aquaveil = set_combine(sets.precast.FC, {
-        hands="Vitiation Gloves +3",
-        main="Daybreak",
-        sub="Culminus"
-    })
+-- Enspell (Skill / Potency)
+sets.midcast.Enspell = set_combine(sets.EnhancingSkill, {
+    legs="Vitiation Tights +4",
+    head="Umuthi Hat",
+    main="Archduke's Sword"
+})
 
-    sets.midcast.BarElement = set_combine(sets.midcast['Enhancing Magic'], {
-        hands="Vitiation Gloves +3"
-    })
+sets.midcast.Enspell.DW = set_combine(sets.midcast.Enspell, {})
 
-    sets.midcast.Temper = set_combine(sets.midcast['Enhancing Magic'], {})
-    sets.midcast.Temper.DW = set_combine(sets.midcast.Temper, {})
+-- Stoneskin (Skill / Potency)
+sets.midcast.Stoneskin = set_combine(sets.EnhancingSkill, {
+    waist="Siegel Sash",
+    legs="Shedir Seraweels",
+    head="Umuthi Hat",
+    neck="Nodens Gorget",
+})
 
-    sets.midcast.Enspell = set_combine(sets.midcast.Temper, {
-        back="Ghostfyre Cape",
-        legs="Vitiation Tights +4",
-        head="Umuthi Hat",
-        main="Archduke's Sword"
-    })
+-- Spikes
+sets.midcast.ShockSpikes = set_combine(sets.midcast['Enhancing Magic'], {
+    legs="Vitiation Tights +4"
+})
 
-    sets.midcast.Enspell.DW = set_combine(sets.midcast.Enspell, {})
+sets.midcast.BlazeSpikes = set_combine(sets.midcast.ShockSpikes, {})
+sets.midcast.IceSpikes = set_combine(sets.midcast.ShockSpikes, {})
 
-    sets.midcast.Stoneskin = set_combine(sets.midcast['Enhancing Magic'], {
-        waist="Siegel Sash",
-        legs="Shedir Seraweels",
-        head="Umuthi Hat",
-        hands="Vitiation Gloves +3",
-        neck="Nodens Gorget",
-    })
+-- Gain spells (Skill / Potency)
+sets.midcast.Gain = set_combine(sets.EnhancingSkill, {
+    hands="Vitiation Gloves +3"
+})
 
-    sets.midcast.ShockSpikes = set_combine(sets.midcast['Enhancing Magic'], {
-        legs="Vitiation Tights +4"
-    })
+-- Phalanx (Skill / Potency)
+sets.midcast.Phalanx = set_combine(sets.EnhancingSkill, {
+    back="Ghostfyre Cape",
+})
+-- Future Phalanx+ gear goes here.
+sets.midcast.Phalanx.Self = set_combine(sets.midcast.Phalanx, {})
 
-    sets.midcast.BlazeSpikes = set_combine(sets.midcast.ShockSpikes, {})
-    sets.midcast.IceSpikes = set_combine(sets.midcast.ShockSpikes, {})
-
-    sets.midcast.Gain = set_combine(sets.midcast['Enhancing Magic'], {
-        hands="Vitiation Gloves +3"
-    })
 
     -- Midcast: Enfeebling Magic
     sets.midcast['Enfeebling Magic'] = {

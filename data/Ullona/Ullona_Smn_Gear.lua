@@ -69,9 +69,9 @@ function user_job_lockstyle()
 end
 
 function init_gear_sets()
-    ---------------------------------------------------------------------------
+    ------------
     -- Weapon modes
-    ---------------------------------------------------------------------------
+    ------------
     sets.weapons = sets.weapons or {}
     sets.weapons.Tumafyrig = {main="Tumafyrig"}
     sets.weapons.Marquetry = {main="Marquetry Staff"}
@@ -81,9 +81,9 @@ function init_gear_sets()
         feet = gear.merlinic_treasure_feet
     })
 
-    ---------------------------------------------------------------------------
+    ------------
     -- Job abilities
-    ---------------------------------------------------------------------------
+    ------------
     sets.precast.JA['Astral Flow'] = {head="Glyphic Horn +1"}
     sets.precast.JA['Elemental Siphon'] = {
         main="Tumafyrig",
@@ -103,13 +103,13 @@ function init_gear_sets()
     -- Convoker's Horn +1 is an optional +2 Summoning skill over Beckoner's Horn +1;
     -- not worth farming solely for that small gain. Convoker's Bracers +1 are skipped.
 
-    ---------------------------------------------------------------------------
+    ------------
     -- Blood Pact precast / delay reduction
     -- Full Blood Pact recast set. Use every timer-reduction piece available,
     -- especially for Cait Sith's Mewing Lullaby when repeatedly applying it to a
     -- raid boss. Mewing Lullaby has a dedicated named override below.
     -- Damage / accuracy gear belongs in the pet midcast set.
-    ---------------------------------------------------------------------------
+    ------------
     sets.precast.BloodPactWard = {
         ammo="Seraphicaller",
         head="Glyphic Horn +1",
@@ -130,9 +130,9 @@ function init_gear_sets()
     )
     sets.precast.BloodPactRage = sets.precast.BloodPactWard
 
-    ---------------------------------------------------------------------------
+    ------------
     -- Fast Cast
-    ---------------------------------------------------------------------------
+    ------------
     sets.precast.FC = {
         main="Mpaca's Staff",
         sub="Willpower Grip",
@@ -176,14 +176,14 @@ function init_gear_sets()
         waist="Siegel Sash", legs="Querkening Brais",
     })
 
-    ---------------------------------------------------------------------------
+    ------------
     -- Weaponskills
-    ---------------------------------------------------------------------------
+    ------------
     sets.precast.WS = {}
 
-    ---------------------------------------------------------------------------
+    ------------
     -- Player midcast: healing / status removal
-    ---------------------------------------------------------------------------
+    ------------
     sets.midcast.Cure = {
         main="Bunzi's Rod",
         head="Vanya Hood",
@@ -209,9 +209,9 @@ function init_gear_sets()
         sub="Clemency Grip",
     })
 
-    ---------------------------------------------------------------------------
+    ------------
     -- Player midcast: summoning and nuking
-    ---------------------------------------------------------------------------
+    ------------
     sets.midcast['Summoning Magic'] = {
         main="Malignance Pole", sub="Willpower Grip",
     }
@@ -287,9 +287,9 @@ function init_gear_sets()
     sets.midcast.Bio = sets.midcast.Dia
     sets.midcast['Bio II'] = sets.midcast.Dia
 
-    ---------------------------------------------------------------------------
+    ------------
     -- Enhancing magic
-    ---------------------------------------------------------------------------
+    ------------
     sets.midcast['Enhancing Magic'] = {
         main="Daybreak", sub="Ammurapi Shield", ammo="Psilomene",
         head="Umuthi Hat", body="Bunzi's Robe",
@@ -312,9 +312,9 @@ function init_gear_sets()
         legs="Shedir Seraweels",
     })
 
-    ---------------------------------------------------------------------------
+    ------------
     -- Pet Blood Pact wards
-    ---------------------------------------------------------------------------
+    ------------
     sets.midcast.Pet = sets.midcast.Pet or {}
     sets.midcast.Pet.BloodPactWard = {
         main="Tumafyrig", ammo="Seraphicaller",
@@ -342,9 +342,9 @@ function init_gear_sets()
     -- Future NQ placeholder from Azure-toothed Clawberry: Asteria Mitts.
     -- Consider for Carbuncle / Avatar MAB and idle Refresh; HQ alone adds Carbuncle Lv.+1.
 
-    ---------------------------------------------------------------------------
+    ------------
     -- Pet Blood Pact rage: physical and magical
-    ---------------------------------------------------------------------------
+    ------------
     sets.midcast.Pet.PhysicalBloodPactRage = {
         main="Tumafyrig", ammo="Seraphicaller",
         head="Bunzi's Hat", body="Convoker's Doublet +1",
@@ -409,9 +409,9 @@ function init_gear_sets()
     )
     sets.midcast.Pet.Impact = sets.midcast.Pet.DebuffBloodPactWard
 
-    ---------------------------------------------------------------------------
+    ------------
     -- Idle / perpetuation
-    ---------------------------------------------------------------------------
+    ------------
     sets.idle = {
         main="Mpaca's Staff", sub="Willpower Grip",
         ammo="Crepuscular Pebble",
@@ -474,9 +474,9 @@ function init_gear_sets()
         -- hands="Lamassu Mitts", -- NQ placeholder: Cait Sith skill / magic accuracy
     }
 
-    ---------------------------------------------------------------------------
+    ------------
     -- Avatar perpetuation / refresh
-    ---------------------------------------------------------------------------
+    ------------
     -- Dedicated avatar-out set. Prioritises Refresh while retaining enough
     -- perpetuation reduction to keep upkeep low: Assid. Pants +1 (-3),
     -- Beck. Pigaches +1 (-7), Evoker's Ring (-1), and Lucidity Sash (-2).
@@ -505,9 +505,9 @@ function init_gear_sets()
     sets.perp.Alexander = sets.midcast.Pet.BloodPactWard
     sets.perp.staff_and_grip = {}
 
-    ---------------------------------------------------------------------------
+    ------------
     -- Defense / movement / latent
-    ---------------------------------------------------------------------------
+    ------------
     sets.defense.PDT = sets.idle.PDT
     sets.defense.MDT = {
         main="Malignance Pole", sub="Willpower Grip",
@@ -538,17 +538,17 @@ function init_gear_sets()
     sets.NightIdle = {}
     sets.HPDown = {}
 
-    ---------------------------------------------------------------------------
+    ------------
     -- Buff / utility sets
-    ---------------------------------------------------------------------------
+    ------------
     sets.buff.Doom = set_combine(sets.buff.Doom or {}, {})
     sets.buff.Sleep = {}
     sets.buff.Sublimation = {waist="Embla Sash"}
     sets.buff.DTSublimation = {waist="Embla Sash"}
 
-    ---------------------------------------------------------------------------
+    ------------
     -- Custom mode placeholders expected by SMN.lua
-    ---------------------------------------------------------------------------
+    ------------
     sets.engaged = {}
     sets.element = sets.element or {}
     sets.element.Fire = {}

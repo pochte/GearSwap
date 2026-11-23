@@ -1,4 +1,4 @@
--------------------------
+----
 -- Ullona_COR.lua
 -- COR job logic. Weapon state tokens are single words; item names are mapped below.
 -- WS handling deliberately never equips or reselects the ranged weapon.

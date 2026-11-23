@@ -29,8 +29,12 @@ end
 -- Setup vars that are user-independent. state.Buff vars initialized here will automatically be tracked.
 function job_setup()
     -- Construct our custom weapon state before init_job_states().
-    state.MainWeapon = M{['description']='Main Weapon'}
-    state.OffWeapon = M{['description']='Off Weapon'}
+state.MainWeapon = M{
+    ['description'] = 'Main Weapon',
+    'None', 'Idris', 'KajaRod'}
+state.OffWeapon = M{
+    ['description'] = 'Off Weapon',
+    'None', 'GenmeiShield', 'AmmurapiShield', 'Culminus'}
     state.Buff.Entrust = buffactive.Entrust or false
     state.Buff['Blaze of Glory'] = buffactive['Blaze of Glory'] or false
     LowTierNukes = S{'Stone', 'Water', 'Aero', 'Fire', 'Blizzard', 'Thunder',
