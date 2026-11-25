@@ -689,7 +689,7 @@ sets.midcast.Shell = sets.midcast.Protect
         sub="Ammurapi Shield",
     }
 
-    -----placeholder----
+      placeholder----
     -- Referenced in SCH.lua but not yet gear-defined. Built via set_combine off their real
     -- base sets so they inherit sensible gear immediately instead of equipping nothing --
     -- fill in the {} overrides with anything Resistant/Burst-specific whenever ready.
@@ -705,7 +705,7 @@ sets.midcast.Shell = sets.midcast.Protect
     sets.RecoverBurst = set_combine(sets.RecoverMP, {})
     sets.ResistantRecoverBurst = set_combine(sets.RecoverBurst, {})
     sets.MaxTP = {}
-    -----placeholder----
+      placeholder----
 end
 
 -- Select default macro book on initial load or subjob change.

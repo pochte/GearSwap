@@ -1,10 +1,3 @@
--- CHANGELOG
--- 2026-11-19: Replaced Altruistic Cape (now in storage) with Null Shawl in the Enfeebling set.
--- 2026-11-19: Note: Shomonjijoe +1 is a WIP (grind nearly complete); the file already treats it as available.
--- 2026-11-19: Elite Royal Collar (San d'Oria citizen: Regen+3, DT-5%) now the neck in sets.idle / sets.idle.PDT (2 set(s)); replaces Null Loop there (Null Loop kept in all other sets).
--- 2026-11-19: Replaced Platinum Moogle Belt with Null Belt (Regen+3, Eva/MEva/Acc/MAcc+30) in 1 idle set(s); the belt caused too much blood aggro. Defense/FC/other sets unchanged.
--- 2026-11-19: Added Platinum Moogle Belt to sets.Kiting (moved out of idle).
-
 -- Ullona_Smn_Gear.lua
 -- Rebuilt SMN GearSwap file.
 -- Assumptions: Glyphic Horn +1 (other Glyphic pieces NQ), Convoker's body/legs/feet +1,
@@ -15,9 +8,11 @@
 --   * Glyphic pieces are used for Blood Pact delay / summoning utility.
 --   * Convoker's pieces are used where their avatar accuracy or BP damage wins.
 --   * Shomonjijoe is centralised in gear.shomonjijoe to avoid spelling it repeatedly.
---   * Beckoner's Earring +1 is always assigned to ear2 in pet sets.
+--   * Beckoner's Earring +2 is always assigned to ear2 in pet sets.
 --   * Nyame is not forced into SMN damage sets; it is primarily a defensive option.
 --   * Alt+W = Assault, Alt+E = Retreat, Alt+R = Release.
+--   * Asteria Mitts +1: Carbuncle half-perp + Lv+1, Avatar MAB, idle Refresh.
+--   * Lamassu Mitts +1: Summoning skill, Cait Sith Lv+1, Avatar Mag Acc.
 
 function select_default_macro_book()
     set_macro_page(1, 7)
@@ -32,9 +27,14 @@ function user_job_setup()
     set_macro_page(1, 7)
 
     gear.perp_staff = {name = "Mpaca's Staff"}
-    gear.shomonjijoe = {name = "Shomonjijoe +1"}
-    gear.magic_jse_back = "Samanisi Cape"
-    gear.phys_jse_back = "Samanisi Cape"
+    gear.shomonjijoe = {name = "Shomonjijoe"} --+1 is a wip. 
+    -- Magical Blood Pact / Debuff cape.
+    -- Current augments: Pet Magic Accuracy +3, Pet Magic Attack Bonus +3.
+    gear.magic_jse_back = {
+        name="Samanisi Cape", augments={'Pet: Mag. Acc.+3', 'Pet: "Mag.Atk.Bns."+3'}}
+    -- Physical Blood Pact cape placeholder.
+    -- Replace the item and augments once the physical cape is completed.
+    gear.phys_jse_back = "Campestres's Cape"
 
     -- Local binds. Ctrl+` remains reserved for Ullona-Globals.lua.
     send_command('bind !` input /ja "Release" <me>')
@@ -69,9 +69,9 @@ function user_job_lockstyle()
 end
 
 function init_gear_sets()
-    ------------
+  
     -- Weapon modes
-    ------------
+  
     sets.weapons = sets.weapons or {}
     sets.weapons.Tumafyrig = {main="Tumafyrig"}
     sets.weapons.Marquetry = {main="Marquetry Staff"}
@@ -81,17 +81,17 @@ function init_gear_sets()
         feet = gear.merlinic_treasure_feet
     })
 
-    ------------
+  
     -- Job abilities
-    ------------
+  
     sets.precast.JA['Astral Flow'] = {head="Glyphic Horn +1"}
     sets.precast.JA['Elemental Siphon'] = {
         main="Tumafyrig",
-        head="Beckoner's Horn +1",
-        body="Beck. Doublet +1",
-        hands="Glyphic Bracers",
-        legs="Beck. Spats +1",
-        feet="Beck. Pigaches +1",
+        head="Beckoner's Horn +2",
+        body="Beck. Doublet +2",
+        hands="Lamassu Mitts +1",
+        legs="Beck. Spats +2",
+        feet="Beck. Pigaches +2",
         neck="Incanter's Torque",
         ear1="Andoaa Earring",
         ring1="Evoker's Ring",
@@ -99,40 +99,42 @@ function init_gear_sets()
         back="Conveyance Cape",
         waist="Lucidity Sash",
     }
-    sets.precast.JA['Mana Cede'] = {hands="Beck. Bracers +1"}
-    -- Convoker's Horn +1 is an optional +2 Summoning skill over Beckoner's Horn +1;
+    sets.precast.JA['Mana Cede'] = {hands="Beck. Bracers +2"}
+    -- Convoker's Horn +1 is an optional +2 Summoning skill over Beckoner's Horn +2;
     -- not worth farming solely for that small gain. Convoker's Bracers +1 are skipped.
 
-    ------------
+  
     -- Blood Pact precast / delay reduction
     -- Full Blood Pact recast set. Use every timer-reduction piece available,
     -- especially for Cait Sith's Mewing Lullaby when repeatedly applying it to a
     -- raid boss. Mewing Lullaby has a dedicated named override below.
     -- Damage / accuracy gear belongs in the pet midcast set.
-    ------------
-    sets.precast.BloodPactWard = {
-        ammo="Seraphicaller",
-        head="Glyphic Horn +1",
-        body="Glyphic Doublet",
-        hands="Glyphic Bracers",
-        legs="Glyphic Spats",
-        feet="Glyphic Pigaches",
-        back="Conveyance Cape",
-    }
+  
+sets.precast.BloodPactWard = {
+    ammo="Seraphicaller",
+    head="Glyphic Horn",
+    body="Glyphic Doublet +1",
+    hands="Glyphic Bracers +1",
+    legs="Glyphic Spats +1",
+    feet="Glyph. Pigaches +1",
+    neck="Caller's Pendant",
+    ear1="Caller's Earring",
+    back="Conveyance Cape",
+}
     -- Cait Sith's Mewing Lullaby gets its own named override. Use the strongest
     -- BP-delay head/body pieces here; the remaining slots inherit the Ward delay set.
     -- (The ability is officially named "Mewing Lullaby" in FFXI.)
     sets.precast.BloodPactWard['Mewing Lullaby'] = set_combine(
         sets.precast.BloodPactWard, {
-            head="Beckoner's Horn +1",
+            head="Beckoner's Horn +2",
             body = gear.shomonjijoe,
         }
     )
     sets.precast.BloodPactRage = sets.precast.BloodPactWard
 
-    ------------
+  
     -- Fast Cast
-    ------------
+  
     sets.precast.FC = {
         main="Mpaca's Staff",
         sub="Willpower Grip",
@@ -176,14 +178,14 @@ function init_gear_sets()
         waist="Siegel Sash", legs="Querkening Brais",
     })
 
-    ------------
+  
     -- Weaponskills
-    ------------
+  
     sets.precast.WS = {}
 
-    ------------
+  
     -- Player midcast: healing / status removal
-    ------------
+  
     sets.midcast.Cure = {
         main="Bunzi's Rod",
         head="Vanya Hood",
@@ -209,9 +211,9 @@ function init_gear_sets()
         sub="Clemency Grip",
     })
 
-    ------------
+  
     -- Player midcast: summoning and nuking
-    ------------
+  
     sets.midcast['Summoning Magic'] = {
         main="Malignance Pole", sub="Willpower Grip",
     }
@@ -287,9 +289,9 @@ function init_gear_sets()
     sets.midcast.Bio = sets.midcast.Dia
     sets.midcast['Bio II'] = sets.midcast.Dia
 
-    ------------
+  
     -- Enhancing magic
-    ------------
+  
     sets.midcast['Enhancing Magic'] = {
         main="Daybreak", sub="Ammurapi Shield", ammo="Psilomene",
         head="Umuthi Hat", body="Bunzi's Robe",
@@ -312,58 +314,79 @@ function init_gear_sets()
         legs="Shedir Seraweels",
     })
 
-    ------------
+  
     -- Pet Blood Pact wards
-    ------------
+  
     sets.midcast.Pet = sets.midcast.Pet or {}
     sets.midcast.Pet.BloodPactWard = {
-        main="Tumafyrig", ammo="Seraphicaller",
-        head="Beckoner's Horn +1", body="Beck. Doublet +1",
-        hands="Glyphic Bracers", legs="Beck. Spats +1",
+        main="Tumafyrig",
+        ammo="Seraphicaller",
+        head="Beckoner's Horn +1",
+        body="Beck. Doublet +1",
+        hands="Glyphic Bracers +3",
+        legs="Beck. Spats +1",
         feet="Beck. Pigaches +1",
         neck="Incanter's Torque",
-        ear1="Andoaa Earring", ear2="Beck. Earring +1",
-        ring1="Evoker's Ring", ring2="Inyanga Ring",
-        back="Conveyance Cape", waist="Lucidity Sash",
+        ear1="Andoaa Earring",
+        ear2="Beck. Earring +1",
+        ring1="Evoker's Ring",
+        ring2="Fervor Ring",
+        back="Conveyance Cape",
+        waist="Lucidity Sash",
     }
 
     sets.midcast.Pet.DebuffBloodPactWard = {
-        main="Marquetry Staff", ammo="Seraphicaller",
-        head="Bunzi's Hat", body="Bunzi's Robe",
-        hands="Bunzi's Gloves", legs="Bunzi's Pants",
+        main="Marquetry Staff", 
+        ammo="Seraphicaller",
+        head="Bunzi's Hat", 
+        body="Bunzi's Robe",
+        hands="Lamassu Mitts +1", 
+        legs="Bunzi's Pants",
         feet="Bunzi's Sabots",
         neck="Adad Amulet",
-        ear1="Enmerkar Earring", ear2="Beck. Earring +1",
-        ring1="C. Palug Ring", ring2="Murky Ring",
-        back="Samanisi Cape", waist="Regal Belt",
+        ear1="Enmerkar Earring", 
+        ear2="Beck. Earring +2",
+        ring1="C. Palug Ring", 
+        ring2="Murky Ring",
+        back=gear.magic_jse_back,
+        waist="Regal Belt",
     }
     sets.midcast.Pet.DebuffBloodPactWard.Acc =
         sets.midcast.Pet.DebuffBloodPactWard
-    -- Future NQ placeholder from Azure-toothed Clawberry: Asteria Mitts.
-    -- Consider for Carbuncle / Avatar MAB and idle Refresh; HQ alone adds Carbuncle Lv.+1.
 
-    ------------
+  
     -- Pet Blood Pact rage: physical and magical
-    ------------
-    sets.midcast.Pet.PhysicalBloodPactRage = {
-        main="Tumafyrig", ammo="Seraphicaller",
-        head="Bunzi's Hat", body="Convoker's Doublet +1",
-        hands="Beck. Bracers +1", legs="Enticer's Pants",
+  
+       sets.midcast.Pet.PhysicalBloodPactRage = {
+        main="Tumafyrig",
+        ammo="Seraphicaller",
+        head="Bunzi's Hat",
+        body="Convoker's Doublet +1",
+        hands="Beck. Bracers +1",
+        legs="Enticer's Pants",
         feet="Inyan. Crackows +2",
         neck="Shulmanu Collar",
-        ear1="Enmerkar Earring", ear2="Beck. Earring +1",
-        ring1="C. Palug Ring", ring2="Murky Ring",
-        back="Samanisi Cape", waist="Regal Belt",
+        ear1="Enmerkar Earring",
+        ear2="Beck. Earring +1",
+        ring1="C. Palug Ring",
+        ring2="Murky Ring",
+        back=gear.phys_jse_back,
+        waist="Regal Belt",
     }
+
     sets.midcast.Pet.PhysicalBloodPactRage.AM = set_combine(
         sets.midcast.Pet.PhysicalBloodPactRage, {
-            body="Bunzi's Robe", feet="Bunzi's Sabots",
+            body="Bunzi's Robe",
+            feet="Bunzi's Sabots",
         }
     )
+
     sets.midcast.Pet.PhysicalBloodPactRage.Acc = set_combine(
         sets.midcast.Pet.PhysicalBloodPactRage, {
-            body="Bunzi's Robe", hands="Bunzi's Gloves",
-            legs="Convoker's Spats +1", feet="Bunzi's Sabots",
+            body="Bunzi's Robe",
+            hands="Bunzi's Gloves",
+            legs="Convoker's Spats +1",
+            feet="Bunzi's Sabots",
             neck="Adad Amulet",
         }
     )
@@ -372,19 +395,25 @@ function init_gear_sets()
     -- is used for physical BP damage; compare in-game if your pact/target favors
     -- the alternative body for a particular Rage ability.
     sets.midcast.Pet.MagicalBloodPactRage = {
-        main="Frazil Staff", ammo="Seraphicaller",
-        head="Bunzi's Hat", body = gear.shomonjijoe,
-        hands="Bunzi's Gloves", legs="Avatara Slops",
+        main="Frazil Staff", 
+        ammo="Seraphicaller",
+        head="Bunzi's Hat", 
+        body = gear.shomonjijoe,
+        hands="Asteria Mitts +1", 
+        legs="Avatara Slops",
         feet="Inyan. Crackows +2",
         neck="Adad Amulet",
-        ear1="Enmerkar Earring", ear2="Beck. Earring +1",
-        ring1="C. Palug Ring", ring2="Murky Ring",
-        back="Samanisi Cape", waist="Regal Belt",
+        ear1="Enmerkar Earring", 
+        ear2="Beck. Earring +2",
+        ring1="C. Palug Ring", 
+        ring2="Murky Ring",
+        back=gear.magic_jse_back,
+        waist="Regal Belt",
     }
     sets.midcast.Pet.MagicalBloodPactRage.Acc = set_combine(
         sets.midcast.Pet.MagicalBloodPactRage, {
             main="Marquetry Staff", body="Bunzi's Robe",
-            legs="Bunzi's Pants", feet="Bunzi's Sabots",
+            hands="Bunzi's Gloves", legs="Bunzi's Pants", feet="Bunzi's Sabots",
         }
     )
 
@@ -394,33 +423,40 @@ function init_gear_sets()
     )
 
     -- Spirit spells are ordinary pet spell midcasts, not Blood Pacts.
-    sets.midcast.Pet.WhiteMagic = {legs="Glyphic Spats"}
+    sets.midcast.Pet.WhiteMagic = {
+        legs="Glyphic Spats +1",
+    }
+
     sets.midcast.Pet['Elemental Magic'] = set_combine(
         sets.midcast.Pet.MagicalBloodPactRage, {
-            legs="Glyphic Spats",
+            legs="Glyphic Spats +1",
         }
     )
+
     sets.midcast.Pet['Elemental Magic'].Resistant = set_combine(
         sets.midcast.Pet['Elemental Magic'], {
-            main="Marquetry Staff", body="Bunzi's Robe",
-            head="Bunzi's Hat", hands="Bunzi's Gloves",
-            legs="Bunzi's Pants", feet="Bunzi's Sabots",
+            main="Marquetry Staff",
+            body="Bunzi's Robe",
+            head="Bunzi's Hat",
+            hands="Bunzi's Gloves",
+            legs="Bunzi's Pants",
+            feet="Bunzi's Sabots",
         }
     )
+
     sets.midcast.Pet.Impact = sets.midcast.Pet.DebuffBloodPactWard
 
-    ------------
+  
     -- Idle / perpetuation
-    ------------
+  
     sets.idle = {
         main="Mpaca's Staff", sub="Willpower Grip",
         ammo="Crepuscular Pebble",
-        head="Beckoner's Horn +1", body = gear.shomonjijoe,
-        hands="Beck. Bracers +1", legs="Assid. Pants +1",
-        -- hands="Asteria Mitts", -- NQ placeholder: Carbuncle / Avatar MAB and Refresh
-        feet="Beck. Pigaches +1",
+        head="Beckoner's Horn +2", body = gear.shomonjijoe,
+        hands="Asteria Mitts +1", legs="Assid. Pants +1",
+        feet="Beck. Pigaches +2",
         neck="Elite Royal Collar",
-        ear1="Alabaster Earring", ear2="Beck. Earring +1",
+        ear1="Alabaster Earring", ear2="Beck. Earring +2",
         ring1="Evoker's Ring", ring2="Inyanga Ring",
         back="Conveyance Cape", waist="Regal Belt",
     }
@@ -440,9 +476,11 @@ function init_gear_sets()
     sets.idle.Avatar = {
         main="Mpaca's Staff", sub="Oneiros Grip",
         ammo="Seraphicaller",
-        head="Beckoner's Horn +1", body="Beck. Doublet +1",
-        hands="Beck. Bracers +1", legs="Assid. Pants +1",
-        feet="Beck. Pigaches +1",
+        head="Beckoner's Horn +2", 
+        body="Beck. Doublet +2",
+        hands="Beck. Bracers +2", 
+        legs="Assid. Pants +1",
+        feet="Beck. Pigaches +2",
         neck="Null Loop",
         ear1="Handler's Earring +1", ear2="Handler's Earring",
         ring1="Evoker's Ring", ring2="Inyanga Ring",
@@ -450,10 +488,10 @@ function init_gear_sets()
     }
     sets.idle.PDT.Avatar = set_combine(sets.idle.Avatar, {
         main="Malignance Pole", body = gear.shomonjijoe,
-        head="Nyame Helm", hands="Beck. Bracers +1",
+        head="Nyame Helm", hands="Beck. Bracers +2",
         legs="Nyame Flanchard", feet="Nyame Sollerets",
         neck="Adad Amulet", ear1="Odnowa Earring +1",
-        ear2="Beck. Earring +1", ring1="Murky Ring",
+        ear2="Beck. Earring +2", ring1="Murky Ring",
         back="Archon Cape", waist="Regal Belt",
     })
     sets.idle.Spirit = set_combine(sets.idle.Avatar, {
@@ -466,48 +504,50 @@ function init_gear_sets()
 
     -- Favor and engaged variants are intentionally explicit placeholders.
     sets.idle.Avatar.Favor = {}
-    -- Future NQ placeholder from Azure-toothed Clawberry: Lamassu Mitts.
-    -- Skill / Cait Sith magic accuracy utility; HQ alone adds Cait Sith Lv.+1.
     sets.idle.Avatar.Engaged = {}
-    sets.idle.Avatar.Engaged.Carbuncle = {}
+    sets.idle.Avatar.Engaged.Carbuncle = {
+        hands="Asteria Mitts +1",
+    }
     sets.idle.Avatar.Engaged['Cait Sith'] = {
-        -- hands="Lamassu Mitts", -- NQ placeholder: Cait Sith skill / magic accuracy
+        hands="Lamassu Mitts +1",
     }
 
-    ------------
+  
     -- Avatar perpetuation / refresh
-    ------------
+  
     -- Dedicated avatar-out set. Prioritises Refresh while retaining enough
     -- perpetuation reduction to keep upkeep low: Assid. Pants +1 (-3),
-    -- Beck. Pigaches +1 (-7), Evoker's Ring (-1), and Lucidity Sash (-2).
-    -- Beck. Bracers +1 additionally halve the remaining cost on matching day
-    -- or weather. Shomonjijoe +1 (+3 Refresh), Beckoner's Horn +1 (+2 Refresh),
+    -- Beck. Pigaches +2 (-8), Evoker's Ring (-1), and Lucidity Sash (-2).
+    -- Beck. Bracers +2 additionally halve the remaining cost on matching day
+    -- or weather. Shomonjijoe +1 (+3 Refresh), Beckoner's Horn +2 (+3 Refresh),
     -- and Mpaca's Staff (+2 Refresh) are retained rather than overstacking
     -- -perpetuation beyond what is useful.
     -- Convoker's Pigaches +1 are not selected here: their -4 is weaker than
-    -- Beck. Pigaches +1's -7, which this character already owns.
+    -- Beck. Pigaches +2's -8, which this character already owns.
     sets.perp = set_combine(sets.idle.Avatar, {
         main="Mpaca's Staff",
-        head="Beckoner's Horn +1",
+        head="Beckoner's Horn +2",
         body = gear.shomonjijoe,
-        hands="Beck. Bracers +1",
+        hands="Beck. Bracers +2",
         legs="Assid. Pants +1",
-        feet="Beck. Pigaches +1",
+        feet="Beck. Pigaches +2",
         ring1="Evoker's Ring",
         waist="Lucidity Sash",
     })
-    -- Beckoner's Bracers +1's half-cost effect is conditional on matching
+    -- Beckoner's Bracers +2's half-cost effect is conditional on matching
     -- avatar element day/weather; the base set already equips them.
     sets.perp.Day = {}
     sets.perp.Weather = {}
-    sets.perp.Carbuncle = set_combine(sets.perp, {})
+    sets.perp.Carbuncle = set_combine(sets.perp, {
+        hands="Asteria Mitts +1",
+    })
     sets.perp.Diabolos = set_combine(sets.perp, {waist="Diabolos's Rope"})
     sets.perp.Alexander = sets.midcast.Pet.BloodPactWard
     sets.perp.staff_and_grip = {}
 
-    ------------
+  
     -- Defense / movement / latent
-    ------------
+  
     sets.defense.PDT = sets.idle.PDT
     sets.defense.MDT = {
         main="Malignance Pole", sub="Willpower Grip",
@@ -516,9 +556,12 @@ function init_gear_sets()
         hands="Nyame Gauntlets", legs="Nyame Flanchard",
         feet="Nyame Sollerets",
         neck="Null Loop",
-        ear1="Alabaster Earring", ear2="Odnowa Earring +1",
-        ring1="Murky Ring", ring2="Inyanga Ring",
-        back="Archon Cape", waist="Platinum Moogle Belt",
+        ear1="Alabaster Earring", 
+        ear2="Odnowa Earring +1",
+        ring1="Murky Ring", 
+        ring2="Inyanga Ring",
+        back="Archon Cape", 
+        waist="Platinum Moogle Belt",
     }
     sets.defense.MEVA = {
         main="Daybreak", sub="Genmei Shield",
@@ -531,24 +574,26 @@ function init_gear_sets()
         ring1="Murky Ring", ring2="Inyanga Ring",
         back="Null Shawl", waist="Null Belt",
     }
-    sets.Kiting = {feet="Herald's Gaiters", waist="Platinum Moogle Belt"}
+    -- Kiting while an avatar is summoned.
+    -- Retains the avatar-out idle equipment, with movement speed footwear.
+    sets.Kiting = set_combine(sets.idle.Avatar, {feet="Herald's Gaiters", waist="Platinum Moogle Belt", })
     sets.latent_refresh = {waist="Fucho-no-Obi"}
     sets.latent_refresh_grip = {sub="Oneiros Grip"}
     sets.DayIdle = {}
     sets.NightIdle = {}
     sets.HPDown = {}
 
-    ------------
+  
     -- Buff / utility sets
-    ------------
+  
     sets.buff.Doom = set_combine(sets.buff.Doom or {}, {})
     sets.buff.Sleep = {}
     sets.buff.Sublimation = {waist="Embla Sash"}
     sets.buff.DTSublimation = {waist="Embla Sash"}
 
-    ------------
+  
     -- Custom mode placeholders expected by SMN.lua
-    ------------
+  
     sets.engaged = {}
     sets.element = sets.element or {}
     sets.element.Fire = {}

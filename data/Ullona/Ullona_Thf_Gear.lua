@@ -1,12 +1,19 @@
 -- CHANGELOG
--- 2026-11-19: Replaced Ejekamal Mask with Nyame Helm in sets.precast.FC (Ejekamal has Haste+9% but no Fast Cast).
--- 2026-11-19: Added Platinum Moogle Belt to sets.Kiting (moved out of idle).
--- 2026-11-19: Documented Pillager's Vest +1 purpose (sets.precast.JA['Hide']: Hide duration +100).
-
+-- 2026-11-24:
+--   Added Malignance Chapeau.
+--   Added dedicated weaponskill sets using owned equipment.
+--   Added ranged attack accuracy set.
+--   Updated MDT and MEVA headpiece.
+--   Consolidated duplicate Hide definition.
+--
+-- 2026-11-19:
+--   Replaced Ejekamal Mask with Nyame Helm in sets.precast.FC.
+--   Added Platinum Moogle Belt to sets.Kiting.
+--   Documented Pillager's Vest +1 purpose in sets.precast.JA['Hide'].
 
 -- Ullona_Thf_Gear.lua
+
 function user_job_setup()
-    -- Options: Override default values
     state.OffenseMode:options('Normal','SomeAcc','Acc','FullAcc','Fodder')
     state.HybridMode:options('Normal','DT')
     state.RangedMode:options('Normal', 'Acc')
@@ -16,7 +23,6 @@ function user_job_setup()
     state.MagicalDefenseMode:options('MDT')
     state.ResistDefenseMode:options('MEVA')
 
-    -- Weapon states are constructed in THF.lua's job_setup().
     state.MainWeapon:options('None','Naegling','Tauret')
     state.OffWeapon:options('None','GletisKnife','Tauret','Sandung')
     state.RangedWeapon:options('None','Wingcutter')
@@ -31,23 +37,20 @@ function user_job_setup()
 
     state.AmbushMode = M(false, 'Ambush Mode')
 
-    -- Macro Book
     set_macro_page(1, 6)
 
-    -- Additional local binds
-    send_command('bind ^` input /ja "Flee" <me>')                   -- Ctrl + ` : Flee
-    send_command('bind !` input /ra <t>')                           -- Alt + ` : Ranged attack
-    send_command('bind @` gs c cycle SkillchainMode')               -- Win + ` : Cycle SkillchainMode
-    send_command('bind @f10 gs c toggle AmbushMode')                -- Win + F10 : Toggle AmbushMode
-    send_command('bind ^backspace input /item "Thief\'s Tools" <t>') -- Ctrl + Backspace
-    send_command('bind !q gs c set MainWeapon Naegling;gs c set OffWeapon GletisKnife;gs c set RangedWeapon Wingcutter') -- Alt + Q
-    send_command('bind !backspace input /ja "Hide" <me>')           -- Alt + Backspace : Hide
-    send_command('bind ^a gs c set MainWeapon None;gs c set OffWeapon None;gs c set RangedWeapon None;gs c set WeaponskillMode Match') -- Ctrl + A
-    send_command('bind ^\\\\ input /ja "Despoil" <t>')              -- Ctrl + \
-    send_command('bind !\\\\ input /ja "Mug" <t>')                  -- Alt + \
+    send_command('bind ^` input /ja "Flee" <me>')
+    send_command('bind !` input /ra <t>')
+    send_command('bind @` gs c cycle SkillchainMode')
+    send_command('bind @f10 gs c toggle AmbushMode')
+    send_command('bind ^backspace input /item "Thief\'s Tools" <t>')
+    send_command('bind !q gs c set MainWeapon Naegling;gs c set OffWeapon GletisKnife;gs c set RangedWeapon Wingcutter')
+    send_command('bind !backspace input /ja "Hide" <me>')
+    send_command('bind ^a gs c set MainWeapon None;gs c set OffWeapon None;gs c set RangedWeapon None;gs c set WeaponskillMode Match')
+    send_command('bind ^\\\\ input /ja "Despoil" <t>')
+    send_command('bind !\\\\ input /ja "Mug" <t>')
 end
 
--- Clear every bind this file sets so they don't linger after a job change/reload.
 function user_job_unload()
     send_command('unbind ^`')
     send_command('unbind !`')
@@ -62,13 +65,15 @@ function user_job_unload()
 end
 
 function user_job_lockstyle()
-    -- Delay is necessary for the game to finish loading the equipment model.
     send_command('input /lockstyleset 5')
 end
 
--- Define sets and vars used by this job file.
 function init_gear_sets()
-    -- Special sets
+
+  
+    -- SPECIAL SETS
+  
+
     sets.TreasureHunter = {
         hands="Plunderer's Armlets +1",
         feet="Skulker's Poulaines +3",
@@ -94,30 +99,26 @@ function init_gear_sets()
         hands="Pillager's Armlets +1"
     }
 
-    -- Extra Melee sets. Apply these on top of melee sets.
+  
+    -- EXTRA MELEE
+  
+
     sets.Knockback = {}
     sets.Suppa = {}
     sets.DWEarrings = {}
+
     sets.DWMax = {
-        waist="Patentia Sash", -- Enhances Dual Wield
-        feet="Rawhide Boots" -- Dual Wield+3
+        waist="Patentia Sash",
+        feet="Rawhide Boots"
     }
+
     sets.Parry = {}
     sets.Ambush = {}
 
-    -- Weapons:
-    -- Main/Off/Ranged are locked independently via state.MainWeapon,
-    -- state.OffWeapon, and state.RangedWeapon, forced every pass in
-    -- THF.lua's job_customize_idle_set/melee_set.
-    --
-    -- No sets.weapons.* table is needed here.
-    -- MainWeapon=Tauret and OffWeapon=GletisKnife replace the old
-    -- duplicated Tauret + Gleti's Knife weapon sets.
-    -- RangedWeapon=Wingcutter and ammo handling are handled by
-    -- the customize functions.
-    -- OffWeapon=Sandung is the TH-farming pick.
+  
+    -- TREASURE HUNTER / TAGGING
+  
 
-    -- Actions used to tag Treasure Hunter.
     sets.precast.Step = {
         head="Mummu Bonnet +2",
         neck="Null Loop",
@@ -141,7 +142,10 @@ function init_gear_sets()
     sets.precast.JA.Provoke =
         set_combine(sets.TreasureHunter, {})
 
-    -- Precast Job Abilities
+  
+    -- JOB ABILITIES
+  
+
     sets.precast.JA['Collaborator'] = {
         head="Skulker's Bonnet +2"
     }
@@ -155,7 +159,7 @@ function init_gear_sets()
     }
 
     sets.precast.JA['Hide'] = {
-        body="Pillager's Vest +1" -- Hide duration +100 and Crit Dmg +5%: its only job. Skulker's Vest +2 / Malignance cover every other body slot.
+        body="Pillager's Vest +1"
     }
 
     sets.precast.JA['Conspirator'] = {
@@ -188,9 +192,7 @@ function init_gear_sets()
     sets.precast.JA['Feint'] = {
         legs="Plunderer's Culottes +1"
     }
-    sets.precast.JA['Hide'] = {
-        body="Pillager's Vest +1"
-    }
+
     sets.precast.JA["Assassin's Charge"] = {}
 
     sets.precast.JA['Sneak Attack'] =
@@ -199,7 +201,10 @@ function init_gear_sets()
     sets.precast.JA['Trick Attack'] =
         set_combine(sets.buff['Trick Attack'], {})
 
-    -- Waltz set (CHR and VIT)
+  
+    -- WALTZ
+  
+
     sets.precast.Waltz = {
         body="Gleti's Cuirass",
         head="Mummu Bonnet +2",
@@ -214,7 +219,10 @@ function init_gear_sets()
     sets.precast.Waltz['Healing Waltz'] =
         set_combine(sets.precast.Waltz, {})
 
-    -- Fast Cast
+  
+    -- FAST CAST
+  
+
     sets.precast.FC = {
         head="Nyame Helm",
         ear1="Alabaster Earring",
@@ -234,12 +242,25 @@ function init_gear_sets()
         hands="Rawhide Gloves"
     })
 
-    -- Ranged snapshot gear
+  
+    -- RANGED ATTACK
+  
+
     sets.precast.RA = {}
 
-    -- Weaponskill sets
-    -- General-purpose set for weaponskills without a dedicated set.
-    -- Nyame assumed Path B, Rank 15.
+    sets.midcast.RA = {
+        head="Malignance Chapeau"
+    }
+
+    sets.midcast.RA.Acc = set_combine(sets.midcast.RA, {
+        neck="Null Loop",
+        waist="Null Belt"
+    })
+
+  
+    -- WEAPONSKILLS - GENERAL
+    -- Nyame assumed Path B Rank 15.
+  
 
     sets.precast.WS = {
         head="Nyame Helm",
@@ -257,36 +278,161 @@ function init_gear_sets()
         ammo="Oshasha's Treatise"
     }
 
-    -- Accuracy overlay
+  
+    -- WEAPONSKILL ACCURACY MODES
+  
+
     sets.precast.WS.SomeAcc = set_combine(sets.precast.WS, {
         hands="Leyline Gloves",
         ring2="Meghanada Ring",
         ear2="Crepuscular Earring"
     })
 
-    sets.precast.WS.Acc = set_combine(sets.precast.WS.SomeAcc, {})
-    sets.precast.WS.FullAcc = set_combine(sets.precast.WS.Acc, {})
+    sets.precast.WS.Acc = set_combine(sets.precast.WS.SomeAcc, {
+        neck="Sanctity Necklace",
+        waist="Null Belt"
+    })
 
-    -- Swap to these when using Moonshade with WS at 3000 TP.
+    sets.precast.WS.FullAcc = set_combine(sets.precast.WS.Acc, {
+        ring1="Mars's Ring",
+        ear1="Alabaster Earring"
+    })
+
+    sets.precast.WS.DT = set_combine(sets.precast.WS, {
+        head="Malignance Chapeau",
+        body="Malignance Tabard",
+        hands="Malignance Gloves",
+        legs="Malignance Tights",
+        feet="Malignance Boots",
+        ring1="Murky Ring",
+        ring2="Meghanada Ring"
+    })
+
+    sets.precast.WS.Fodder = set_combine(sets.precast.WS, {
+        back="Null Shawl"
+    })
+
+    sets.precast.WS.Proc = set_combine(sets.precast.WS, {
+        head="Malignance Chapeau",
+        body="Malignance Tabard",
+        hands="Malignance Gloves",
+        legs="Malignance Tights",
+        feet="Malignance Boots",
+        neck="Null Loop",
+        ring1="Mars's Ring",
+        ring2="Meghanada Ring"
+    })
+
+  
+    -- WS TP PRESERVATION
+  
+
     sets.MaxTP = {}
     sets.AccMaxTP = {}
 
-    -- Midcast sets
+  
+    -- DEDICATED WEAPONSKILL SETS
+    -- Built only from equipment present in your supplied file.
+  
+
+    -- Rudra's Storm: DEX/WSD-oriented single-hit WS.
+    sets.precast.WS["Rudra's Storm"] = set_combine(sets.precast.WS, {
+        head="Nyame Helm",
+        body="Nyame Mail",
+        hands="Nyame Gauntlets",
+        legs="Nyame Flanchard",
+        feet="Nyame Sollerets",
+        neck="Fotia Gorget",
+        waist="Fotia Belt",
+        ring1="Cornelia's Ring",
+        ring2="Rufescent Ring"
+    })
+
+    -- Evisceration: critical hit / multi-hit focus.
+    sets.precast.WS["Evisceration"] = set_combine(sets.precast.WS, {
+        head="Mummu Bonnet +2",
+        body="Mummu Jacket +2",
+        hands="Mummu Wrists +2",
+        legs="Mummu Kecks +2",
+        feet="Mummu Gamashes +2",
+        neck="Fotia Gorget",
+        waist="Fotia Belt",
+        ear1="Sherida Earring",
+        ear2="Cessance Earring",
+        ring1="Mars's Ring",
+        ring2="Meghanada Ring"
+    })
+
+    -- Savage Blade: physical WSD/attack focused.
+    sets.precast.WS["Savage Blade"] = set_combine(sets.precast.WS, {
+        head="Nyame Helm",
+        body="Nyame Mail",
+        hands="Nyame Gauntlets",
+        legs="Nyame Flanchard",
+        feet="Nyame Sollerets",
+        neck="Fotia Gorget",
+        waist="Fotia Belt",
+        ring1="Cornelia's Ring",
+        ring2="Rufescent Ring"
+    })
+
+    -- Mandalic Stab: single-hit physical WS.
+    sets.precast.WS["Mandalic Stab"] = set_combine(sets.precast.WS, {
+        head="Nyame Helm",
+        body="Nyame Mail",
+        hands="Nyame Gauntlets",
+        legs="Nyame Flanchard",
+        feet="Nyame Sollerets",
+        neck="Fotia Gorget",
+        waist="Fotia Belt",
+        ring1="Cornelia's Ring",
+        ring2="Rufescent Ring"
+    })
+
+    -- Exenterator: multi-hit AGI WS.
+    sets.precast.WS["Exenterator"] = set_combine(sets.precast.WS, {
+        head="Mummu Bonnet +2",
+        body="Mummu Jacket +2",
+        hands="Mummu Wrists +2",
+        legs="Mummu Kecks +2",
+        feet="Mummu Gamashes +2",
+        neck="Fotia Gorget",
+        waist="Fotia Belt",
+        ear1="Sherida Earring",
+        ear2="Cessance Earring",
+        ring1="Mars's Ring",
+        ring2="Meghanada Ring"
+    })
+
+    -- Aeolian Edge: magic WS.
+    sets.precast.WS["Aeolian Edge"] = set_combine(sets.precast.WS, {
+        head="Nyame Helm",
+        body="Nyame Mail",
+        hands="Nyame Gauntlets",
+        legs="Nyame Flanchard",
+        feet="Nyame Sollerets",
+        neck="Sanctity Necklace",
+        waist="Fotia Belt",
+        ring1="Cornelia's Ring",
+        ring2="Murky Ring"
+    })
+
+  
+    -- MIDCAST
+  
+
     sets.midcast.FastRecast = {}
 
-    -- Specific spells
     sets.midcast.Utsusemi = set_combine(sets.midcast.FastRecast, {
         neck="Magoraga Beads"
     })
 
-    -- Ranged gear
-    sets.midcast.RA = {}
-    sets.midcast.RA.Acc = {}
+  
+    -- MELEE SETS
+  
 
-    -- Melee sets
-    -- MUST be defined before sets.idle, which combines onto sets.engaged.
     sets.engaged = {
-        head="Gleti's Mask",
+        head="Malignance Chapeau",
         feet="Malignance Boots",
         neck="Anu Torque",
         ear2="Skulker's Earring",
@@ -322,14 +468,25 @@ function init_gear_sets()
         back="Null Shawl"
     })
 
-    sets.engaged.DT = set_combine(sets.engaged, {})
+    sets.engaged.DT = set_combine(sets.engaged, {
+        head="Malignance Chapeau",
+        body="Malignance Tabard",
+        hands="Malignance Gloves",
+        legs="Malignance Tights",
+        feet="Malignance Boots",
+        ring1="Murky Ring",
+        ring2="Meghanada Ring"
+    })
 
-    sets.engaged.SomeAcc.DT = set_combine(sets.engaged.SomeAcc, {})
-    sets.engaged.Acc.DT = set_combine(sets.engaged.Acc, {})
-    sets.engaged.FullAcc.DT = set_combine(sets.engaged.FullAcc, {})
-    sets.engaged.Fodder.DT = set_combine(sets.engaged.Fodder, {})
+    sets.engaged.SomeAcc.DT = set_combine(sets.engaged.SomeAcc, sets.engaged.DT)
+    sets.engaged.Acc.DT = set_combine(sets.engaged.Acc, sets.engaged.DT)
+    sets.engaged.FullAcc.DT = set_combine(sets.engaged.FullAcc, sets.engaged.DT)
+    sets.engaged.Fodder.DT = set_combine(sets.engaged.Fodder, sets.engaged.DT)
 
-    -- Idle/resting/defense sets
+  
+    -- IDLE / RESTING
+  
+
     sets.resting = {}
 
     sets.idle = set_combine(sets.engaged, {
@@ -354,8 +511,11 @@ function init_gear_sets()
         waist="Null Belt"
     })
 
-    -- Defense sets
-    -- Defense sets don't touch main/sub/range: weapons are locked via MainWeapon/OffWeapon/RangedWeapon.
+  
+    -- DEFENSE SETS
+  
+
+    -- Physical defense: retain Gleti's Mask for PDT.
     sets.defense.PDT = {
         ammo="Crepuscular Pebble",
         head="Gleti's Mask",
@@ -369,12 +529,13 @@ function init_gear_sets()
         back="Archon Cape",
         waist="Platinum Moogle Belt",
         legs="Malignance Tights",
-        feet="Malignance Boots",
+        feet="Malignance Boots"
     }
 
+    -- Magic defense: Malignance Chapeau for DT and magic evasion.
     sets.defense.MDT = {
         ammo="Crepuscular Pebble",
-        head="Gleti's Mask",
+        head="Malignance Chapeau",
         neck="Null Loop",
         ear1="Alabaster Earring",
         ear2="Odnowa Earring +1",
@@ -385,12 +546,13 @@ function init_gear_sets()
         back="Null Shawl",
         waist="Platinum Moogle Belt",
         legs="Malignance Tights",
-        feet="Malignance Boots",
+        feet="Malignance Boots"
     }
 
+    -- Magic evasion: Malignance Chapeau.
     sets.defense.MEVA = {
         ammo="Crepuscular Pebble",
-        head="Gleti's Mask",
+        head="Malignance Chapeau",
         neck="Null Loop",
         ear1="Alabaster Earring",
         ear2="Odnowa Earring +1",
@@ -401,12 +563,16 @@ function init_gear_sets()
         back="Null Shawl",
         waist="Null Belt",
         legs="Malignance Tights",
-        feet="Malignance Boots",
+        feet="Malignance Boots"
     }
 
-    sets.engaged.Haste_15 = {}
-    sets.engaged.Haste_30 = {}
-    sets.engaged.MaxHaste = {}
+  
+    -- HASTE PRESETS
+  
 
-    ----- placeholder -----
+    sets.engaged.Haste_15 = set_combine(sets.engaged, {})
+    sets.engaged.Haste_30 = set_combine(sets.engaged, {})
+    sets.engaged.MaxHaste = set_combine(sets.engaged, {})
+
+    ----- placeholder  
 end

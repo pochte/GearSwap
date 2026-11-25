@@ -137,19 +137,20 @@ function init_gear_sets()
         ring1="Mallquis Ring",
     })
 
-    sets.precast.FC.Cure = set_combine(sets.precast.FC, {
-        main="Daybreak",
-        sub="Sors Shield",
-        head="Vanya Hood",
-        body="Vrikodara Jupon",
-        hands="Bokwus Gloves",
-        feet="Vanya Clogs",
-        ear1="Magnetic Earring",
-        ear2="Mendicant's Earring",
-        ring1="Lebeche Ring",
-        ring2="Janniston Ring",
-        legs="Gyve Trousers",
-    })
+sets.precast.FC.Cure = set_combine(sets.precast.FC, {
+    main="Daybreak",
+    sub="Sors Shield",
+    head="Vanya Hood",
+    body="Vanya Robe",
+    hands="Bokwus Gloves",
+    feet="Vanya Clogs",
+    ear1="Malignance Earring",
+    ear2="Mendicant's Earring",
+    ring1="Lebeche Ring",
+    ring2="Janniston Ring",
+    legs="Ayanmo Cosciales +2",
+    back="Pahtli Cape"
+})
 
     sets.precast['Healing Magic'] = set_combine(sets.precast.FC, {
         main="Daybreak",
