@@ -1,6 +1,3 @@
--- CHANGELOG
--- 2026-11-19: Removed the Sorcerer's Ring swap (HP<75% and TP<1000 in Fodder mode). Old-world item, not owned, no longer needed.
-
 -- BLM.lua — Changelog
 function get_sets()
     -- Load and initialize the include file.
@@ -83,6 +80,12 @@ function job_post_midcast(spell, spellMap, eventArgs)
 			end
 		elseif is_nuke(spell, spellMap) and spell.english ~= 'Impact' then
 			try_magic_burst()
+			if player.hpp < 75 and player.tp < 1000 and state.CastingMode.value == 'Fodder' then
+				if item_available("Sorcerer's Ring") then
+					sets.SorcRing = {ring1="Sorcerer's Ring"}
+					equip(sets.SorcRing)
+				end
+			end
 			if spell.element == world.weather_element or spell.element == world.day_element then
 				if state.CastingMode.value == 'Fodder' or state.CastingMode.value == 'Normal' then
 					-- if item_available('Twilight Cape') and not LowTierNukes:contains(spell.english) and not state.Capacity.value then

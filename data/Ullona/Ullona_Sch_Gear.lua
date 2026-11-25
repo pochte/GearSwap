@@ -1,13 +1,4 @@
 -- CHANGELOG
--- 2026-11-19: Replaced Altruistic Cape (now in storage) with Null Shawl in the Enfeebling set.
--- 2026-11-19: Note: SCH is a WIP job. Argute +2 is the WIP Pedagogy gear; Arbatel pieces are in a Storage Slip.
--- 2026-11-19: Elite Royal Collar (San d'Oria citizen: Regen+3, DT-5%) now the neck in sets.idle / sets.idle.PDT (2 set(s)); replaces Null Loop there (Null Loop kept in all other sets).
--- 2026-11-19: Replaced Platinum Moogle Belt with Null Belt (Regen+3, Eva/MEva/Acc/MAcc+30) in 2 idle set(s); the belt caused too much blood aggro. Defense/FC/other sets unchanged.
--- 2026-11-19: Added Platinum Moogle Belt to sets.Kiting (moved out of idle).
--- 2026-11-19: Pedagogy pieces set to the base reforged item (Pedagogy Gown/Pants, Peda. Loafers); +1 deferred as too expensive.
--- 2026-11-19: Academic's: Gown is owned (base); Pants and Mortarboard commented out as "get:" until owned.
--- 2026-11-19: Arbatel +1 set confirmed owned (was in a Storage Slip); no code change.
--- 2026-11-19: Uncommented the Nyame body/hands/legs/feet (all owned) in sets.idle and sets.defense.PDT; swapped SV Separates/Gauntlets/Loincloth/Gaiters for Nyame in idle.PDT and defense PDT/MDT (12 replacements). Old lines kept as "-- previous" where a commented Nyame line existed.
 
 -- Ullona_Sch_Gear.lua
 -- SCH gear setup. One item per line.
@@ -689,7 +680,7 @@ sets.midcast.Shell = sets.midcast.Protect
         sub="Ammurapi Shield",
     }
 
-      placeholder----
+     --- placeholder----
     -- Referenced in SCH.lua but not yet gear-defined. Built via set_combine off their real
     -- base sets so they inherit sensible gear immediately instead of equipping nothing --
     -- fill in the {} overrides with anything Resistant/Burst-specific whenever ready.
@@ -705,7 +696,7 @@ sets.midcast.Shell = sets.midcast.Protect
     sets.RecoverBurst = set_combine(sets.RecoverMP, {})
     sets.ResistantRecoverBurst = set_combine(sets.RecoverBurst, {})
     sets.MaxTP = {}
-      placeholder----
+     ---- placeholder----
 end
 
 -- Select default macro book on initial load or subjob change.
