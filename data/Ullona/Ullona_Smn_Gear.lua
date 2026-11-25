@@ -31,7 +31,7 @@ function user_job_setup()
     -- Magical Blood Pact / Debuff cape.
     -- Current augments: Pet Magic Accuracy +3, Pet Magic Attack Bonus +3.
     gear.magic_jse_back = {
-        name="Samanisi Cape", augments={'Pet: Mag. Acc.+3', 'Pet: "Mag.Atk.Bns."+3'}}
+        name="Campestres's Cape", augments={'Pet: Mag. Acc.+3', 'Pet: "Mag.Atk.Bns."+3'}}
     -- Physical Blood Pact cape placeholder.
     -- Replace the item and augments once the physical cape is completed.
     gear.phys_jse_back = "Campestres's Cape"
