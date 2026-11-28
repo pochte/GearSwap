@@ -4,7 +4,7 @@
 -- status bar display) -- real item names are looked up from the short token instead.
 main_weapon_items = {
     Naegling = "Naegling",
-    KajaRod = "Kaja Rod",
+    Maxentius = "Maxentius",
     Tauret = "Tauret"
 }
 off_weapon_items = {
@@ -80,18 +80,19 @@ function job_setup()
     state.MainWeapon:options(
         'None',
         'Naegling',
-        'KajaRod',
+        'Maxentius',
         'Tauret'
     )
     state.OffWeapon:options(
+        'None',
         'Culminus',
         'SacroBulwark',
         'ArchdukeShield',
         'DemersalDegen',
         'Machaera',
         'GletisKnife',
-        'Daybreak',
-        'None'
+        'Daybreak'
+        
     )
 end
 -- Weapon locking helper.

@@ -1,5 +1,7 @@
 -- CHANGELOG
 -- 2026-11-19: Added Tauret to off_weapon_items. Ullona_Thf_Gear.lua already offers OffWeapon "Tauret", which previously equipped nothing.
+-- 2026-11-28: Fixed display stuck on "Weapons" by listing MainWeapon/OffWeapon/RangedWeapon in init_job_states.
+--             Added Tauret to state.OffWeapon options so it matches gear/off_weapon_items.
 
 -- THF.lua
 -- Weapon-mode option values must stay single-word (spaces/apostrophes break the console
@@ -28,7 +30,7 @@ end
 function job_setup()
     -- Weapon states need real options, otherwise .value is nil.
     state.MainWeapon   = M{['description']='Main Weapon',   'None', 'Naegling', 'Tauret'}
-    state.OffWeapon    = M{['description']='Off Weapon',    'None', 'GletisKnife', 'Sandung'}
+    state.OffWeapon    = M{['description']='Off Weapon',    'None', 'GletisKnife', 'Tauret', 'Sandung'}
     state.RangedWeapon = M{['description']='Ranged Weapon', 'None', 'Wingcutter'}
 
     state.Buff['Sneak Attack'] = buffactive['Sneak Attack'] or false
@@ -48,7 +50,7 @@ function job_setup()
     update_melee_groups()
     init_job_states(
         {"Capacity","AutoRuneMode","AutoTrustMode","AutoNukeMode","AutoWSMode","AutoShadowMode","AutoFoodMode","AutoStunMode","AutoDefenseMode"},
-        {"AutoBuffMode","Weapons","OffenseMode","WeaponskillMode","IdleMode","Passive","RuneElement","ElementalMode","CastingMode","TreasureMode"}
+        {"AutoBuffMode","MainWeapon","OffWeapon","RangedWeapon","OffenseMode","WeaponskillMode","IdleMode","Passive","RuneElement","ElementalMode","CastingMode","TreasureMode"}
     )
 end
 

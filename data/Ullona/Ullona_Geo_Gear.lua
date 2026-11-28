@@ -14,7 +14,7 @@
 -- gs c castws fires the WS for the selected MainWeapon (handled by smart-ws.lua).
 ws_by_main_weapon = {
     Idris = 'Exudation',
-    KajaRod = 'Black Halo',
+    Maxentius = 'Black Halo',
 }
 ws_by_main_weapon_default = 'Exudation'
 include('smart-ws.lua')
@@ -28,7 +28,7 @@ function user_job_setup()
     state.MagicalDefenseMode:options('MDT', 'NukeLock')
     state.ResistDefenseMode:options('MEVA')
     -- Main-hand lock: Ctrl+F7 cycles. Geomancy casts temporarily unlock it (see GEO.lua).
-    state.MainWeapon:options('None', 'Idris', 'KajaRod')
+    state.MainWeapon:options('None', 'Idris', 'Maxentius')
     -- Sub-hand lock: Alt+F7 cycles. GEO is never /NIN so no dual wield.
     state.OffWeapon:options('None', 'GenmeiShield', 'AmmurapiShield', 'Culminus')
     -- AutoGeo defaults
@@ -346,8 +346,8 @@ sets.precast.FC.Cure = set_combine(sets.precast.FC, {
 
     -- Elemental Magic
     sets.midcast['Elemental Magic'] = {
-        main="Bunzi's Rod",
-        sub="Ammurapi Shield",
+        main="Marin Staff +1",
+        sub="Daduchos Grip",
         head="Azimuth Hood +3",
         body="Azimuth Coat +3",
         hands="Azimuth Gloves +3",

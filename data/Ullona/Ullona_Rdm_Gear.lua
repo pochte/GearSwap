@@ -9,7 +9,7 @@
 
 ws_by_main_weapon = {
     Tauret = 'Exenterator',
-    KajaRod = 'Black Halo',
+    Maxentius = 'Black Halo',
 }
 ws_by_main_weapon_default = 'Savage Blade'
 include('smart-ws.lua')
@@ -25,8 +25,8 @@ function user_job_setup()
     state.MagicalDefenseMode:options('MDT')
     state.ResistDefenseMode:options('MEVA')
 
-    state.MainWeapon:options('None','Naegling','KajaRod','Tauret')
-    state.OffWeapon:options('Culminus','SacroBulwark','ArchdukeShield','DemersalDegen','Machaera','GletisKnife','Daybreak','None')
+    state.MainWeapon:options('None','Naegling','Maxentius','Tauret')
+    state.OffWeapon:options('None','Culminus','SacroBulwark','ArchdukeShield','DemersalDegen','Machaera','GletisKnife','Daybreak')
 
     -- Macro Book
     set_macro_page(1, 3)

@@ -27,11 +27,11 @@ function user_job_setup()
     set_macro_page(1, 7)
 
     gear.perp_staff = {name = "Mpaca's Staff"}
-    gear.shomonjijoe = {name = "Shomonjijoe"} --+1 is a wip. 
+    gear.shomonjijoe = {name = "Shomonjijoe +1"} --+1 is a wip. 
     -- Magical Blood Pact / Debuff cape.
     -- Current augments: Pet Magic Accuracy +3, Pet Magic Attack Bonus +3.
     gear.magic_jse_back = {
-        name="Campestres's Cape", augments={'Pet: Mag. Acc.+3', 'Pet: "Mag.Atk.Bns."+3'}}
+        name="Campestres's Cape", augments={'Pet: Mag. Acc.+7', 'Pet: "Mag.Atk.Bns."+7'}}
     -- Physical Blood Pact cape placeholder.
     -- Replace the item and augments once the physical cape is completed.
     gear.phys_jse_back = "Campestres's Cape"
@@ -110,17 +110,17 @@ function init_gear_sets()
     -- raid boss. Mewing Lullaby has a dedicated named override below.
     -- Damage / accuracy gear belongs in the pet midcast set.
   
-sets.precast.BloodPactWard = {
-    ammo="Seraphicaller",
-    head="Glyphic Horn",
-    body="Glyphic Doublet +1",
-    hands="Glyphic Bracers +1",
-    legs="Glyphic Spats +1",
-    feet="Glyph. Pigaches +1",
-    neck="Caller's Pendant",
-    ear1="Caller's Earring",
-    back="Conveyance Cape",
-}
+    sets.precast.BloodPactWard = {
+        ammo="Seraphicaller",
+        head="Beckoner's Horn +2",
+        body=gear.shomonjijoe,
+        hands="Glyphic Bracers +1", -- Change to +3 if you own +3
+        legs="Glyphic Spats +1",
+        feet="Glyph. Pigaches +1",
+        neck="Caller's Pendant",
+        ear1="Caller's Earring",
+        back="Conveyance Cape",
+    }
     -- Cait Sith's Mewing Lullaby gets its own named override. Use the strongest
     -- BP-delay head/body pieces here; the remaining slots inherit the Ward delay set.
     -- (The ability is officially named "Mewing Lullaby" in FFXI.)
@@ -214,49 +214,93 @@ sets.precast.BloodPactWard = {
   
     -- Player midcast: summoning and nuking
   
-    sets.midcast['Summoning Magic'] = {
-        main="Malignance Pole", sub="Willpower Grip",
+     sets.midcast['Summoning Magic'] = {
+        main="Tumafyrig",
+        ammo="Seraphicaller",
+        head="Beckoner's Horn +2",
+        body="Beck. Doublet +2",
+        hands="Lamassu Mitts +1",
+        legs="Beck. Spats +2",
+        feet="Beck. Pigaches +2",
+        neck="Incanter's Torque",
+        ear1="Andoaa Earring",
+        ear2="Beck. Earring +2",
+        ring1="Evoker's Ring",
+        ring2="Inyanga Ring",
+        back="Conveyance Cape",
+        waist="Lucidity Sash",
     }
-    sets.midcast['Elemental Magic'] = {
-        main="Marin Staff +1", sub="Willpower Grip",
-        ammo="Ghastly Tathlum",
-        head="Bunzi's Hat", body="Bunzi's Robe",
-        hands="Bunzi's Gloves", legs="Bunzi's Pants",
-        feet="Bunzi's Sabots",
-        neck="Baetyl Pendant",
-        ear1="Malignance Earring", ear2="Hecate's Earring",
-        ring1="Resonance Ring", ring2="Freke Ring",
-        back="Izdubar Mantle", waist="Hachirin-no-Obi",
+
+sets.midcast['Elemental Magic'] = sets.midcast['Elemental Magic'] or {}
+
+sets.midcast['Elemental Magic'].Resistant = set_combine(
+    sets.midcast['Elemental Magic'], {
+        main="Mpaca's Staff",
+        head="Inyanga Tiara +2",
+        neck="Incanter's Torque",
+        waist="Null Belt",
+        back="Null Shawl",
     }
-    sets.midcast['Elemental Magic'].Resistant = set_combine(
-        sets.midcast['Elemental Magic'], {
-            main="Mpaca's Staff", head="Inyanga Tiara +2",
-            neck="Incanter's Torque", waist="Null Belt",
-            back="Null Shawl",
-        }
-    )
-    sets.midcast['Elemental Magic'].OccultAcumen = set_combine(
-        sets.midcast['Elemental Magic'], {
-            main="Mpaca's Staff", neck="Incanter's Torque",
-            waist="Acerbic Sash +1",
-        }
-    )
-    sets.midcast.Impact = set_combine(sets.midcast['Elemental Magic'], {
-        head="empty", body="Twilight Cloak",
-    })
-    sets.midcast['Divine Magic'] = set_combine(
-        sets.midcast['Elemental Magic'], {
-            feet="Medium's Sabots", body="Vanya Robe",
-        }
-    )
-    sets.midcast['Dark Magic'] = set_combine(
-        sets.midcast['Elemental Magic'], {
-            neck="Erra Pendant",
-            ear1="Alabaster Earring", ear2="Malignance Earring",
-            ring1="Crepuscular Ring", ring2="Evanescence Ring",
-            back="Izdubar Mantle", waist="Eschan Stone",
-        }
-    )
+)
+
+sets.midcast['Elemental Magic'].OccultAcumen = set_combine(
+    sets.midcast['Elemental Magic'], {
+        main="Mpaca's Staff",
+        neck="Incanter's Torque",
+        waist="Acerbic Sash +1",
+    }
+)
+
+sets.midcast.Impact = set_combine(
+    sets.midcast['Elemental Magic'], {
+        head="empty",
+        body="Twilight Cloak",
+    }
+)
+
+sets.midcast['Elemental Magic'].Resistant = set_combine(
+    sets.midcast['Elemental Magic'], {
+        main="Mpaca's Staff",
+        head="Inyanga Tiara +2",
+        neck="Incanter's Torque",
+        waist="Null Belt",
+        back="Null Shawl",
+    }
+)
+
+sets.midcast['Elemental Magic'].OccultAcumen = set_combine(
+    sets.midcast['Elemental Magic'], {
+        main="Mpaca's Staff",
+        neck="Incanter's Torque",
+        waist="Acerbic Sash +1",
+    }
+)
+
+sets.midcast.Impact = set_combine(
+    sets.midcast['Elemental Magic'], {
+        head="empty",
+        body="Twilight Cloak",
+    }
+)
+
+sets.midcast['Divine Magic'] = set_combine(
+    sets.midcast['Elemental Magic'], {
+        feet="Medium's Sabots",
+        body="Vanya Robe",
+    }
+)
+
+sets.midcast['Dark Magic'] = set_combine(
+    sets.midcast['Elemental Magic'], {
+        neck="Erra Pendant",
+        ear1="Alabaster Earring",
+        ear2="Malignance Earring",
+        ring1="Crepuscular Ring",
+        ring2="Evanescence Ring",
+        back="Izdubar Mantle",
+        waist="Eschan Stone",
+    }
+)
     sets.midcast.Drain = set_combine(sets.midcast['Dark Magic'], {
         neck="Erra Pendant", waist="Fucho-no-Obi",
         feet="Merlinic Crackows",
@@ -317,18 +361,19 @@ sets.precast.BloodPactWard = {
   
     -- Pet Blood Pact wards
   
+       -- Pet Blood Pact wards
     sets.midcast.Pet = sets.midcast.Pet or {}
     sets.midcast.Pet.BloodPactWard = {
         main="Tumafyrig",
         ammo="Seraphicaller",
-        head="Beckoner's Horn +1",
-        body="Beck. Doublet +1",
-        hands="Glyphic Bracers +3",
-        legs="Beck. Spats +1",
-        feet="Beck. Pigaches +1",
+        head="Beckoner's Horn +2",
+        body="Beck. Doublet +2",
+        hands="Glyphic Bracers +3", -- Change to +1 if you only own +1
+        legs="Beck. Spats +2",
+        feet="Beck. Pigaches +2",
         neck="Incanter's Torque",
         ear1="Andoaa Earring",
-        ear2="Beck. Earring +1",
+        ear2="Beck. Earring +2",
         ring1="Evoker's Ring",
         ring2="Fervor Ring",
         back="Conveyance Cape",
@@ -354,20 +399,18 @@ sets.precast.BloodPactWard = {
     sets.midcast.Pet.DebuffBloodPactWard.Acc =
         sets.midcast.Pet.DebuffBloodPactWard
 
-  
     -- Pet Blood Pact rage: physical and magical
-  
-       sets.midcast.Pet.PhysicalBloodPactRage = {
+    sets.midcast.Pet.PhysicalBloodPactRage = {
         main="Tumafyrig",
         ammo="Seraphicaller",
-        head="Bunzi's Hat",
+        head="Beckoner's Horn +2",
         body="Convoker's Doublet +1",
-        hands="Beck. Bracers +1",
-        legs="Enticer's Pants",
-        feet="Inyan. Crackows +2",
+        hands="Beck. Bracers +2",
+        legs="Convoker's Spats +1",
+        feet="Convoker's Pigaches +1",
         neck="Shulmanu Collar",
         ear1="Enmerkar Earring",
-        ear2="Beck. Earring +1",
+        ear2="Beck. Earring +2",
         ring1="C. Palug Ring",
         ring2="Murky Ring",
         back=gear.phys_jse_back,
@@ -391,17 +434,14 @@ sets.precast.BloodPactWard = {
         }
     )
 
-    -- Shomonjijoe supplies Avatar MAB for magical pacts. Convoker's Doublet +1
-    -- is used for physical BP damage; compare in-game if your pact/target favors
-    -- the alternative body for a particular Rage ability.
     sets.midcast.Pet.MagicalBloodPactRage = {
         main="Frazil Staff", 
         ammo="Seraphicaller",
         head="Bunzi's Hat", 
-        body = gear.shomonjijoe,
+        body=gear.shomonjijoe,
         hands="Asteria Mitts +1", 
-        legs="Avatara Slops",
-        feet="Inyan. Crackows +2",
+        legs="Enticer's Pants", -- Swapped from Avatara Slops for TP-scaling + Pet MAB/Acc
+        feet="Bunzi's Sabots",
         neck="Adad Amulet",
         ear1="Enmerkar Earring", 
         ear2="Beck. Earring +2",
@@ -417,10 +457,10 @@ sets.precast.BloodPactWard = {
         }
     )
 
-    -- Fervor Ring's Avatar MAB bonus is Ifrit-only; never use it in generic sets.
     sets.midcast.Pet.MagicalBloodPactRage.Ifrit = set_combine(
         sets.midcast.Pet.MagicalBloodPactRage, {ring2="Fervor Ring"}
     )
+
 
     -- Spirit spells are ordinary pet spell midcasts, not Blood Pacts.
     sets.midcast.Pet.WhiteMagic = {
@@ -503,14 +543,34 @@ sets.precast.BloodPactWard = {
     })
 
     -- Favor and engaged variants are intentionally explicit placeholders.
-    sets.idle.Avatar.Favor = {}
-    sets.idle.Avatar.Engaged = {}
-    sets.idle.Avatar.Engaged.Carbuncle = {
-        hands="Asteria Mitts +1",
+       sets.idle.Avatar.Favor = set_combine(sets.idle.Avatar, {
+        head="Beckoner's Horn +2",
+        body=gear.shomonjijoe,
+        hands="Beck. Bracers +2",
+        legs="Assid. Pants +1",
+        feet="Beck. Pigaches +2",
+        waist="Lucidity Sash",
+    })
+    sets.idle.Avatar.Engaged = {
+        main="Tumafyrig",
+        sub="Oneiros Grip",
+        ammo="Seraphicaller",
+        head="Beckoner's Horn +2",
+        body="Beck. Doublet +2",
+        hands="Beck. Bracers +2",
+        legs="Assid. Pants +1",
+        feet="Beck. Pigaches +2",
+        neck="Shulmanu Collar",
+        ear1="Enmerkar Earring",
+        ear2="Beck. Earring +2",
+        ring1="Evoker's Ring",
+        ring2="C. Palug Ring",
+        back=gear.phys_jse_back,
+        waist="Regal Belt",
     }
-    sets.idle.Avatar.Engaged['Cait Sith'] = {
-        hands="Lamassu Mitts +1",
-    }
+    sets.idle.Avatar.Engaged.Carbuncle = set_combine(sets.idle.Avatar.Engaged, {hands="Asteria Mitts +1",})
+    sets.idle.Avatar.Engaged['Cait Sith'] = set_combine(sets.idle.Avatar.Engaged, {hands="Lamassu Mitts +1",})
+
 
   
     -- Avatar perpetuation / refresh

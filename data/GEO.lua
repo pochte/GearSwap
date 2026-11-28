@@ -3,7 +3,7 @@
 -- status bar display) -- real item names are looked up from the short token instead.
 main_weapon_items = {
     Idris = "Idris",
-    KajaRod = "Kaja Rod"
+    Maxentius = "Maxentius"
 }
 off_weapon_items = {
     GenmeiShield = "Genmei Shield",
@@ -31,7 +31,7 @@ function job_setup()
     -- Construct our custom weapon state before init_job_states().
 state.MainWeapon = M{
     ['description'] = 'Main Weapon',
-    'None', 'Idris', 'KajaRod'}
+    'None', 'Idris', 'Maxentius'}
 state.OffWeapon = M{
     ['description'] = 'Off Weapon',
     'None', 'GenmeiShield', 'AmmurapiShield', 'Culminus'}

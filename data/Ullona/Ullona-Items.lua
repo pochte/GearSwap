@@ -3,7 +3,7 @@ sets.BehemothSuit = {body="Behemoth Suit +1",hands=empty,legs=empty,feet=empty}
 sets.Sheltered = {ring2="Sheltered Ring"}
 -- Capacity Mode wears the EXP cape; lock_capacity_back() (Ullona-Globals) swaps in the
 -- non-+1 Aptitude Mantle if the +1 is not available, and locks the back slot while on.
-sets.Capacity = {back="Aptitude Mantle +1"}
+sets.Capacity = {}
 
 sets.buff.Doom = {neck="Nicander's Necklace",waist="Gishdubar Sash",ring1="Eshmun's Ring",ring2="Eshmun's Ring"}
 sets.TreasureHunter = {head="Wh. Rarab Cap +1",waist="Chaac Belt"}
